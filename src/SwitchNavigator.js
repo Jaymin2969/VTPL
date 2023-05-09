@@ -88,7 +88,7 @@ const RootNavigator = ({ isLogin }) => {
       <SafeAreaProvider>
         <NavigationContainer>
           <Stack.Navigator
-            initialRouteName={isOnboard === 'true' ? 'TabScreen' : 'Onboarding'}
+            initialRouteName={'ActiveStack'}
             screenOptions={{
               headerShown: false,
               gestureEnabled: false,

@@ -6,13 +6,18 @@ const styles = StyleSheet.create({
   view: {
     flexDirection: 'row',
     width: '90%',
-    marginTop: verticalScale(15),
+    marginTop: verticalScale(10),
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    backgroundColor: brandColors.inputColor,
+    backgroundColor: brandColors.white,
     height: horizontalScale(45),
     borderRadius: horizontalScale(8),
+    shadowOffset: { height: horizontalScale(5), width: horizontalScale(5) },
+    shadowOpacity: 0.1,
+    shadowRadius: horizontalScale(5),
+    borderWidth: 1,
+    borderColor: brandColors.inputColor
   },
   textInput: {
     flex: 1,

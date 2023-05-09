@@ -11,6 +11,9 @@ const style = StyleSheet.create({
     fontSize: fontScale(22),
     fontWeight: '700',
   },
+  mainWrapper: {
+    marginTop: verticalScale(20)
+  },
   image: {
     resizeMode: 'contain',
     height: horizontalScale(230),
@@ -19,10 +22,11 @@ const style = StyleSheet.create({
   },
   des: {
     // fontFamily: 'SourceSansPro-Regular',
-    fontSize: fontScale(13),
-    // marginTop: verticalScale(5),
+    fontSize: fontScale(15),
+    marginTop: verticalScale(10),
     fontWeight: '400',
     color: brandColors.textColor,
+    marginLeft: horizontalScale(17)
   },
   flexBox: {
     flexDirection: 'row',

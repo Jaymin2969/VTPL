@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/core";
 import React from "react";
 import { TouchableOpacity, Keyboard, StyleSheet, Text, View, Platform, StatusBar } from "react-native";
+import LinearGradient from 'react-native-linear-gradient';
 import { getStatusBarHeight } from "react-native-iphone-x-helper";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {
@@ -14,19 +15,19 @@ import {
 const NavBar = ({ onClick = () => { }, style, textStyle, text, disabled = false, rightIcon }) => {
   const navigation = useNavigation()
   return (
-    <View style={[styles.mainView, style]} >
+    <LinearGradient colors={['#4c669f', '#09096a', '#010151']} style={[styles.mainView, style]}>
       <View style={styles.flexDirection}>
+        <Text style={[styles.text, textStyle]}>{text}</Text>
         <TouchableOpacity style={styles.iconStyle} onPress={() => onClick() || navigation.goBack()}>
           <AntDesign
-            name="arrowleft"
+            name="setting"
             size={fontScale(30)}
-            color={brandColors.black}
+            color={brandColors.white}
           />
         </TouchableOpacity>
-        <Text style={[styles.text, textStyle]}>{text}</Text>
       </View>
       {rightIcon}
-    </View>
+    </LinearGradient>
   );
 };
 const statusBarHeight = Platform.select({
@@ -45,18 +46,20 @@ const styles = StyleSheet.create({
     shadowOffset: { height: 10, width: 0 },
     shadowOpacity: 0.1,
     shadowRadius: horizontalScale(5),
-    elevation: 3
+    elevation: 3,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20
   },
   text: {
-    fontSize: fontScale(15),
-    fontWeight: '600',
-    color: brandColors.black,
+    fontSize: fontScale(20),
+    fontWeight: 'bold',
+    color: brandColors.white,
     paddingVertical: verticalScale(10),
     marginLeft: horizontalScale(15)
   },
-  flexDirection: { flexDirection: 'row', alignItems: 'center', },
+  flexDirection: { flexDirection: 'row', justifyContent: 'space-between', width: '100%' },
   iconStyle: {
-    backgroundColor: brandColors.fillColor,
+    // backgroundColor: brandColors.fillColor,
     padding: horizontalScale(5),
     borderRadius: horizontalScale(8),
     alignItems: 'center'

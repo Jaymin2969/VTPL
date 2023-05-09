@@ -6,21 +6,23 @@ import {
   horizontalScale,
   verticalScale,
 } from "../Core/basicStyles";
+import LinearGradient from "react-native-linear-gradient";
 
 const index = ({ onClick, style, textStyle, text, disabled = false, leftIcon }) => {
   return (
-    <TouchableOpacity
-      disabled={disabled}
-      style={[styles.button, style, { opacity: disabled ? 0.7 : 1 }]}
-      onPress={() => {
-        Keyboard.dismiss();
-        onClick && onClick();
-      }}
-    >
-      {!!leftIcon && leftIcon}
-      <Text style={[styles.text, textStyle]}>{text}</Text>
-      {!!disabled && <ActivityIndicator color={brandColors.white} />}
-    </TouchableOpacity>
+    <LinearGradient colors={['#0dd058', '#138e22', '#166b06']} style={[styles.button, style, { opacity: disabled ? 0.7 : 1 }]}>
+      <TouchableOpacity
+        disabled={disabled}
+        onPress={() => {
+          Keyboard.dismiss();
+          onClick && onClick();
+        }}
+      >
+        {!!leftIcon && leftIcon}
+        <Text style={[styles.text, textStyle]}>{text}</Text>
+        {!!disabled && <ActivityIndicator color={brandColors.white} />}
+      </TouchableOpacity>
+    </LinearGradient>
   );
 };
 
