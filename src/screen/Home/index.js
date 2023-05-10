@@ -1,43 +1,45 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 
-import {CheckBox} from 'react-native-elements';
+import ModalDropdown from 'react-native-modal-dropdown';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 //style
 import styles from './style';
 
 //components
-import Input from '../../../components/Input';
-import Button from '../../../components/Button';
-import BaseScreen from '../../../components/BaseScreen';
+import Input from '../../components/Input';
+import Button from '../../components/Button';
+import BaseScreen from '../../components/BaseScreen';
 
 //image
 
 //redux
 import {useDispatch, useSelector} from 'react-redux';
-import NavBar from '../../../components/NavBar';
-import {apple, google, loginBG} from '../../../assets/images';
-import {horizontalScale} from '../../../components/Core/basicStyles';
+import NavBar from '../../components/NavBar';
+import {apple, google, loginBG} from '../../assets/images';
+import {horizontalScale} from '../../components/Core/basicStyles';
 import {isIOS} from 'react-native-elements/dist/helpers';
-import {loginUser} from '../../../redux/actions/authAction';
-import TokenManager from '../../../utils/TokenManager';
+import {loginUser} from '../../redux/actions/authAction';
+import TokenManager from '../../utils/TokenManager';
+import LinearGradient from 'react-native-linear-gradient';
 
-const SignIn = ({navigation}) => {
+const Home = ({navigation}) => {
   const dispatch = useDispatch();
   const {
     flags: {loginSuccess},
   } = useSelector(({auth}) => auth);
   const [loading, setLoading] = React.useState(false);
   const [phno, setPhno] = React.useState('');
+  const [activeTab, setActiveTab] = React.useState(true);
   const [password, setPassword] = React.useState('');
-  const [checked, setChecked] = React.useState(true);
+  const [checked, setChecked] = React.useState(false);
 
   useEffect(() => {
     if (loginSuccess) return navigation.navigate('TabScreen');
   }, [loginSuccess]);
 
   const login = () => {
-    return navigation.navigate('ChangeServer');
     if (phno?.length < 13 || !phno) {
       return alert('Please enter valid phno');
     }
@@ -108,39 +110,59 @@ const SignIn = ({navigation}) => {
 
   const toggleCheckbox = () => setChecked(!checked);
 
+  const onTabPress = () => setActiveTab(prv => !prv);
+
   return (
     <BaseScreen>
-      <NavBar text={'Login'} onClick={() => navigation.navigate('TabScreen')} />
+      <NavBar text={`Welcome ${'User Name'}`} onClick={toggleCheckbox} />
       <View style={styles.mainWrapper}>
-        <Text style={styles.des}>{'User name'}</Text>
-        <Input placeholder="Email" onChangeText={setPhno} value={phno} />
-        <Text style={styles.des}>{'Password'}</Text>
-        <Input
-          placeholder="Password"
-          onChangeText={setPassword}
-          value={password}
-          secureTextEntry
-        />
-        <CheckBox
-          checked={checked}
-          onPress={toggleCheckbox}
-          iconType="material-community"
-          checkedIcon="checkbox-outline"
-          uncheckedIcon={'checkbox-blank-outline'}
-          title={'Remember me'}
-          containerStyle={styles.checkWrapper}
-          textStyle={styles.textStyle}
-        />
-        <Button
+        <Text style={styles.des}>{'Choose your Preference'}</Text>
+        {activeTab ? (
+          <>
+            <LinearGradient
+              style={styles.buttonStyle}
+              colors={['#e32d2e', '#b32527', '#892020']}>
+              <TouchableOpacity onPress={onTabPress}>
+                <Image />
+                <Text style={styles.buttonText}> Report</Text>
+              </TouchableOpacity>
+            </LinearGradient>
+            <LinearGradient
+              style={styles.buttonStyle}
+              colors={['#45e2ea', '#26a4a9', '#097272']}>
+              <TouchableOpacity onPress={onTabPress}>
+                <Image />
+                <Text style={styles.buttonText}> Dispatch Plan</Text>
+              </TouchableOpacity>
+            </LinearGradient>
+          </>
+        ) : (
+          <>
+            <LinearGradient
+              style={styles.buttonStyle}
+              colors={['#e32d2e', '#b32527', '#892020']}>
+              <TouchableOpacity onPress={onTabPress}>
+                <Image />
+                <Text style={styles.buttonText}> So Status</Text>
+              </TouchableOpacity>
+            </LinearGradient>
+            <LinearGradient
+              style={styles.buttonStyle}
+              colors={['#45e2ea', '#26a4a9', '#097272']}>
+              <TouchableOpacity onPress={onTabPress}>
+                <Image />
+                <Text style={styles.buttonText}> Ledger Report</Text>
+              </TouchableOpacity>
+            </LinearGradient>
+          </>
+        )}
+        {/* <Button
           disabled={loading}
           onClick={login}
-          text="Login"
+          text={activeTab ? 'Save IP' : 'Submit'}
           textStyle={styles.buttonText}
           style={styles.buttonStyle}
-        />
-        <TouchableOpacity onPress={onPressHandler} style={styles.account}>
-          <Text style={styles.bottomText}>{'Forgotten Password?'}</Text>
-        </TouchableOpacity>
+        /> */}
       </View>
 
       <View style={styles.buttonView}></View>
@@ -148,4 +170,4 @@ const SignIn = ({navigation}) => {
   );
 };
 
-export default SignIn;
+export default Home;

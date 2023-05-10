@@ -5,7 +5,7 @@ import {
   horizontalScale,
   isIOS,
   verticalScale,
-} from '../../../components/Core/basicStyles';
+} from '../../components/Core/basicStyles';
 
 const style = StyleSheet.create({
   viewInner: {
@@ -25,6 +25,27 @@ const style = StyleSheet.create({
     height: horizontalScale(230),
     width: horizontalScale(230),
     alignSelf: 'center',
+  },
+  tabWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: brandColors.white,
+    shadowOffset: {height: horizontalScale(5), width: horizontalScale(5)},
+    shadowOpacity: 0.1,
+    shadowRadius: horizontalScale(5),
+  },
+  tab: {
+    width: '50%',
+    padding: horizontalScale(13),
+    alignItems: 'center',
+  },
+  activeTab: {
+    backgroundColor: '#0707071f',
+    borderBottomWidth: 3,
+  },
+  tabText: {
+    fontSize: fontScale(15),
+    fontWeight: 'bold',
   },
   des: {
     // fontFamily: 'SourceSansPro-Regular',

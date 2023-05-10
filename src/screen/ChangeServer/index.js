@@ -1,43 +1,44 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 
-import {CheckBox} from 'react-native-elements';
+import ModalDropdown from 'react-native-modal-dropdown';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 //style
 import styles from './style';
 
 //components
-import Input from '../../../components/Input';
-import Button from '../../../components/Button';
-import BaseScreen from '../../../components/BaseScreen';
+import Input from '../../components/Input';
+import Button from '../../components/Button';
+import BaseScreen from '../../components/BaseScreen';
 
 //image
 
 //redux
 import {useDispatch, useSelector} from 'react-redux';
-import NavBar from '../../../components/NavBar';
-import {apple, google, loginBG} from '../../../assets/images';
-import {horizontalScale} from '../../../components/Core/basicStyles';
+import NavBar from '../../components/NavBar';
+import {apple, google, loginBG} from '../../assets/images';
+import {horizontalScale} from '../../components/Core/basicStyles';
 import {isIOS} from 'react-native-elements/dist/helpers';
-import {loginUser} from '../../../redux/actions/authAction';
-import TokenManager from '../../../utils/TokenManager';
+import {loginUser} from '../../redux/actions/authAction';
+import TokenManager from '../../utils/TokenManager';
 
-const SignIn = ({navigation}) => {
+const ChangeServer = ({navigation}) => {
   const dispatch = useDispatch();
   const {
     flags: {loginSuccess},
   } = useSelector(({auth}) => auth);
   const [loading, setLoading] = React.useState(false);
   const [phno, setPhno] = React.useState('');
+  const [activeTab, setActiveTab] = React.useState(true);
   const [password, setPassword] = React.useState('');
-  const [checked, setChecked] = React.useState(true);
+  const [checked, setChecked] = React.useState(false);
 
   useEffect(() => {
     if (loginSuccess) return navigation.navigate('TabScreen');
   }, [loginSuccess]);
 
   const login = () => {
-    return navigation.navigate('ChangeServer');
     if (phno?.length < 13 || !phno) {
       return alert('Please enter valid phno');
     }
@@ -108,39 +109,51 @@ const SignIn = ({navigation}) => {
 
   const toggleCheckbox = () => setChecked(!checked);
 
+  const onTabPress = () => setActiveTab(prv => !prv);
+
   return (
     <BaseScreen>
-      <NavBar text={'Login'} onClick={() => navigation.navigate('TabScreen')} />
+      <NavBar text={'Change Server IP'} onClick={toggleCheckbox} />
+      <View style={styles.tabWrapper}>
+        <TouchableOpacity
+          onPress={onTabPress}
+          style={[styles.tab, activeTab && styles.activeTab]}>
+          <Text style={styles.tabText}>Server IP</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={onTabPress}
+          style={[styles.tab, !activeTab && styles.activeTab]}>
+          <Text style={styles.tabText}>Password</Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.mainWrapper}>
-        <Text style={styles.des}>{'User name'}</Text>
-        <Input placeholder="Email" onChangeText={setPhno} value={phno} />
-        <Text style={styles.des}>{'Password'}</Text>
-        <Input
-          placeholder="Password"
-          onChangeText={setPassword}
-          value={password}
-          secureTextEntry
-        />
-        <CheckBox
-          checked={checked}
-          onPress={toggleCheckbox}
-          iconType="material-community"
-          checkedIcon="checkbox-outline"
-          uncheckedIcon={'checkbox-blank-outline'}
-          title={'Remember me'}
-          containerStyle={styles.checkWrapper}
-          textStyle={styles.textStyle}
-        />
+        {activeTab ? (
+          <>
+            <Text style={styles.des}>{'Server IP'}</Text>
+            <Input
+              placeholder="Server IP"
+              onChangeText={setPhno}
+              value={phno}
+            />
+          </>
+        ) : (
+          <>
+            <Text style={styles.des}>{'Password'}</Text>
+            <Input
+              placeholder="Password"
+              onChangeText={setPassword}
+              value={password}
+              secureTextEntry
+            />
+          </>
+        )}
         <Button
           disabled={loading}
           onClick={login}
-          text="Login"
+          text={activeTab ? 'Save IP' : 'Submit'}
           textStyle={styles.buttonText}
           style={styles.buttonStyle}
         />
-        <TouchableOpacity onPress={onPressHandler} style={styles.account}>
-          <Text style={styles.bottomText}>{'Forgotten Password?'}</Text>
-        </TouchableOpacity>
       </View>
 
       <View style={styles.buttonView}></View>
@@ -148,4 +161,4 @@ const SignIn = ({navigation}) => {
   );
 };
 
-export default SignIn;
+export default ChangeServer;

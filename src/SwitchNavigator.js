@@ -20,6 +20,8 @@ import TokenManager from "./utils/TokenManager";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Onboarding from "./screen/Authentication/Onboarding";
 import { IS_PROCESSING_REQUEST } from "./redux/reducers/systemReducer";
+import ChangeServer from "./screen/ChangeServer";
+import Home from "./screen/Home";
 
 const Stack = createStackNavigator();
 const AppBottomTab = createBottomTabNavigator();
@@ -88,13 +90,15 @@ const RootNavigator = ({ isLogin }) => {
       <SafeAreaProvider>
         <NavigationContainer>
           <Stack.Navigator
-            initialRouteName={'ActiveStack'}
+            initialRouteName={'Home'}
             screenOptions={{
               headerShown: false,
               gestureEnabled: false,
             }}
           >
             <Stack.Screen name="TabScreen" component={AppTabScreen} />
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="ChangeServer" component={ChangeServer} />
             <Stack.Screen name="Onboarding" component={Onboarding} />
             <Stack.Screen name="ChooseCountry" component={ChooseCountry} />
             <Stack.Screen name="SetUpAccount" component={SetUpAccount} />

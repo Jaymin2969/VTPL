@@ -5,7 +5,7 @@ import {
   horizontalScale,
   isIOS,
   verticalScale,
-} from '../../../components/Core/basicStyles';
+} from '../../components/Core/basicStyles';
 
 const style = StyleSheet.create({
   viewInner: {
@@ -26,13 +26,35 @@ const style = StyleSheet.create({
     width: horizontalScale(230),
     alignSelf: 'center',
   },
+  tabWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: brandColors.white,
+    shadowOffset: {height: horizontalScale(5), width: horizontalScale(5)},
+    shadowOpacity: 0.1,
+    shadowRadius: horizontalScale(5),
+  },
+  tab: {
+    width: '50%',
+    padding: horizontalScale(13),
+    alignItems: 'center',
+  },
+  activeTab: {
+    backgroundColor: '#0707071f',
+    borderBottomWidth: 3,
+  },
+  tabText: {
+    fontSize: fontScale(15),
+    fontWeight: 'bold',
+  },
   des: {
     // fontFamily: 'SourceSansPro-Regular',
-    fontSize: fontScale(15),
+    fontSize: fontScale(17),
     marginTop: verticalScale(10),
-    fontWeight: '400',
-    color: brandColors.textColor,
+    fontWeight: '600',
+    color: brandColors.black,
     marginLeft: horizontalScale(17),
+    textAlign: 'center',
   },
   textStyle: {
     fontSize: fontScale(15),
@@ -83,11 +105,16 @@ const style = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   buttonText: {
-    fontSize: fontScale(17),
+    fontSize: fontScale(20),
+    color: brandColors.white,
+    fontWeight: '600',
   },
   buttonStyle: {
     marginHorizontal: horizontalScale(20),
     marginTop: verticalScale(20),
+    padding: horizontalScale(5),
+    alignItems: 'center',
+    borderRadius: horizontalScale(10),
   },
   account: {
     alignItems: 'center',
