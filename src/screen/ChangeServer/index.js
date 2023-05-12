@@ -39,6 +39,7 @@ const ChangeServer = ({navigation}) => {
   }, [loginSuccess]);
 
   const login = () => {
+    navigation.navigate('Home');
     if (phno?.length < 13 || !phno) {
       return alert('Please enter valid phno');
     }

@@ -110,7 +110,10 @@ const Home = ({navigation}) => {
 
   const toggleCheckbox = () => setChecked(!checked);
 
-  const onTabPress = () => setActiveTab(prv => !prv);
+  const onTabPress = () => {
+    if (activeTab) navigation.navigate('SoStatus');
+    setActiveTab(prv => !prv);
+  };
 
   return (
     <BaseScreen>

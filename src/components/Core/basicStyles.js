@@ -1,9 +1,11 @@
-import { Dimensions, PixelRatio, Platform } from 'react-native';
+import {Dimensions, PixelRatio, Platform} from 'react-native';
 
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
 
 const [shortDimension, longDimension] =
-  SCREEN_WIDTH < SCREEN_HEIGHT ? [SCREEN_WIDTH, SCREEN_HEIGHT] : [SCREEN_HEIGHT, SCREEN_WIDTH];
+  SCREEN_WIDTH < SCREEN_HEIGHT
+    ? [SCREEN_WIDTH, SCREEN_HEIGHT]
+    : [SCREEN_HEIGHT, SCREEN_WIDTH];
 
 // Guideline sizes are based on standard ~5" screen mobile device
 const guidelineBaseWidth = 350;
@@ -110,10 +112,12 @@ export const brandColors = {
   pink: '#F76C89',
   Dusk: '#F1F1F1',
   facebook: '#3b5998',
+  blueLight: '#b2c1cf',
+  skyLight: '#e7ecee',
   transparent: 'rgba(0,0,0,0)',
   error: '#F92323',
   grayWhite: '#F5F5F5',
-  blackGray: '#171719'
+  blackGray: '#171719',
 };
 
 let paddingMedium = horizontalScale(20);
