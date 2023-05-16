@@ -1,12 +1,18 @@
-import { StyleSheet } from 'react-native';
-import { brandColors, fontScale, horizontalScale, isIOS, verticalScale } from '../../../components/Core/basicStyles';
+import {StyleSheet} from 'react-native';
+import {
+  brandColors,
+  fontScale,
+  horizontalScale,
+  isIOS,
+  verticalScale,
+} from '../../../components/Core/basicStyles';
 
 const style = StyleSheet.create({
   viewInner: {
     marginTop: isIOS ? verticalScale(50) : verticalScale(30),
     paddingHorizontal: horizontalScale(20),
   },
-  containerStyle: { flex: 1, backgroundColor: brandColors.white },
+  containerStyle: {flex: 1, backgroundColor: brandColors.white},
   titleText: {
     // fontFamily: 'SFProText-Semibold',
     fontSize: fontScale(22),
@@ -19,7 +25,7 @@ const style = StyleSheet.create({
     fontSize: fontScale(18),
     fontWeight: '700',
     color: brandColors.gray,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   image: {
     resizeMode: 'contain',
@@ -30,7 +36,7 @@ const style = StyleSheet.create({
     height: horizontalScale(6),
     width: horizontalScale(6),
     borderRadius: horizontalScale(6),
-    marginLeft: horizontalScale(5)
+    marginLeft: horizontalScale(5),
   },
   iconStyle: {
     backgroundColor: brandColors.fillColor,
@@ -39,7 +45,7 @@ const style = StyleSheet.create({
     padding: horizontalScale(5),
     borderRadius: horizontalScale(8),
     zIndex: 1,
-    marginLeft: 10
+    marginLeft: 10,
   },
   des: {
     // fontFamily: 'SourceSansPro-Regular',
@@ -68,11 +74,12 @@ const style = StyleSheet.create({
   },
   buttonText: {
     fontSize: fontScale(17),
+    color: brandColors.black,
   },
   buttonStyle: {
     marginHorizontal: horizontalScale(20),
     backgroundColor: brandColors.black,
-    marginBottom: verticalScale(20)
+    marginBottom: verticalScale(20),
   },
   account: {
     alignItems: 'center',

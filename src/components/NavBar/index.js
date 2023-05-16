@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: fontScale(15),
     marginLeft: horizontalScale(10),
+    color: brandColors.black,
   },
 
   text: {
@@ -145,6 +146,7 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: fontScale(18),
     padding: horizontalScale(5),
+    color: brandColors.black,
   },
 });
 export default NavBar;

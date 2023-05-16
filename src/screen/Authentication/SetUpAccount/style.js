@@ -1,5 +1,11 @@
-import { StyleSheet } from 'react-native';
-import { brandColors, fontScale, horizontalScale, isIOS, verticalScale } from '../../../components/Core/basicStyles';
+import {StyleSheet} from 'react-native';
+import {
+  brandColors,
+  fontScale,
+  horizontalScale,
+  isIOS,
+  verticalScale,
+} from '../../../components/Core/basicStyles';
 
 const style = StyleSheet.create({
   viewInner: {
@@ -18,13 +24,13 @@ const style = StyleSheet.create({
     fontWeight: '600',
     color: brandColors.black,
     marginTop: verticalScale(20),
-    marginLeft: horizontalScale(20)
+    marginLeft: horizontalScale(20),
   },
   image: {
     resizeMode: 'contain',
     height: horizontalScale(230),
     width: horizontalScale(230),
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   des: {
     // fontFamily: 'SourceSansPro-Regular',
@@ -37,7 +43,7 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'center',
-    marginTop: verticalScale(10)
+    marginTop: verticalScale(10),
   },
   divider: {
     alignSelf: 'center',
@@ -53,7 +59,7 @@ const style = StyleSheet.create({
     marginHorizontal: horizontalScale(20),
     marginTop: verticalScale(10),
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   checkView: {
     alignItems: 'flex-end',
@@ -73,10 +79,11 @@ const style = StyleSheet.create({
   },
   buttonText: {
     fontSize: fontScale(17),
+    color: brandColors.black,
   },
   buttonStyle: {
     marginHorizontal: horizontalScale(20),
-    marginTop: verticalScale(20)
+    marginTop: verticalScale(20),
   },
   account: {
     alignItems: 'center',
@@ -90,19 +97,20 @@ const style = StyleSheet.create({
   rightTextBottom: {
     color: brandColors.error,
     fontSize: fontScale(17),
-    textDecorationLine: 'underline', fontWeight: '700'
+    textDecorationLine: 'underline',
+    fontWeight: '700',
   },
   appleImage: {
     resizeMode: 'contain',
     width: horizontalScale(20),
     height: horizontalScale(20),
-    marginRight: horizontalScale(10)
+    marginRight: horizontalScale(10),
   },
   googleImage: {
     resizeMode: 'contain',
     width: horizontalScale(20),
     height: horizontalScale(20),
-    marginRight: horizontalScale(10)
+    marginRight: horizontalScale(10),
   },
 });
 

@@ -1,5 +1,11 @@
-import { StyleSheet } from 'react-native';
-import { brandColors, fontScale, horizontalScale, isIOS, verticalScale } from '../../../components/Core/basicStyles';
+import {StyleSheet} from 'react-native';
+import {
+  brandColors,
+  fontScale,
+  horizontalScale,
+  isIOS,
+  verticalScale,
+} from '../../../components/Core/basicStyles';
 
 const style = StyleSheet.create({
   viewInner: {
@@ -11,6 +17,7 @@ const style = StyleSheet.create({
     fontSize: fontScale(22),
     marginVertical: verticalScale(10),
     fontWeight: '200',
+    color: brandColors.black,
   },
   mainView: {
     justifyContent: 'center',
@@ -49,6 +56,7 @@ const style = StyleSheet.create({
   },
   buttonText: {
     fontSize: fontScale(17),
+    color: brandColors.black,
   },
   buttonStyle: {
     marginHorizontal: horizontalScale(20),

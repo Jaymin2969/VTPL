@@ -28,18 +28,20 @@ const SignIn = ({navigation}) => {
     flags: {loginSuccess},
   } = useSelector(({auth}) => auth);
   const [loading, setLoading] = React.useState(false);
-  const [phno, setPhno] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [phno, setPhno] = React.useState('9723165069');
+  const [password, setPassword] = React.useState('krishna');
   const [checked, setChecked] = React.useState(true);
 
   useEffect(() => {
-    if (loginSuccess) return navigation.navigate('TabScreen');
+    if (loginSuccess) return navigation.navigate('Home');
   }, [loginSuccess]);
 
   const login = () => {
-    return navigation.navigate('ChangeServer');
-    if (phno?.length < 13 || !phno) {
+    if (phno?.length < 10 || !phno) {
       return alert('Please enter valid phno');
+    }
+    if (!password) {
+      return alert('Please enter valid password');
     }
     dispatch(
       loginUser({
@@ -113,7 +115,7 @@ const SignIn = ({navigation}) => {
       <NavBar text={'Login'} onClick={() => navigation.navigate('TabScreen')} />
       <View style={styles.mainWrapper}>
         <Text style={styles.des}>{'User name'}</Text>
-        <Input placeholder="Email" onChangeText={setPhno} value={phno} />
+        <Input placeholder="User name" onChangeText={setPhno} value={phno} />
         <Text style={styles.des}>{'Password'}</Text>
         <Input
           placeholder="Password"

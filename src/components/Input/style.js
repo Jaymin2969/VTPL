@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { verticalScale, horizontalScale, brandColors } from '../Core/basicStyles';
+import {StyleSheet} from 'react-native';
+import {verticalScale, horizontalScale, brandColors} from '../Core/basicStyles';
 const ICON_SIZE = horizontalScale(20);
 
 const styles = StyleSheet.create({
@@ -13,11 +13,11 @@ const styles = StyleSheet.create({
     backgroundColor: brandColors.white,
     height: horizontalScale(45),
     borderRadius: horizontalScale(8),
-    shadowOffset: { height: horizontalScale(5), width: horizontalScale(5) },
+    shadowOffset: {height: horizontalScale(5), width: horizontalScale(5)},
     shadowOpacity: 0.1,
     shadowRadius: horizontalScale(5),
     borderWidth: 1,
-    borderColor: brandColors.inputColor
+    borderColor: brandColors.inputColor,
   },
   textInput: {
     flex: 1,
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     lineHeight: horizontalScale(20),
     fontSize: horizontalScale(15),
     paddingRight: horizontalScale(10),
-    color: '#000',
+    color: brandColors.black,
     marginLeft: horizontalScale(8),
   },
   iconStyle: {

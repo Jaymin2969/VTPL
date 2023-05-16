@@ -16,6 +16,7 @@ const style = StyleSheet.create({
     // fontFamily: 'SFProText-Semibold',
     fontSize: fontScale(22),
     fontWeight: '700',
+    color: brandColors.black,
   },
   mainWrapper: {
     marginTop: verticalScale(20),
@@ -84,6 +85,7 @@ const style = StyleSheet.create({
   },
   buttonText: {
     fontSize: fontScale(17),
+    color: brandColors.black,
   },
   buttonStyle: {
     marginHorizontal: horizontalScale(20),

@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { fontScale, horizontalScale, brandColors } from '../Core/basicStyles';
+import {StyleSheet} from 'react-native';
+import {fontScale, horizontalScale, brandColors} from '../Core/basicStyles';
 const styles = StyleSheet.create({
   mainView: {
     flex: 1,
@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
   testButtonTextStyle: {
     textAlign: 'center',
     fontSize: fontScale(18),
+    color: brandColors.black,
   },
   testButtonStyle: {
     backgroundColor: brandColors.buttonColor,
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: horizontalScale(60),
     height: horizontalScale(45),
     borderRadius: horizontalScale(10),
-    shadowOffset: { height: horizontalScale(5), width: horizontalScale(5) },
+    shadowOffset: {height: horizontalScale(5), width: horizontalScale(5)},
     shadowOpacity: 0.1,
     shadowRadius: horizontalScale(5),
   },
