@@ -472,7 +472,7 @@ function* handleProdctDetails(action) {
   }
 }
 function listApi(payload) {
-  return request.get('/public-products-list', { params: payload });
+  return axios.get('http://116.72.19.220:800/Api/SOStatusFilter',{params:payload});
 }
 
 function* handleList(action) {

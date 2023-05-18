@@ -33,22 +33,21 @@ function showProcessing(isProcessing = false) {
 }
 
 function login(payload) {
-  return axios.post('https://116.72.19.220:800/Api/ERPAuth', payload);
+  return axios.get('http://116.72.19.220:800/Api/ERPAuth', {params: payload});
 }
-
 function* handleLogin(action) {
   try {
     yield put(showProcessing(true));
-    const {status, data, headers} = yield call(login, action.payload);
-    const {token} = headers;
+    yield TokenManager.saveToken(action.payload.UserID, 'UserId');
+    const {status, data} = yield call(login, action.payload);
     if (status === 200) {
-      yield TokenManager.saveToken(token);
-      yield setupHttpConfig();
+      yield TokenManager.saveToken(data.Message);
+      // yield setupHttpConfig();
       yield put({
         type: USER_LOGIN_SUCCESS,
-        data: '',
+        data,
       });
-      dispatch({
+      yield put({
         type: RESET_FLAGS,
       });
     } else {

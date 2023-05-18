@@ -22,6 +22,7 @@ import {horizontalScale} from '../../components/Core/basicStyles';
 import {isIOS} from 'react-native-elements/dist/helpers';
 import {loginUser} from '../../redux/actions/authAction';
 import TokenManager from '../../utils/TokenManager';
+import {getProductList} from '../../redux/actions/listAction';
 
 const SoStatus = ({navigation}) => {
   const dispatch = useDispatch();
@@ -30,82 +31,34 @@ const SoStatus = ({navigation}) => {
   } = useSelector(({auth}) => auth);
   const [loading, setLoading] = React.useState(false);
   const [phno, setPhno] = React.useState('');
-  const [password, setPassword] = React.useState('');
   const [checked, setChecked] = React.useState(true);
 
+  // useEffect(() => {
+  //   if (loginSuccess) return navigation.navigate('ChangeServer');
+  // }, [loginSuccess]);
+  const getSolist = async () => {
+    const UserID = await TokenManager.retrieveToken('UserId');
+    dispatch(
+      getProductList({
+        UserID,
+      }),
+    );
+  };
   useEffect(() => {
-    if (loginSuccess) return navigation.navigate('TabScreen');
-  }, [loginSuccess]);
+    getSolist();
+  }, []);
 
   const login = () => {
-    return navigation.navigate('ChangeServer');
     if (phno?.length < 13 || !phno) {
       return alert('Please enter valid phno');
     }
     dispatch(
-      loginUser({
-        email: phno,
-        password: password,
+      getProductList({
+        UserID: '',
+        SecLevel: 'normal',
       }),
     );
   };
-
-  const onAppleButtonPress = async () => {
-    // Start the sign-in request
-    // const appleAuthRequestResponse = await appleAuth.performRequest({
-    //   requestedOperation: appleAuth.Operation.LOGIN,
-    //   requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-    // });
-
-    // Ensure Apple returned a user identityToken
-    if (!appleAuthRequestResponse.identityToken) {
-      throw new Error('Apple Sign-In failed - no identify token returned');
-    }
-
-    // Create a Firebase credential from the response
-    const {identityToken, nonce} = appleAuthRequestResponse;
-    const appleCredential = auth.AppleAuthProvider.credential(
-      identityToken,
-      nonce,
-    );
-    // Sign the user in with the credential
-    // return auth().signInWithCredential(appleCredential);
-  };
-  const signInWithPhoneNumber = async () => {
-    try {
-      setLoading(true);
-      // const confirmation = await auth().signInWithPhoneNumber(phno);
-      // setLoading(false)
-      // return navigation.navigate("OTP", { confirmation });
-    } catch (error) {
-      setLoading(false);
-      console.log('error', error);
-      alert(error);
-      // showErrorToast(error)
-    }
-  };
-  const onGoogleButtonPress = async () => {
-    try {
-      // Check if your device supports Google Play
-      // await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-      // // Get the users ID token
-      // const { idToken } = await GoogleSignin.signIn();
-
-      // Create a Google credential with the token
-      // const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      // // Sign-in the user with the credential
-      // const data = await auth().signInWithCredential(googleCredential);
-      // const token = await data.user.getIdToken()
-      // await TokenManager.saveToken(token)
-      return navigation.navigate('TabScreen');
-    } catch (error) {
-      alert(error);
-    }
-  };
-
-  function onPressHandler() {
-    navigation.navigate('SignUp');
-  }
 
   const toggleCheckbox = () => setChecked(!checked);
 

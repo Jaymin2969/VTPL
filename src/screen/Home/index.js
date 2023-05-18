@@ -35,10 +35,6 @@ const Home = ({navigation}) => {
   const [password, setPassword] = React.useState('');
   const [checked, setChecked] = React.useState(false);
 
-  useEffect(() => {
-    if (loginSuccess) return navigation.navigate('TabScreen');
-  }, [loginSuccess]);
-
   const login = () => {
     if (phno?.length < 13 || !phno) {
       return alert('Please enter valid phno');

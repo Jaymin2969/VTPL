@@ -20,6 +20,7 @@ import {
   isIOS,
   verticalScale,
 } from '../Core/basicStyles';
+import TokenManager from '../../utils/TokenManager';
 
 const NavBar = ({
   onClick = () => {},
@@ -34,6 +35,11 @@ const NavBar = ({
   const navigation = useNavigation();
   const onPressView = data => {
     modalRef.current?.hide();
+    if (data === 'Logout') deleteToken();
+  };
+  const deleteToken = async () => {
+    await TokenManager.deleteToken();
+    return navigation.navigate('ActiveStack');
   };
   const renderItem = ({name, onPress, title}) => {
     return (

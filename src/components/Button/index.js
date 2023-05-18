@@ -24,20 +24,20 @@ const index = ({
   leftIcon,
 }) => {
   return (
-    <LinearGradient
-      colors={colors}
-      style={[styles.button, style, {opacity: disabled ? 0.7 : 1}]}>
-      <TouchableOpacity
-        disabled={disabled}
-        onPress={() => {
-          Keyboard.dismiss();
-          onClick && onClick();
-        }}>
+    <TouchableOpacity
+      disabled={disabled}
+      onPress={() => {
+        Keyboard.dismiss();
+        onClick && onClick();
+      }}>
+      <LinearGradient
+        colors={colors}
+        style={[styles.button, style, {opacity: disabled ? 0.7 : 1}]}>
         {!!leftIcon && leftIcon}
         <Text style={[styles.text, textStyle]}>{text}</Text>
         {!!disabled && <ActivityIndicator color={brandColors.white} />}
-      </TouchableOpacity>
-    </LinearGradient>
+      </LinearGradient>
+    </TouchableOpacity>
   );
 };
 

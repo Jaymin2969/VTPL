@@ -51,7 +51,7 @@ const AppTabScreen = () => {
         tabBarActiveTintColor: brandColors.error,
         headerShown: false,
       })}>
-      <AppBottomTab.Screen name="Home" component={Onboarding} />
+      <AppBottomTab.Screen name="HomeTab" component={Onboarding} />
       <AppBottomTab.Screen name="Catering" component={Onboarding} />
       <AppBottomTab.Screen name="Account" component={Onboarding} />
       {/* <AppBottomTab.Screen name="Category" component={Category} /> */}
@@ -85,25 +85,18 @@ const RootNavigator = ({isLogin}) => {
   const [loading, setLoading] = useState(true);
 
   const getDataUser = async data => {
-    const dataToken = await data?.getIdToken();
-    setupHttpConfig(dataToken);
-    setUser(dataToken);
-    return TokenManager.saveToken(dataToken);
+    const isOnboardDone = await TokenManager.retrieveToken();
+    setIsOnBoard(isOnboardDone);
+    return;
   };
-  getOnBoard({setIsOnBoard, setLoading});
-
   useEffect(() => {
-    dispatch({
-      type: IS_PROCESSING_REQUEST,
-      isProcessing: loading,
-    });
+    getDataUser();
+    // dispatch({
+    //   type: IS_PROCESSING_REQUEST,
+    //   isProcessing: loading,
+    // });
   }, [loading]);
 
-  // useEffect(() => {
-  //   const subscriber = auth().onAuthStateChanged(getDataUser);
-  //   return subscriber; // unsubscribe on unmount
-  // }, []);
-  // if (loading) return <ProcessingWheel />
   return (
     <React.Fragment>
       <SafeAreaProvider>
@@ -114,8 +107,8 @@ const RootNavigator = ({isLogin}) => {
               headerShown: false,
               gestureEnabled: false,
             }}>
-            <Stack.Screen name="TabScreen" component={AppTabScreen} />
             <Stack.Screen name="Home" component={Home} />
+            {/* <Stack.Screen name="TabScreen" component={AppTabScreen} /> */}
             <Stack.Screen name="Ledger" component={Ledger} />
             <Stack.Screen
               name="DispatchOrderEntry"

@@ -33,6 +33,16 @@ const SignIn = ({navigation}) => {
   const [checked, setChecked] = React.useState(true);
 
   useEffect(() => {
+    getDataUser();
+  }, []);
+
+  const getDataUser = async data => {
+    const isOnboardDone = await TokenManager.retrieveToken();
+    if (isOnboardDone) navigation.navigate('Home');
+    return;
+  };
+
+  useEffect(() => {
     if (loginSuccess) return navigation.navigate('Home');
   }, [loginSuccess]);
 
@@ -45,8 +55,8 @@ const SignIn = ({navigation}) => {
     }
     dispatch(
       loginUser({
-        email: phno,
-        password: password,
+        UserID: phno,
+        UserPwd: password,
       }),
     );
   };

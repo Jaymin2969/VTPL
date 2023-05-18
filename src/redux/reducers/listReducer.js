@@ -129,78 +129,104 @@ export const ListReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_STATE_SUCCESS:
       return {
-        ...state, flags: { stateListSuccess: true }, stateList: action.data?.map(i => {
-          return { ...i, label: i.name, value: i.id }
-        })
+        ...state,
+        flags: {stateListSuccess: true},
+        stateList: action.data?.map(i => {
+          return {...i, label: i.name, value: i.id};
+        }),
       };
     case GET_STATE_ERROR:
-      return { ...state, errors: { stateList: action.error } };
+      return {...state, errors: {stateList: action.error}};
     case GET_COUNTRY_SUCCESS:
       return {
-        ...state, flags: { countryListSuccess: true }, countryList: action.data?.map(i => {
-          return { ...i, label: i.name, value: i.id }
-        })
+        ...state,
+        flags: {countryListSuccess: true},
+        countryList: action.data?.map(i => {
+          return {...i, label: i.name, value: i.id};
+        }),
       };
     case GET_COUNTRY_ERROR:
-      return { ...state, errors: { countryList: action.error } };
+      return {...state, errors: {countryList: action.error}};
     case ADD_ADDRESS_SUCCESS:
-      return { ...state, flags: { addAddressSuccess: true }, addAddress: action.data };
+      return {
+        ...state,
+        flags: {addAddressSuccess: true},
+        addAddress: action.data,
+      };
     case ADD_ADDRESS_ERROR:
-      return { ...state, errors: { addAddress: action.error } };
+      return {...state, errors: {addAddress: action.error}};
     case GET_ADDRESS_LIST_SUCCESS:
-      return { ...state, flags: { addressListSuccess: true }, addressList: action.data };
+      return {
+        ...state,
+        flags: {addressListSuccess: true},
+        addressList: action.data,
+      };
     case GET_ADDRESS_LIST_ERROR:
-      return { ...state, errors: { addressList: action.error } };
+      return {...state, errors: {addressList: action.error}};
     case GET_HOME_PRODUCT_LIST_SUCCESS:
-      return { ...state, flags: { getHomeProductListSuccess: true }, homeProductList: action.data };
+      return {
+        ...state,
+        flags: {getHomeProductListSuccess: true},
+        homeProductList: action.data,
+      };
     case GET_HOME_PRODUCT_LIST_ERROR:
-      return { ...state, errors: { getHomeProductList: action.error } };
+      return {...state, errors: {getHomeProductList: action.error}};
     case GET_CART_LIST_SUCCESS:
-      return { ...state, flags: { cartListSuccess: true }, cartList: action.data };
+      return {...state, flags: {cartListSuccess: true}, cartList: action.data};
     case GET_CART_LIST_ERROR:
-      return { ...state, errors: { cartList: action.error } };
+      return {...state, errors: {cartList: action.error}};
     case ADD_TO_CART_SUCCESS:
-      return { ...state, flags: { addToCartSuccess: true }, addToCart: action.data };
+      return {
+        ...state,
+        flags: {addToCartSuccess: true},
+        addToCart: action.data,
+      };
     case ADD_TO_CART_ERROR:
-      return { ...state, errors: { addToCart: action.error } };
+      return {...state, errors: {addToCart: action.error}};
     case GET_CATEGORY_LIST_SUCCESS:
       return {
-        ...state, flags: { categoryListSuccess: true }, categoryList: [
-          ...state.categoryList,
-          ...action.data
-        ]
+        ...state,
+        flags: {categoryListSuccess: true},
+        categoryList: [...state.categoryList, ...action.data],
       };
     case GET_CATEGORY_LIST_ERROR:
-      return { ...state, errors: { categoryList: action.error } };
+      return {...state, errors: {categoryList: action.error}};
     case GET_USER_SUCCESS:
-      return { ...state, flags: { userDataSuccess: true }, userData: action.data };
+      return {...state, flags: {userDataSuccess: true}, userData: action.data};
     case GET_USER_ERROR:
-      return { ...state, errors: { userData: action.error } };
+      return {...state, errors: {userData: action.error}};
     case POST_USER_SUCCESS:
-      return { ...state, flags: { postUserSuccess: true }, postUser: action.data };
+      return {...state, flags: {postUserSuccess: true}, postUser: action.data};
     case POST_USER_ERROR:
-      return { ...state, errors: { postUser: action.error } };
+      return {...state, errors: {postUser: action.error}};
     case GET_CART_SUCCESS:
-      return { ...state, flags: { cartCountSuccess: true }, cartCount: action.data };
+      return {
+        ...state,
+        flags: {cartCountSuccess: true},
+        cartCount: action.data,
+      };
     case GET_CART_ERROR:
-      return { ...state, errors: { cartCount: action.error } };
+      return {...state, errors: {cartCount: action.error}};
     case GET_PRODUCT_DETAILS_SUCCESS:
-      return { ...state, flags: { productDetailsSuccess: true }, productDetails: action.data };
+      return {
+        ...state,
+        flags: {productDetailsSuccess: true},
+        productDetails: action.data,
+      };
     case GET_PRODUCT_DETAILS_ERROR:
-      return { ...state, errors: { productDetails: action.error } };
+      return {...state, errors: {productDetails: action.error}};
     case GET_LIST_SUCCESS:
       return {
-        ...state, flags: { productListSuccess: true }, productList: [
-          ...state.productList,
-          ...action.data
-        ]
+        ...state,
+        flags: {productListSuccess: true},
+        productList: action.data,
       };
     case GET_LIST_ERROR:
-      return { ...state, errors: { productList: action.error } };
+      return {...state, errors: {productList: action.error}};
     case GET_STATE_ERROR:
-      return { ...state, errors: { stateList: action.error } };
+      return {...state, errors: {stateList: action.error}};
     case RESET_FLAGS:
-      return { ...state, errors: initialState.errors, flags: initialState.flags };
+      return {...state, errors: initialState.errors, flags: initialState.flags};
     default:
       return state;
   }
