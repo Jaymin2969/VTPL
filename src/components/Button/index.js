@@ -29,10 +29,9 @@ const index = ({
       onPress={() => {
         Keyboard.dismiss();
         onClick && onClick();
-      }}>
-      <LinearGradient
-        colors={colors}
-        style={[styles.button, style, {opacity: disabled ? 0.7 : 1}]}>
+      }}
+      style={[style, {opacity: disabled ? 0.7 : 1}]}>
+      <LinearGradient colors={colors} style={[styles.button]}>
         {!!leftIcon && leftIcon}
         <Text style={[styles.text, textStyle]}>{text}</Text>
         {!!disabled && <ActivityIndicator color={brandColors.white} />}
@@ -50,10 +49,11 @@ const styles = StyleSheet.create({
     marginRight: horizontalScale(10),
   },
   button: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    // flexDirection: 'row',
+    // justifyContent: 'center',
     backgroundColor: brandColors.black,
     alignItems: 'center',
+    width: '100%',
     borderRadius: horizontalScale(8),
   },
 });

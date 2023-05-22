@@ -36,6 +36,7 @@ const NavBar = ({
   const onPressView = data => {
     modalRef.current?.hide();
     if (data === 'Logout') deleteToken();
+    if (data === 'Change Server IP') navigation.navigate('ChangeServer');
   };
   const deleteToken = async () => {
     await TokenManager.deleteToken();
@@ -56,7 +57,9 @@ const NavBar = ({
       colors={['#151589', '#09096a', '#010151']}
       style={[styles.mainView, style]}>
       <View style={styles.flexDirection}>
-        <Text style={[styles.text, textStyle]}>{text}</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={[styles.text, textStyle]}>{text}</Text>
+        </TouchableOpacity>
         <ModalDropdown
           ref={modalRef}
           style={styles.dropdownModal}

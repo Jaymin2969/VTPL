@@ -57,7 +57,7 @@ function* handleLogin(action) {
       });
     }
   } catch (error) {
-    console.log('login error', error);
+    console.log('login error===>', error.message);
     yield put({
       type: USER_LOGIN_ERROR,
       error:

@@ -122,7 +122,7 @@ const style = StyleSheet.create({
   },
   buttonText: {
     fontSize: fontScale(17),
-    color: brandColors.black,
+    color: brandColors.white,
   },
   buttonStyle: {
     // marginHorizontal: horizontalScale(20),

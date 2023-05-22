@@ -106,8 +106,8 @@ const Home = ({navigation}) => {
 
   const toggleCheckbox = () => setChecked(!checked);
 
-  const onTabPress = () => {
-    if (activeTab) navigation.navigate('SoStatus');
+  const onTabPress = type => () => {
+    if (!activeTab && type) navigation.navigate(type);
     setActiveTab(prv => !prv);
   };
 
@@ -121,7 +121,7 @@ const Home = ({navigation}) => {
             <LinearGradient
               style={styles.buttonStyle}
               colors={['#e32d2e', '#b32527', '#892020']}>
-              <TouchableOpacity onPress={onTabPress}>
+              <TouchableOpacity onPress={onTabPress()}>
                 <Image />
                 <Text style={styles.buttonText}> Report</Text>
               </TouchableOpacity>
@@ -129,7 +129,7 @@ const Home = ({navigation}) => {
             <LinearGradient
               style={styles.buttonStyle}
               colors={['#45e2ea', '#26a4a9', '#097272']}>
-              <TouchableOpacity onPress={onTabPress}>
+              <TouchableOpacity onPress={onTabPress()}>
                 <Image />
                 <Text style={styles.buttonText}> Dispatch Plan</Text>
               </TouchableOpacity>
@@ -140,7 +140,7 @@ const Home = ({navigation}) => {
             <LinearGradient
               style={styles.buttonStyle}
               colors={['#e32d2e', '#b32527', '#892020']}>
-              <TouchableOpacity onPress={onTabPress}>
+              <TouchableOpacity onPress={onTabPress('SoStatus')}>
                 <Image />
                 <Text style={styles.buttonText}> So Status</Text>
               </TouchableOpacity>
@@ -148,7 +148,7 @@ const Home = ({navigation}) => {
             <LinearGradient
               style={styles.buttonStyle}
               colors={['#45e2ea', '#26a4a9', '#097272']}>
-              <TouchableOpacity onPress={onTabPress}>
+              <TouchableOpacity onPress={onTabPress('Ledger')}>
                 <Image />
                 <Text style={styles.buttonText}> Ledger Report</Text>
               </TouchableOpacity>
