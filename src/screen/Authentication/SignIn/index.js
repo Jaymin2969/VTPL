@@ -38,7 +38,7 @@ const SignIn = ({navigation}) => {
 
   const getDataUser = async data => {
     const isOnboardDone = await TokenManager.retrieveToken();
-    if (isOnboardDone) navigation.navigate('Home');
+    if (!isOnboardDone) navigation.navigate('Home');
     return;
   };
 

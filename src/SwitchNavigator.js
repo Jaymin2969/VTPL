@@ -26,6 +26,9 @@ import SoStatus from './screen/SoStatus';
 import Ledger from './screen/Ledger';
 import DispatchOrderEntry from './screen/DispatchOrderEntry';
 import DispatchPlanning from './screen/DispatchPlanning';
+import BasicQuotation from './screen/BasicQuotation';
+import ProductDetails from './screen/ProductDetails';
+import QuotationEntry from './screen/QuotationEntry';
 
 const Stack = createStackNavigator();
 const AppBottomTab = createBottomTabNavigator();
@@ -102,7 +105,7 @@ const RootNavigator = ({isLogin}) => {
       <SafeAreaProvider>
         <NavigationContainer>
           <Stack.Navigator
-            initialRouteName={'ActiveStack'}
+            initialRouteName={'QuotationEntry'}
             screenOptions={{
               headerShown: false,
               gestureEnabled: false,
@@ -119,11 +122,14 @@ const RootNavigator = ({isLogin}) => {
               name="DispatchPlanning"
               component={DispatchPlanning}
             />
+            <Stack.Screen name="BasicQuotation" component={BasicQuotation} />
+            <Stack.Screen name="ProductDetails" component={ProductDetails} />
             <Stack.Screen name="ChangeServer" component={ChangeServer} />
             <Stack.Screen name="Onboarding" component={Onboarding} />
             <Stack.Screen name="ChooseCountry" component={ChooseCountry} />
             <Stack.Screen name="SetUpAccount" component={SetUpAccount} />
             <Stack.Screen name="ActiveStack" component={ActiveStack} />
+            <Stack.Screen name="QuotationEntry" component={QuotationEntry} />
           </Stack.Navigator>
         </NavigationContainer>
         <ProcessingWheel />
