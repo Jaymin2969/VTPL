@@ -244,7 +244,7 @@ const Ledger = ({navigation}) => {
           <Button
             colors={['#151589', '#09096a', '#010151']}
             disabled={loading}
-            onClick={login}
+            onClick={()=>navigation.navigate('DispatchOrderEntry')}
             text="Report"
             textStyle={styles.buttonText}
             style={[styles.buttonStyle, styles.dropdownView]}

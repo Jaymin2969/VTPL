@@ -469,7 +469,7 @@ const BasicQuotation = ({navigation}) => {
           <Button
             colors={['#d10d3b', '#a0123b', '#7c163b']}
             disabled={loading}
-            onClick={login}
+            onClick={()=>navigation.navigate('ProductDetails')}
             text="Exit"
             textStyle={styles.buttonText}
             style={[styles.buttonStyle, styles.dropdownView]}

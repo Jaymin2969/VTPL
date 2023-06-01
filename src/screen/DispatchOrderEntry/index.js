@@ -321,7 +321,7 @@ const DispatchOrderEntry = ({navigation}) => {
           <Button
             colors={['#151589', '#09096a', '#010151']}
             disabled={loading}
-            onClick={login}
+            onClick={()=>navigation.navigate('DispatchPlanning')}
             text="Report"
             textStyle={styles.buttonText}
             style={[styles.buttonStyle, styles.dropdownView]}

@@ -235,7 +235,7 @@ const DispatchPlanning = ({navigation}) => {
         <View style={styles.dropdownWrapper}>
           <Button
             disabled={loading}
-            onClick={login}
+            onClick={()=>navigation.navigate('BasicQuotation')}
             text="Save"
             textStyle={styles.buttonText}
             style={[styles.buttonStyle, styles.dropdownView]}

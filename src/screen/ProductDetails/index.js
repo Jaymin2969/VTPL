@@ -324,7 +324,7 @@ const ProductDetails = ({navigation}) => {
           <Button
             colors={['#10add1', '#07799a', '#034e6d']}
             disabled={loading}
-            onClick={login}
+            onClick={()=>navigation.navigate('QuotationEntry')}
             text="Ok"
             textStyle={styles.buttonText}
             style={[styles.buttonStyle, styles.dropdownView]}

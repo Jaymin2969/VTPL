@@ -105,7 +105,7 @@ const RootNavigator = ({isLogin}) => {
       <SafeAreaProvider>
         <NavigationContainer>
           <Stack.Navigator
-            initialRouteName={'QuotationEntry'}
+            initialRouteName={'Home'}
             screenOptions={{
               headerShown: false,
               gestureEnabled: false,
