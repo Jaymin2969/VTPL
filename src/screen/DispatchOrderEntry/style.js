@@ -155,6 +155,44 @@ const style = StyleSheet.create({
     height: horizontalScale(20),
     marginRight: horizontalScale(10),
   },
+
+  cellRow: {
+    lexDirection: 'row',
+    backgroundColor: '#FFF1C1',
+  },
+
+  container: {flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff'},
+  head: {height: 40, backgroundColor: '#808B97'},
+
+  header: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    padding: 10,
+  },
+  textHeader: {
+    fontSize: fontScale(15),
+    fontWeight: 'bold',
+    color: 'black',
+    paddingHorizontal: horizontalScale(10),
+    width: horizontalScale(170),
+    textAlign: 'left',
+  },
+  row: {
+    flexDirection: 'row',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(0,0,0,0.2)',
+    backgroundColor: '#fff',
+    padding: 10,
+  },
+
+  txtDes: {
+    fontSize: fontScale(15),
+    fontWeight: '400',
+    color: 'black',
+    width: horizontalScale(170),
+    paddingHorizontal: horizontalScale(10),
+    textAlign: 'left',
+  },
 });
 
 export default style;

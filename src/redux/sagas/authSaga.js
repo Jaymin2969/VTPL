@@ -1,5 +1,6 @@
 import {all, call, put, takeLatest} from 'redux-saga/effects';
 import axios from 'axios';
+import Toast from 'react-native-toast-message';
 
 import {request, setupHttpConfig} from '../../utils/http';
 import {
@@ -58,6 +59,11 @@ function* handleLogin(action) {
     }
   } catch (error) {
     console.log('login error===>', error);
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     yield put({
       type: USER_LOGIN_ERROR,
       error:
@@ -98,6 +104,11 @@ function* handleRegister(action) {
       });
     }
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     console.log('signup error :', error);
     yield put({
       type: USER_REGISTER_ERROR,
@@ -130,6 +141,11 @@ function* handleResetPassword(action) {
       });
     }
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     console.log('error :', error);
     yield put({
       type: RESET_PASSWORD_ERROR,
@@ -162,6 +178,11 @@ function* handleGetState({payload}) {
       });
     }
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     console.log('error :', error);
     yield put({
       type: GET_STATE_ERROR,
@@ -194,6 +215,11 @@ function* handleForgotPassword(action) {
       });
     }
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     console.log('error :', error);
     yield put({
       type: USER_FORGOT_PASSWORD_ERROR,

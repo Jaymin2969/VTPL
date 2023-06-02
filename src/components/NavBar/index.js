@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/core';
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   TouchableOpacity,
   Keyboard,
@@ -9,6 +9,7 @@ import {
   Platform,
   StatusBar,
 } from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -33,11 +34,47 @@ const NavBar = ({
 }) => {
   const modalRef = useRef();
   const navigation = useNavigation();
+  const [token, setToken] = useState();
+
+  const getIdToken = async () => {
+    const data = await TokenManager.retrieveToken();
+    if (!data) return;
+    setDataArray([
+      ...dataArray,
+      {
+        title: 'Logout',
+        name: 'logout',
+        onPress: onPressView,
+      },
+    ]);
+    setToken(data);
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const unsubscribe = getIdToken();
+      return () => unsubscribe;
+    }, []),
+  );
+
   const onPressView = data => {
     modalRef.current?.hide();
     if (data === 'Logout') deleteToken();
     if (data === 'Change Server IP') navigation.navigate('ChangeServer');
   };
+  const [dataArray, setDataArray] = useState([
+    {
+      title: 'Change Server IP',
+      name: 'earth',
+      onPress: onPressView,
+    },
+    {
+      title: 'Change Password',
+      name: 'lock',
+      onPress: onPressView,
+    },
+  ]);
+
   const deleteToken = async () => {
     await TokenManager.deleteToken();
     return navigation.navigate('ActiveStack');
@@ -63,23 +100,7 @@ const NavBar = ({
         <ModalDropdown
           ref={modalRef}
           style={styles.dropdownModal}
-          options={[
-            {
-              title: 'Change Server IP',
-              name: 'earth',
-              onPress: onPressView,
-            },
-            {
-              title: 'Change Password',
-              name: 'lock',
-              onPress: onPressView,
-            },
-            {
-              title: 'Logout',
-              name: 'logout',
-              onPress: onPressView,
-            },
-          ]}
+          options={dataArray}
           renderRow={renderItem}>
           <TouchableOpacity
             style={styles.iconStyle}

@@ -1,9 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, Image, Text, TouchableOpacity, View} from 'react-native';
+import {
+  FlatList,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import {CheckBox} from 'react-native-elements';
 import {Dropdown} from 'react-native-element-dropdown';
-
+import {Table, Row, TableWrapper, Cell} from 'react-native-table-component';
 //style
 import styles from './style';
 
@@ -23,6 +30,13 @@ import {isIOS} from 'react-native-elements/dist/helpers';
 import {loginUser} from '../../redux/actions/authAction';
 import TokenManager from '../../utils/TokenManager';
 
+const tableHeadData = [
+  'Site',
+  'so.no',
+  'Consent Created On',
+  'Consent Granted On',
+  'Consent Expiry On',
+];
 const DispatchOrderEntry = ({navigation}) => {
   const dispatch = useDispatch();
   const {
@@ -220,41 +234,40 @@ const DispatchOrderEntry = ({navigation}) => {
           />
         </View>
         <View style={styles.textWrapper}>
-          <Input
-            placeholder="Search"
-            onChangeText={setPhno}
-            value={phno}
-            leftIconType={'search'}
-          />
-          <FlatList
-            data={[
-              'Meter',
-              '101 Infra',
-              '101 Infra-DS',
-              '12 Meter Radius',
-              'Meter',
-              '101 Infra',
-              '101 Infra-DS',
-              '12 Meter Radius',
-            ]}
-            renderItem={({item}) => (
-              <CheckBox
-                checked={checked}
-                onPress={toggleCheckbox}
-                iconType="material-community"
-                checkedIcon="checkbox-outline"
-                uncheckedIcon={'checkbox-blank-outline'}
-                title={item}
-                containerStyle={[
-                  styles.checkWrapper,
-                  {width: '90%', alignSelf: 'center', marginTop: 0},
-                ]}
-                textStyle={styles.textStyle}
+          <ScrollView showsVerticalScrollIndicator={false} horizontal>
+            <Table borderStyle={{borderColor: 'transparent'}}>
+              <Row
+                data={tableHeadData}
+                style={styles.header}
+                textStyle={styles.textHeader}
               />
-            )}
-            keyExtractor={item => item.id}
-            style={{marginTop: 10, height: '30%'}}
-          />
+              <ScrollView nestedScrollEnabled>
+                {[
+                  ['SNS-Glorina industrial Park-Sachin-Surat', '1524'],
+                  ['SNS-Glorina industrial Park-Sachin-Surat', '1524'],
+                  ['SNS-Glorina industrial Park-Sachin-Surat', '1524'],
+                  ['SNS-Glorina industrial Park-Sachin-Surat', '1524'],
+                  ['SNS-Glorina industrial Park-Sachin-Surat', '1524'],
+                  ['SNS-Glorina industrial Park-Sachin-Surat', '1524'],
+                ].map((rowData, index) => (
+                  <TableWrapper key={index} style={[styles.row]}>
+                    {rowData.map((cellData, cellIndex) => (
+                      <Cell
+                        key={cellIndex}
+                        data={
+                          cellIndex === 5
+                            ? cellElement(cellData, index)
+                            : cellData
+                        }
+                        textStyle={styles.txtDes}
+                        style={styles.cell}
+                      />
+                    ))}
+                  </TableWrapper>
+                ))}
+              </ScrollView>
+            </Table>
+          </ScrollView>
         </View>
 
         <View style={styles.dropdownWrapper}>
@@ -321,7 +334,7 @@ const DispatchOrderEntry = ({navigation}) => {
           <Button
             colors={['#151589', '#09096a', '#010151']}
             disabled={loading}
-            onClick={()=>navigation.navigate('DispatchPlanning')}
+            onClick={() => navigation.navigate('DispatchPlanning')}
             text="Report"
             textStyle={styles.buttonText}
             style={[styles.buttonStyle, styles.dropdownView]}

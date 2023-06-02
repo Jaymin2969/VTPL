@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import SplashScreen from "react-native-splash-screen";
-
+import Toast from 'react-native-toast-message';
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { StatusBar } from "react-native";
+import { enableScreens } from "react-native-screens";
 
 import { setupHttpConfig } from "./utils/http";
 import { store } from "./redux/store";
-import { StatusBar } from "react-native";
 import { isIOS } from "./components/Core/basicStyles";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+
 import RootNavigator from "./SwitchNavigator";
-import { enableScreens } from "react-native-screens";
 import TokenManager from "./utils/TokenManager";
 
 enableScreens();
@@ -40,6 +41,7 @@ const App = () => {
       <SafeAreaProvider>
         <RootNavigator isLogin={isLogin}/>
       </SafeAreaProvider>
+      <Toast />
     </Provider>
   );
 };

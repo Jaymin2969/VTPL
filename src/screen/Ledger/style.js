@@ -30,6 +30,7 @@ const style = StyleSheet.create({
     marginTop: verticalScale(20),
     borderTopLeftRadius: horizontalScale(20),
     borderTopRightRadius: horizontalScale(20),
+    height: '40%',
   },
   dropdownWrapper: {
     flexDirection: 'row',

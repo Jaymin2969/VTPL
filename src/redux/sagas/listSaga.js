@@ -1,9 +1,10 @@
-import { all, call, put, takeLatest } from 'redux-saga/effects';
+import {all, call, put, takeLatest} from 'redux-saga/effects';
 import axios from 'axios';
 //firebase
 // import auth from '@react-native-firebase/auth';
+import Toast from 'react-native-toast-message';
 
-import { request, setupHttpConfig } from '../../utils/http';
+import {request, setupHttpConfig} from '../../utils/http';
 import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -53,12 +54,16 @@ import {
   ADD_ADDRESS_REQUEST,
   GET_COUNTRY_REQUEST,
   GET_COUNTRY_SUCCESS,
-  GET_COUNTRY_ERROR
+  GET_COUNTRY_ERROR,
 } from '../reducers/listReducer';
-import { getSimplifiedError } from '../../utils/error';
+import {getSimplifiedError} from '../../utils/error';
 import TokenManager from '../../utils/TokenManager';
-import { IS_PROCESSING_REQUEST } from '../reducers/systemReducer';
-import { GET_LIST_ERROR, GET_LIST_REQUEST, GET_LIST_SUCCESS } from '../reducers/listReducer';
+import {IS_PROCESSING_REQUEST} from '../reducers/systemReducer';
+import {
+  GET_LIST_ERROR,
+  GET_LIST_REQUEST,
+  GET_LIST_SUCCESS,
+} from '../reducers/listReducer';
 
 function showProcessing(isProcessing = false) {
   return {
@@ -67,17 +72,18 @@ function showProcessing(isProcessing = false) {
   };
 }
 
-
 async function getStateListApi(payload) {
-  const token = await TokenManager.retrieveToken()
-  return axios.get('https://identity-service-test.dezensolutions.com/states/' + payload);
+  const token = await TokenManager.retrieveToken();
+  return axios.get(
+    'https://identity-service-test.dezensolutions.com/states/' + payload,
+  );
 }
 
 function* handleGetStateList(action) {
   try {
-    console.log('action',action)
+    console.log('action', action);
     yield put(showProcessing(true));
-    const { status, data } = yield call(getStateListApi, action.payload);
+    const {status, data} = yield call(getStateListApi, action.payload);
     if (status === 200) {
       yield put({
         type: GET_STATE_SUCCESS,
@@ -93,10 +99,17 @@ function* handleGetStateList(action) {
       });
     }
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     console.log('login error', error);
     yield put({
       type: GET_STATE_ERROR,
-      error: getSimplifiedError(error) || 'Something went wrong, Please try again later',
+      error:
+        getSimplifiedError(error) ||
+        'Something went wrong, Please try again later',
     });
   } finally {
     yield put(showProcessing());
@@ -104,14 +117,17 @@ function* handleGetStateList(action) {
 }
 
 async function getCountryListApi(payload) {
-  const token = await TokenManager.retrieveToken()
-  return axios.get('https://identity-service-test.dezensolutions.com/get-active-countries', { params: payload, headers: { Authorization: `Bearer ${token}` } },);
+  const token = await TokenManager.retrieveToken();
+  return axios.get(
+    'https://identity-service-test.dezensolutions.com/get-active-countries',
+    {params: payload, headers: {Authorization: `Bearer ${token}`}},
+  );
 }
 
 function* handleGetCountryList(action) {
   try {
     yield put(showProcessing(true));
-    const { status, data } = yield call(getCountryListApi, action.payload);
+    const {status, data} = yield call(getCountryListApi, action.payload);
     if (status === 200) {
       yield put({
         type: GET_COUNTRY_SUCCESS,
@@ -127,10 +143,17 @@ function* handleGetCountryList(action) {
       });
     }
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     console.log('login error', error);
     yield put({
       type: GET_COUNTRY_ERROR,
-      error: getSimplifiedError(error) || 'Something went wrong, Please try again later',
+      error:
+        getSimplifiedError(error) ||
+        'Something went wrong, Please try again later',
     });
   } finally {
     yield put(showProcessing());
@@ -138,15 +161,24 @@ function* handleGetCountryList(action) {
 }
 
 async function addAddressApi(payload) {
-  const token = await TokenManager.retrieveToken()
-  if (!payload?.update) return axios.post('https://identity-service-test.dezensolutions.com/address', payload?.params, { headers: { Authorization: `Bearer ${token}` } });
-  return axios.patch('https://identity-service-test.dezensolutions.com/address', payload?.params, { headers: { Authorization: `Bearer ${token}` } });
+  const token = await TokenManager.retrieveToken();
+  if (!payload?.update)
+    return axios.post(
+      'https://identity-service-test.dezensolutions.com/address',
+      payload?.params,
+      {headers: {Authorization: `Bearer ${token}`}},
+    );
+  return axios.patch(
+    'https://identity-service-test.dezensolutions.com/address',
+    payload?.params,
+    {headers: {Authorization: `Bearer ${token}`}},
+  );
 }
 
 function* handleAddAddress(action) {
   try {
     yield put(showProcessing(true));
-    const { status, data } = yield call(addAddressApi, action.payload);
+    const {status, data} = yield call(addAddressApi, action.payload);
     if (status === 201) {
       yield put({
         type: ADD_ADDRESS_SUCCESS,
@@ -154,7 +186,7 @@ function* handleAddAddress(action) {
       });
       dispatch({
         type: RESET_FLAGS,
-      })
+      });
     } else {
       yield put({
         type: ADD_ADDRESS_ERROR,
@@ -162,24 +194,34 @@ function* handleAddAddress(action) {
       });
     }
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     console.log('login error', error);
     yield put({
       type: ADD_ADDRESS_ERROR,
-      error: getSimplifiedError(error) || 'Something went wrong, Please try again later',
+      error:
+        getSimplifiedError(error) ||
+        'Something went wrong, Please try again later',
     });
   } finally {
     yield put(showProcessing());
   }
 }
 async function getAddressListApi(payload) {
-  const token = await TokenManager.retrieveToken()
-  return axios.get('https://identity-service-test.dezensolutions.com/user-address', { params: payload, headers: { Authorization: `Bearer ${token}` } },);
+  const token = await TokenManager.retrieveToken();
+  return axios.get(
+    'https://identity-service-test.dezensolutions.com/user-address',
+    {params: payload, headers: {Authorization: `Bearer ${token}`}},
+  );
 }
 
 function* handleGetAddressList(action) {
   try {
     yield put(showProcessing(true));
-    const { status, data } = yield call(getAddressListApi, action.payload);
+    const {status, data} = yield call(getAddressListApi, action.payload);
     if (status === 200) {
       yield put({
         type: GET_ADDRESS_LIST_SUCCESS,
@@ -195,23 +237,30 @@ function* handleGetAddressList(action) {
       });
     }
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     console.log('login error', error);
     yield put({
       type: GET_ADDRESS_LIST_ERROR,
-      error: getSimplifiedError(error) || 'Something went wrong, Please try again later',
+      error:
+        getSimplifiedError(error) ||
+        'Something went wrong, Please try again later',
     });
   } finally {
     yield put(showProcessing());
   }
 }
 async function getHomeProductListApi(payload) {
-  return request.get('/public-home-products-list', { params: payload });
+  return request.get('/public-home-products-list', {params: payload});
 }
 
 function* handleGetHomeProductList(action) {
   try {
     yield put(showProcessing(true));
-    const { status, data } = yield call(getHomeProductListApi, action.payload);
+    const {status, data} = yield call(getHomeProductListApi, action.payload);
     if (status === 200) {
       yield put({
         type: GET_HOME_PRODUCT_LIST_SUCCESS,
@@ -227,10 +276,17 @@ function* handleGetHomeProductList(action) {
       });
     }
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     console.log('login error', error);
     yield put({
       type: GET_HOME_PRODUCT_LIST_ERROR,
-      error: getSimplifiedError(error) || 'Something went wrong, Please try again later',
+      error:
+        getSimplifiedError(error) ||
+        'Something went wrong, Please try again later',
     });
   } finally {
     yield put(showProcessing());
@@ -240,12 +296,10 @@ async function getCartApi(payload) {
   return request.get('/get-cart');
 }
 
-function* handleGetCartList(
-
-) {
+function* handleGetCartList() {
   try {
     yield put(showProcessing(true));
-    const { status, data } = yield call(getCartApi);
+    const {status, data} = yield call(getCartApi);
     if (status === 200) {
       yield put({
         type: GET_CART_LIST_SUCCESS,
@@ -261,10 +315,17 @@ function* handleGetCartList(
       });
     }
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     console.log('login error', error);
     yield put({
       type: GET_CART_LIST_ERROR,
-      error: getSimplifiedError(error) || 'Something went wrong, Please try again later',
+      error:
+        getSimplifiedError(error) ||
+        'Something went wrong, Please try again later',
     });
   } finally {
     yield put(showProcessing());
@@ -277,7 +338,7 @@ async function handleAddCartApi(payload) {
 function* handleAddCart(action) {
   try {
     yield put(showProcessing(true));
-    const { status, data } = yield call(handleAddCartApi, action.payload);
+    const {status, data} = yield call(handleAddCartApi, action.payload);
     if (status === 200) {
       yield put({
         type: ADD_TO_CART_SUCCESS,
@@ -301,23 +362,30 @@ function* handleAddCart(action) {
       });
     }
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     console.log('login error', error);
     yield put({
       type: ADD_TO_CART_ERROR,
-      error: getSimplifiedError(error) || 'Something went wrong, Please try again later',
+      error:
+        getSimplifiedError(error) ||
+        'Something went wrong, Please try again later',
     });
   } finally {
     yield put(showProcessing());
   }
 }
 async function getCategoryListApi(payload) {
-  return request.get('/public-categories', { params: payload });
+  return request.get('/public-categories', {params: payload});
 }
 
 function* handlGetCategoryList(action) {
   try {
     yield put(showProcessing(true));
-    const { status, data } = yield call(getCategoryListApi, action.payload);
+    const {status, data} = yield call(getCategoryListApi, action.payload);
     if (status === 200) {
       yield put({
         type: GET_CATEGORY_LIST_SUCCESS,
@@ -330,10 +398,17 @@ function* handlGetCategoryList(action) {
       });
     }
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     console.log('login error', error);
     yield put({
       type: GET_CATEGORY_LIST_ERROR,
-      error: getSimplifiedError(error) || 'Something went wrong, Please try again later',
+      error:
+        getSimplifiedError(error) ||
+        'Something went wrong, Please try again later',
     });
   } finally {
     yield put(showProcessing());
@@ -341,14 +416,17 @@ function* handlGetCategoryList(action) {
 }
 
 async function getUserApi(dataToken) {
-  const token = await TokenManager.retrieveToken()
-  return axios.get('https://identity-service-test.dezensolutions.com/user-profile', { headers: { Authorization: `Bearer ${token || dataToken}` } });
+  const token = await TokenManager.retrieveToken();
+  return axios.get(
+    'https://identity-service-test.dezensolutions.com/user-profile',
+    {headers: {Authorization: `Bearer ${token || dataToken}`}},
+  );
 }
 
 function* handlGetUser(action) {
   try {
     yield put(showProcessing(true));
-    const { status, data } = yield call(getUserApi, action.payload);
+    const {status, data} = yield call(getUserApi, action.payload);
     if (status === 200) {
       yield put({
         type: GET_USER_SUCCESS,
@@ -361,36 +439,45 @@ function* handlGetUser(action) {
       });
     }
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     console.log('login error', error);
-    const { displayName, phoneNumber, } = auth().currentUser
+    const {displayName, phoneNumber} = auth().currentUser;
     const dataSave = {
-      "name": displayName || '',
-      "mobileNumber": phoneNumber || '2234567890',
-      "role": "user",
-      token: auth()?.currentUser?.getIdToken()
-    }
+      name: displayName || '',
+      mobileNumber: phoneNumber || '2234567890',
+      role: 'user',
+      token: auth()?.currentUser?.getIdToken(),
+    };
     yield put({
       type: POST_USER_REQUEST,
       data: dataSave,
     });
     yield put({
       type: GET_USER_ERROR,
-      error: getSimplifiedError(error) || 'Something went wrong, Please try again later',
+      error:
+        getSimplifiedError(error) ||
+        'Something went wrong, Please try again later',
     });
   } finally {
     yield put(showProcessing());
   }
 }
 function postUserApi(payload) {
-  const token = payload?.token
-  delete payload?.token
-  return axios.post('http://65.0.73.160:3000/user', payload, { headers: { Authorization: `Bearer ${token}` } });
+  const token = payload?.token;
+  delete payload?.token;
+  return axios.post('http://65.0.73.160:3000/user', payload, {
+    headers: {Authorization: `Bearer ${token}`},
+  });
 }
 
 function* handlPostUser(action) {
   try {
     yield put(showProcessing(true));
-    const { status, data } = yield call(postUserApi, action.payload);
+    const {status, data} = yield call(postUserApi, action.payload);
     if (status === 200) {
       yield put({
         type: POST_USER_SUCCESS,
@@ -403,24 +490,33 @@ function* handlPostUser(action) {
       });
     }
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     console.log('login error', error);
     yield put({
       type: POST_USER_ERROR,
-      error: getSimplifiedError(error) || 'Something went wrong, Please try again later',
+      error:
+        getSimplifiedError(error) ||
+        'Something went wrong, Please try again later',
     });
   } finally {
     yield put(showProcessing());
   }
 }
 async function cartCountApi(payload) {
-  const token = await TokenManager.retrieveToken()
-  return request.get('/get-cart-count', { headers: { Authorization: `Bearer ${token}` } });
+  const token = await TokenManager.retrieveToken();
+  return request.get('/get-cart-count', {
+    headers: {Authorization: `Bearer ${token}`},
+  });
 }
 
 function* handleCartCount(action) {
   try {
     yield put(showProcessing(true));
-    const { status, data } = yield call(cartCountApi, action.payload);
+    const {status, data} = yield call(cartCountApi, action.payload);
     if (status === 200) {
       yield put({
         type: GET_CART_SUCCESS,
@@ -433,10 +529,17 @@ function* handleCartCount(action) {
       });
     }
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     console.log('login error', error);
     yield put({
       type: GET_CART_ERROR,
-      error: getSimplifiedError(error) || 'Something went wrong, Please try again later',
+      error:
+        getSimplifiedError(error) ||
+        'Something went wrong, Please try again later',
     });
   } finally {
     yield put(showProcessing());
@@ -449,7 +552,7 @@ function productDeatilsApi(payload) {
 function* handleProdctDetails(action) {
   try {
     yield put(showProcessing(true));
-    const { status, data } = yield call(productDeatilsApi, action.payload);
+    const {status, data} = yield call(productDeatilsApi, action.payload);
     if (status === 200) {
       yield put({
         type: GET_PRODUCT_DETAILS_SUCCESS,
@@ -462,23 +565,32 @@ function* handleProdctDetails(action) {
       });
     }
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     console.log('login error', error);
     yield put({
       type: GET_PRODUCT_DETAILS_ERROR,
-      error: getSimplifiedError(error) || 'Something went wrong, Please try again later',
+      error:
+        getSimplifiedError(error) ||
+        'Something went wrong, Please try again later',
     });
   } finally {
     yield put(showProcessing());
   }
 }
 function listApi(payload) {
-  return axios.get('http://116.72.19.220:800/Api/SOStatusFilter',{params:payload});
+  return axios.get('http://116.72.19.220:800/Api/SOStatusFilter', {
+    params: payload,
+  });
 }
 
 function* handleList(action) {
   try {
     yield put(showProcessing(true));
-    const { status, data } = yield call(listApi, action.payload);
+    const {status, data} = yield call(listApi, action.payload);
     if (status === 200) {
       yield put({
         type: GET_LIST_SUCCESS,
@@ -491,10 +603,17 @@ function* handleList(action) {
       });
     }
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     console.log('login error', error);
     yield put({
       type: GET_LIST_ERROR,
-      error: getSimplifiedError(error) || 'Something went wrong, Please try again later',
+      error:
+        getSimplifiedError(error) ||
+        'Something went wrong, Please try again later',
     });
   } finally {
     yield put(showProcessing());
@@ -507,8 +626,8 @@ function login(payload) {
 function* handleLogin(action) {
   try {
     yield put(showProcessing(true));
-    const { status, data } = yield call(login, action.payload);
-    const { user, token } = data;
+    const {status, data} = yield call(login, action.payload);
+    const {user, token} = data;
     if (status === 200) {
       yield TokenManager.saveToken(token);
       yield setupHttpConfig();
@@ -523,10 +642,17 @@ function* handleLogin(action) {
       });
     }
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     console.log('login error', error);
     yield put({
       type: USER_LOGIN_ERROR,
-      error: getSimplifiedError(error) || 'Something went wrong, Please try again later',
+      error:
+        getSimplifiedError(error) ||
+        'Something went wrong, Please try again later',
     });
   } finally {
     yield put(showProcessing());
@@ -540,8 +666,8 @@ function register(payload) {
 function* handleRegister(action) {
   try {
     yield put(showProcessing(true));
-    const { status, data } = yield call(register, action.payload);
-    const { user, token } = data;
+    const {status, data} = yield call(register, action.payload);
+    const {user, token} = data;
     if (status === 200) {
       yield TokenManager.saveToken(token);
       yield setupHttpConfig();
@@ -556,10 +682,17 @@ function* handleRegister(action) {
       });
     }
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     console.log('signup error :', error);
     yield put({
       type: USER_REGISTER_ERROR,
-      error: getSimplifiedError(error) || 'Something went wrong, Please try again later',
+      error:
+        getSimplifiedError(error) ||
+        'Something went wrong, Please try again later',
     });
   } finally {
     yield put(showProcessing());
@@ -573,7 +706,7 @@ function resetPasswordApi(payload) {
 function* handleResetPassword(action) {
   try {
     yield put(showProcessing(true));
-    const { status, data } = yield call(resetPasswordApi, action.payload);
+    const {status, data} = yield call(resetPasswordApi, action.payload);
     if (status === 200) {
       yield put({
         type: RESET_PASSWORD_SUCCESS,
@@ -586,10 +719,17 @@ function* handleResetPassword(action) {
       });
     }
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     console.log('error :', error);
     yield put({
       type: RESET_PASSWORD_ERROR,
-      error: getSimplifiedError(error) || 'Something went wrong, Please try again later',
+      error:
+        getSimplifiedError(error) ||
+        'Something went wrong, Please try again later',
     });
   } finally {
     yield put(showProcessing());
@@ -600,10 +740,10 @@ function getStateApi() {
   return request.get('/auth/states');
 }
 
-function* handleGetState({ payload }) {
+function* handleGetState({payload}) {
   try {
     yield put(showProcessing(payload));
-    const { status, data } = yield call(getStateApi);
+    const {status, data} = yield call(getStateApi);
     if (status === 200) {
       yield put({
         type: GET_STATE_SUCCESS,
@@ -616,10 +756,17 @@ function* handleGetState({ payload }) {
       });
     }
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     console.log('error :', error);
     yield put({
       type: GET_STATE_ERROR,
-      error: getSimplifiedError(error) || 'Something went wrong, Please try again later',
+      error:
+        getSimplifiedError(error) ||
+        'Something went wrong, Please try again later',
     });
   } finally {
     yield put(showProcessing());
@@ -633,7 +780,7 @@ function fogotPasswordApi(payload) {
 function* handleForgotPassword(action) {
   try {
     yield put(showProcessing(true));
-    const { status, data } = yield call(fogotPasswordApi, action.payload);
+    const {status, data} = yield call(fogotPasswordApi, action.payload);
     if (status === 200) {
       yield put({
         type: USER_FORGOT_PASSWORD_SUCCESS,
@@ -646,10 +793,17 @@ function* handleForgotPassword(action) {
       });
     }
   } catch (error) {
+    Toast.show({
+      type: 'error',
+      text1: 'Error',
+      text2: error.message,
+    });
     console.log('error :', error);
     yield put({
       type: USER_FORGOT_PASSWORD_ERROR,
-      error: getSimplifiedError(error) || 'Something went wrong, Please try again later',
+      error:
+        getSimplifiedError(error) ||
+        'Something went wrong, Please try again later',
     });
   } finally {
     yield put(showProcessing());

@@ -1,8 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, Image, Text, TouchableOpacity, View} from 'react-native';
+import {
+  FlatList,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+  ScrollView,
+} from 'react-native';
 
 import {CheckBox} from 'react-native-elements';
 import {Dropdown} from 'react-native-element-dropdown';
+import {Table, Row, TableWrapper, Cell} from 'react-native-table-component';
 
 //style
 import styles from './style';
@@ -22,6 +30,14 @@ import {horizontalScale} from '../../components/Core/basicStyles';
 import {isIOS} from 'react-native-elements/dist/helpers';
 import {loginUser} from '../../redux/actions/authAction';
 import TokenManager from '../../utils/TokenManager';
+
+const tableHeadData = [
+  'Date',
+  'Org.Plan.Qty.',
+  'CurrentYear',
+  'Consent Granted On',
+  'Consent Expiry On',
+];
 
 const DispatchPlanning = ({navigation}) => {
   const dispatch = useDispatch();
@@ -202,6 +218,43 @@ const DispatchPlanning = ({navigation}) => {
           />
         </View>
         <View style={styles.textWrapper}>
+          <Text style={styles.headerText}>{'All Quantities in Pcs'}</Text>
+          <ScrollView showsVerticalScrollIndicator={false} horizontal>
+            <Table borderStyle={{borderColor: 'transparent'}}>
+              <Row
+                data={tableHeadData}
+                style={styles.header}
+                textStyle={styles.textHeader}
+              />
+              <ScrollView nestedScrollEnabled>
+                {[
+                  ['14-02-2023', '2450.00', '2048.00', '2200.00', '2100.00'],
+                  ['14-02-2023', '2450.00', '2048.00', '2200.00', '2100.00'],
+                  ['14-02-2023', '2450.00', '2048.00', '2200.00', '2100.00'],
+                  ['14-02-2023', '2450.00', '2048.00', '2200.00', '2100.00'],
+                  ['14-02-2023', '2450.00', '2048.00', '2200.00', '2100.00'],
+                  ['14-02-2023', '2450.00', '2048.00', '2200.00', '2100.00'],
+                ].map((rowData, index) => (
+                  <TableWrapper key={index} style={[styles.row]}>
+                    {rowData.map((cellData, cellIndex) => (
+                      <Cell
+                        key={cellIndex}
+                        data={
+                          cellIndex === 5
+                            ? cellElement(cellData, index)
+                            : cellData
+                        }
+                        textStyle={styles.txtDes}
+                        style={styles.cell}
+                      />
+                    ))}
+                  </TableWrapper>
+                ))}
+              </ScrollView>
+            </Table>
+          </ScrollView>
+        </View>
+        <View style={styles.textWrapper}>
           <View style={styles.dropdownWrapper}>
             <View>
               <Text style={styles.des}>{'Max. Qty that \ncan be planned'}</Text>
@@ -235,7 +288,7 @@ const DispatchPlanning = ({navigation}) => {
         <View style={styles.dropdownWrapper}>
           <Button
             disabled={loading}
-            onClick={()=>navigation.navigate('BasicQuotation')}
+            onClick={() => navigation.navigate('BasicQuotation')}
             text="Save"
             textStyle={styles.buttonText}
             style={[styles.buttonStyle, styles.dropdownView]}

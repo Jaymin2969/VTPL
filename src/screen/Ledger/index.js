@@ -22,7 +22,17 @@ import {horizontalScale} from '../../components/Core/basicStyles';
 import {isIOS} from 'react-native-elements/dist/helpers';
 import {loginUser} from '../../redux/actions/authAction';
 import TokenManager from '../../utils/TokenManager';
-
+import {useDebounce} from '../../utils/cutomHook';
+const dataArray = [
+  'Meter',
+  '101 Infra',
+  '101 Infra-DS',
+  '12 Meter Radius',
+  'Meter',
+  '101 Infra',
+  '101 Infra-DS',
+  '12 Meter Radius',
+];
 const Ledger = ({navigation}) => {
   const dispatch = useDispatch();
   const {
@@ -32,6 +42,18 @@ const Ledger = ({navigation}) => {
   const [phno, setPhno] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [checked, setChecked] = React.useState(true);
+  const [value, setValue] = useState('');
+  const [store, setStore] = useState(dataArray);
+  const debouncedValue = useDebounce(value, 1000);
+
+  useEffect(() => {
+    // Do fetch here...
+    // Triggers when "debouncedValue" changes
+    const filterData = dataArray.filter(i =>
+      i?.toLocaleLowerCase().includes(value?.toLocaleLowerCase()),
+    );
+    setStore(filterData);
+  }, [debouncedValue]);
 
   useEffect(() => {
     if (loginSuccess) return navigation.navigate('TabScreen');
@@ -162,21 +184,13 @@ const Ledger = ({navigation}) => {
         <View style={styles.textWrapper}>
           <Input
             placeholder="Search"
-            onChangeText={setPhno}
-            value={phno}
+            onChangeText={setValue}
+            value={value}
             leftIconType={'search'}
           />
           <FlatList
-            data={[
-              'Meter',
-              '101 Infra',
-              '101 Infra-DS',
-              '12 Meter Radius',
-              'Meter',
-              '101 Infra',
-              '101 Infra-DS',
-              '12 Meter Radius',
-            ]}
+            nestedScrollEnabled
+            data={store}
             renderItem={({item}) => (
               <CheckBox
                 checked={checked}
@@ -192,8 +206,8 @@ const Ledger = ({navigation}) => {
                 textStyle={styles.textStyle}
               />
             )}
-            keyExtractor={item => item.id}
-            style={{marginTop: 10, height: '30%'}}
+            keyExtractor={(item, index) => index}
+            style={{marginTop: 10}}
           />
         </View>
 
@@ -244,7 +258,7 @@ const Ledger = ({navigation}) => {
           <Button
             colors={['#151589', '#09096a', '#010151']}
             disabled={loading}
-            onClick={()=>navigation.navigate('DispatchOrderEntry')}
+            onClick={() => navigation.navigate('DispatchOrderEntry')}
             text="Report"
             textStyle={styles.buttonText}
             style={[styles.buttonStyle, styles.dropdownView]}

@@ -107,7 +107,7 @@ const Home = ({navigation}) => {
   const toggleCheckbox = () => setChecked(!checked);
 
   const onTabPress = type => () => {
-    if (!activeTab && type) navigation.navigate(type);
+    if (type) navigation.navigate(type);
     setActiveTab(prv => !prv);
   };
 
@@ -129,7 +129,7 @@ const Home = ({navigation}) => {
             <LinearGradient
               style={styles.buttonStyle}
               colors={['#45e2ea', '#26a4a9', '#097272']}>
-              <TouchableOpacity onPress={onTabPress()}>
+              <TouchableOpacity onPress={onTabPress('DispatchPlanning')}>
                 <Image />
                 <Text style={styles.buttonText}> Dispatch Plan</Text>
               </TouchableOpacity>

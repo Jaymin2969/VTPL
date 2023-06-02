@@ -21,6 +21,7 @@ import {horizontalScale} from '../../../components/Core/basicStyles';
 import {isIOS} from 'react-native-elements/dist/helpers';
 import {loginUser} from '../../../redux/actions/authAction';
 import TokenManager from '../../../utils/TokenManager';
+import {useFocusEffect} from '@react-navigation/native';
 
 const SignIn = ({navigation}) => {
   const dispatch = useDispatch();
@@ -32,13 +33,15 @@ const SignIn = ({navigation}) => {
   const [password, setPassword] = React.useState('krishna');
   const [checked, setChecked] = React.useState(true);
 
-  useEffect(() => {
-    getDataUser();
-  }, []);
-
+  useFocusEffect(
+    React.useCallback(() => {
+      const unsubscribe = getDataUser();
+      return () => unsubscribe;
+    }, []),
+  );
   const getDataUser = async data => {
     const isOnboardDone = await TokenManager.retrieveToken();
-    if (!isOnboardDone) navigation.navigate('Home');
+    if (isOnboardDone) navigation.navigate('Home');
     return;
   };
 
