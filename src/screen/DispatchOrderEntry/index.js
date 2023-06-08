@@ -29,41 +29,60 @@ import {horizontalScale} from '../../components/Core/basicStyles';
 import {isIOS} from 'react-native-elements/dist/helpers';
 import {loginUser} from '../../redux/actions/authAction';
 import TokenManager from '../../utils/TokenManager';
+import {getDispPlanDataList} from '../../redux/actions/listAction';
 
 const tableHeadData = [
-  'Site',
-  'so.no',
-  'Consent Created On',
-  'Consent Granted On',
-  'Consent Expiry On',
+  'LocID',
+  'SOID',
+  'SrNo',
+  'FactoryID',
+  'Factory',
+  'SONo',
+  'SODate',
+  'PONo',
+  'ClientID',
+  'Client',
+  'SiteID',
+  'SiteName',
+  'ClientGroup',
+  'MktPersonID',
+  'MktPerson',
+  'ProductID',
+  'ItemID',
+  'ProdItemID',
+  'ProductName',
+  'FinishCode',
+  'ProductGrade',
+  'UoMCode',
+  'SOQty',
+  'PendingSaleQty',
+  'StockQty',
+  'Rate',
+  'PendingPlanQty',
 ];
 const DispatchOrderEntry = ({navigation}) => {
   const dispatch = useDispatch();
-  const {
-    flags: {loginSuccess},
-  } = useSelector(({auth}) => auth);
+  const {addressList = {}} = useSelector(({list}) => list);
   const [loading, setLoading] = React.useState(false);
   const [phno, setPhno] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [checked, setChecked] = React.useState(true);
-
-  useEffect(() => {
-    if (loginSuccess) return navigation.navigate('TabScreen');
-  }, [loginSuccess]);
-
-  const login = () => {
-    return navigation.navigate('ChangeServer');
-    if (phno?.length < 13 || !phno) {
-      return alert('Please enter valid phno');
-    }
+  const [clintInfo, setClintInfo] = useState({});
+  const [site, setSite] = useState({});
+  const [siteName, setSiteName] = useState({});
+  console.log('addressList', addressList.SOList);
+  const getDispPlanList = async () => {
+    const UserID = await TokenManager.retrieveToken('UserId');
     dispatch(
-      loginUser({
-        email: phno,
-        password: password,
+      getDispPlanDataList({
+        UserID: 7600466311,
       }),
     );
   };
-
+  useEffect(() => {
+    getDispPlanList();
+  }, []);
+  console.log('@@@@@');
   const onAppleButtonPress = async () => {
     // Start the sign-in request
     // const appleAuthRequestResponse = await appleAuth.performRequest({
@@ -149,7 +168,14 @@ const DispatchOrderEntry = ({navigation}) => {
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
-            data={data}
+            data={
+              addressList?.Factories?.length > 0
+                ? addressList?.Factories.map(s => ({
+                    label: s._Name,
+                    value: s,
+                  }))
+                : []
+            }
             maxHeight={300}
             labelField="label"
             valueField="value"
@@ -164,7 +190,14 @@ const DispatchOrderEntry = ({navigation}) => {
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
-            data={data}
+            data={
+              addressList?.MktPersons?.length > 0
+                ? addressList?.MktPersons.map(s => ({
+                    label: s._Name,
+                    value: s,
+                  }))
+                : []
+            }
             maxHeight={300}
             labelField="label"
             valueField="value"
@@ -179,13 +212,20 @@ const DispatchOrderEntry = ({navigation}) => {
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
-            data={data}
+            data={
+              addressList?.ClientDetails?.length > 0
+                ? addressList?.ClientDetails.map(s => ({
+                    label: s.GroupName,
+                    value: s.Clients,
+                  }))
+                : []
+            }
             maxHeight={300}
             labelField="label"
             valueField="value"
             searchPlaceholder="Search..."
-            value={phno}
-            onChange={setPhno}
+            value={clintInfo}
+            onChange={setClintInfo}
           />
           <Text style={styles.des}>{'Client'}</Text>
           <Dropdown
@@ -194,13 +234,20 @@ const DispatchOrderEntry = ({navigation}) => {
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
-            data={data}
+            data={
+              clintInfo?.value?.length > 0
+                ? clintInfo?.value.map(s => ({
+                    label: s.Name,
+                    value: s,
+                  }))
+                : []
+            }
             maxHeight={300}
             labelField="label"
             valueField="value"
             searchPlaceholder="Search..."
-            value={phno}
-            onChange={setPhno}
+            value={site}
+            onChange={setSite}
           />
           <Text style={styles.des}>{'Site'}</Text>
           <Dropdown
@@ -209,13 +256,20 @@ const DispatchOrderEntry = ({navigation}) => {
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
-            data={data}
+            data={
+              site?.value?.Sites.length > 0
+                ? site?.value?.Sites.map(s => ({
+                    label: s.SiteName,
+                    value: s.SiteID,
+                  }))
+                : []
+            }
             maxHeight={300}
             labelField="label"
             valueField="value"
             searchPlaceholder="Search..."
-            value={phno}
-            onChange={setPhno}
+            value={siteName}
+            onChange={setSiteName}
           />
           <Text style={styles.des}>{'Product'}</Text>
           <Dropdown
@@ -224,7 +278,14 @@ const DispatchOrderEntry = ({navigation}) => {
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
-            data={data}
+            data={
+              addressList?.Products?.length > 0
+                ? addressList?.Products.map(s => ({
+                    label: s.ProductName,
+                    value: s,
+                  }))
+                : []
+            }
             maxHeight={300}
             labelField="label"
             valueField="value"
@@ -242,23 +303,14 @@ const DispatchOrderEntry = ({navigation}) => {
                 textStyle={styles.textHeader}
               />
               <ScrollView nestedScrollEnabled>
-                {[
-                  ['SNS-Glorina industrial Park-Sachin-Surat', '1524'],
-                  ['SNS-Glorina industrial Park-Sachin-Surat', '1524'],
-                  ['SNS-Glorina industrial Park-Sachin-Surat', '1524'],
-                  ['SNS-Glorina industrial Park-Sachin-Surat', '1524'],
-                  ['SNS-Glorina industrial Park-Sachin-Surat', '1524'],
-                  ['SNS-Glorina industrial Park-Sachin-Surat', '1524'],
-                ].map((rowData, index) => (
+                {addressList?.SOList?.map(i =>
+                  tableHeadData.map(d => i[d] || ''),
+                )?.map((rowData, index) => (
                   <TableWrapper key={index} style={[styles.row]}>
                     {rowData.map((cellData, cellIndex) => (
                       <Cell
                         key={cellIndex}
-                        data={
-                          cellIndex === 5
-                            ? cellElement(cellData, index)
-                            : cellData
-                        }
+                        data={cellData}
                         textStyle={styles.txtDes}
                         style={styles.cell}
                       />
@@ -316,7 +368,7 @@ const DispatchOrderEntry = ({navigation}) => {
         <View style={styles.dropdownWrapper}>
           <Button
             disabled={loading}
-            onClick={login}
+            // onClick={login}
             text="Next"
             textStyle={styles.buttonText}
             style={[styles.buttonStyle, styles.dropdownView]}
@@ -324,7 +376,7 @@ const DispatchOrderEntry = ({navigation}) => {
           <Button
             colors={['#45e2ea', '#26a4a9', '#097272']}
             disabled={loading}
-            onClick={login}
+            // onClick={login}
             text="Full So"
             textStyle={styles.buttonText}
             style={[styles.buttonStyle, styles.dropdownView]}
@@ -342,7 +394,7 @@ const DispatchOrderEntry = ({navigation}) => {
           <Button
             colors={['#e32d2e', '#b32527', '#892020']}
             disabled={loading}
-            onClick={login}
+            // onClick={login}
             text="Exit"
             textStyle={styles.buttonText}
             style={[styles.buttonStyle, styles.dropdownView]}

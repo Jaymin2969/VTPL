@@ -53,6 +53,7 @@ const style = StyleSheet.create({
   mainWrapper: {
     paddingTop: verticalScale(20),
     backgroundColor: brandColors.skyLight,
+    paddingVertical: verticalScale(200),
   },
   mX: {
     marginHorizontal: horizontalScale(15),

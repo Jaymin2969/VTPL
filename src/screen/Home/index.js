@@ -129,7 +129,7 @@ const Home = ({navigation}) => {
             <LinearGradient
               style={styles.buttonStyle}
               colors={['#45e2ea', '#26a4a9', '#097272']}>
-              <TouchableOpacity onPress={onTabPress('DispatchPlanning')}>
+              <TouchableOpacity onPress={onTabPress('DispatchOrderEntry')}>
                 <Image />
                 <Text style={styles.buttonText}> Dispatch Plan</Text>
               </TouchableOpacity>

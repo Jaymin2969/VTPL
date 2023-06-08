@@ -64,6 +64,7 @@ import {
   GET_LIST_REQUEST,
   GET_LIST_SUCCESS,
 } from '../reducers/listReducer';
+import {showErrorToast} from '../../utils/Utils';
 
 function showProcessing(isProcessing = false) {
   return {
@@ -99,11 +100,7 @@ function* handleGetStateList(action) {
       });
     }
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
+    showErrorToast(error.message);
     console.log('login error', error);
     yield put({
       type: GET_STATE_ERROR,
@@ -118,10 +115,9 @@ function* handleGetStateList(action) {
 
 async function getCountryListApi(payload) {
   const token = await TokenManager.retrieveToken();
-  return axios.get(
-    'https://identity-service-test.dezensolutions.com/get-active-countries',
-    {params: payload, headers: {Authorization: `Bearer ${token}`}},
-  );
+  return axios.get('https://vyaratiles.co.in/Api/LedgerFilter', {
+    params: payload,
+  });
 }
 
 function* handleGetCountryList(action) {
@@ -137,17 +133,14 @@ function* handleGetCountryList(action) {
         type: RESET_FLAGS,
       });
     } else {
+      showErrorToast(data.Message);
       yield put({
         type: GET_COUNTRY_ERROR,
         error: 'Something went wrong, Please try again later',
       });
     }
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
+    showErrorToast(error.message);
     console.log('login error', error);
     yield put({
       type: GET_COUNTRY_ERROR,
@@ -161,18 +154,7 @@ function* handleGetCountryList(action) {
 }
 
 async function addAddressApi(payload) {
-  const token = await TokenManager.retrieveToken();
-  if (!payload?.update)
-    return axios.post(
-      'https://identity-service-test.dezensolutions.com/address',
-      payload?.params,
-      {headers: {Authorization: `Bearer ${token}`}},
-    );
-  return axios.patch(
-    'https://identity-service-test.dezensolutions.com/address',
-    payload?.params,
-    {headers: {Authorization: `Bearer ${token}`}},
-  );
+  return axios.get('https://vyaratiles.co.in/Api/SOStatus', {params: payload});
 }
 
 function* handleAddAddress(action) {
@@ -194,12 +176,7 @@ function* handleAddAddress(action) {
       });
     }
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
-    console.log('login error', error);
+    showErrorToast(error.message);
     yield put({
       type: ADD_ADDRESS_ERROR,
       error:
@@ -212,10 +189,9 @@ function* handleAddAddress(action) {
 }
 async function getAddressListApi(payload) {
   const token = await TokenManager.retrieveToken();
-  return axios.get(
-    'https://identity-service-test.dezensolutions.com/user-address',
-    {params: payload, headers: {Authorization: `Bearer ${token}`}},
-  );
+  return axios.get('https://vyaratiles.co.in/Api/DispPlanData', {
+    params: payload,
+  });
 }
 
 function* handleGetAddressList(action) {
@@ -231,18 +207,14 @@ function* handleGetAddressList(action) {
         type: RESET_FLAGS,
       });
     } else {
+      showErrorToast(data.Message);
       yield put({
         type: GET_ADDRESS_LIST_ERROR,
         error: 'Something went wrong, Please try again later',
       });
     }
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
-    console.log('login error', error);
+    showErrorToast(error.message);
     yield put({
       type: GET_ADDRESS_LIST_ERROR,
       error:
@@ -276,11 +248,7 @@ function* handleGetHomeProductList(action) {
       });
     }
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
+    showErrorToast(error.message);
     console.log('login error', error);
     yield put({
       type: GET_HOME_PRODUCT_LIST_ERROR,
@@ -315,11 +283,7 @@ function* handleGetCartList() {
       });
     }
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
+    showErrorToast(error.message);
     console.log('login error', error);
     yield put({
       type: GET_CART_LIST_ERROR,
@@ -332,7 +296,7 @@ function* handleGetCartList() {
   }
 }
 async function handleAddCartApi(payload) {
-  return request.post('/add-cart', payload);
+  return axios.get('https://vyaratiles.co.in/Api/Ledger', {params: payload});
 }
 
 function* handleAddCart(action) {
@@ -362,11 +326,7 @@ function* handleAddCart(action) {
       });
     }
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
+    showErrorToast(error.message);
     console.log('login error', error);
     yield put({
       type: ADD_TO_CART_ERROR,
@@ -398,11 +358,7 @@ function* handlGetCategoryList(action) {
       });
     }
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
+    showErrorToast(error.message);
     console.log('login error', error);
     yield put({
       type: GET_CATEGORY_LIST_ERROR,
@@ -439,11 +395,7 @@ function* handlGetUser(action) {
       });
     }
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
+    showErrorToast(error.message);
     console.log('login error', error);
     const {displayName, phoneNumber} = auth().currentUser;
     const dataSave = {
@@ -490,11 +442,7 @@ function* handlPostUser(action) {
       });
     }
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
+    showErrorToast(error.message);
     console.log('login error', error);
     yield put({
       type: POST_USER_ERROR,
@@ -529,11 +477,7 @@ function* handleCartCount(action) {
       });
     }
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
+    showErrorToast(error.message);
     console.log('login error', error);
     yield put({
       type: GET_CART_ERROR,
@@ -565,11 +509,7 @@ function* handleProdctDetails(action) {
       });
     }
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
+    showErrorToast(error.message);
     console.log('login error', error);
     yield put({
       type: GET_PRODUCT_DETAILS_ERROR,
@@ -582,7 +522,7 @@ function* handleProdctDetails(action) {
   }
 }
 function listApi(payload) {
-  return axios.get('http://116.72.19.220:800/Api/SOStatusFilter', {
+  return axios.get('https://vyaratiles.co.in/Api/SOStatusFilter', {
     params: payload,
   });
 }
@@ -597,17 +537,14 @@ function* handleList(action) {
         data,
       });
     } else {
+      showErrorToast(data.Message);
       yield put({
         type: GET_LIST_ERROR,
         error: 'Something went wrong, Please try again later',
       });
     }
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
+    showErrorToast(error.message);
     console.log('login error', error);
     yield put({
       type: GET_LIST_ERROR,
@@ -642,11 +579,7 @@ function* handleLogin(action) {
       });
     }
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
+    showErrorToast(error.message);
     console.log('login error', error);
     yield put({
       type: USER_LOGIN_ERROR,
@@ -682,11 +615,7 @@ function* handleRegister(action) {
       });
     }
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
+    showErrorToast(error.message);
     console.log('signup error :', error);
     yield put({
       type: USER_REGISTER_ERROR,
@@ -719,11 +648,7 @@ function* handleResetPassword(action) {
       });
     }
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
+    showErrorToast(error.message);
     console.log('error :', error);
     yield put({
       type: RESET_PASSWORD_ERROR,
@@ -756,11 +681,7 @@ function* handleGetState({payload}) {
       });
     }
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
+    showErrorToast(error.message);
     console.log('error :', error);
     yield put({
       type: GET_STATE_ERROR,
@@ -793,11 +714,7 @@ function* handleForgotPassword(action) {
       });
     }
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
+    showErrorToast(error.message);
     console.log('error :', error);
     yield put({
       type: USER_FORGOT_PASSWORD_ERROR,

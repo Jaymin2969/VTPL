@@ -19,80 +19,80 @@ import {
   GET_COUNTRY_REQUEST,
 } from '../reducers/listReducer';
 
-export const getCountries = (payload) => ({
+export const getLedgerList = payload => ({
   type: GET_COUNTRY_REQUEST,
   payload,
 });
-export const getStates = (payload) => ({
+export const getStates = payload => ({
   type: GET_STATE_REQUEST,
   payload,
 });
-export const getAddressList = (payload) => ({
+export const getDispPlanDataList = payload => ({
   type: GET_ADDRESS_LIST_REQUEST,
   payload,
 });
-export const addAddress = (payload) => ({
+export const getSOStatus = payload => ({
   type: ADD_ADDRESS_REQUEST,
   payload,
 });
-export const getHomeProductList = (payload) => ({
+export const getHomeProductList = payload => ({
   type: GET_HOME_PRODUCT_LIST_REQUEST,
   payload,
 });
 
-export const getCartList = (payload) => ({
+export const getCartList = payload => ({
   type: GET_CART_LIST_REQUEST,
   payload,
 });
-export const addToCart = (payload) => ({
+export const addLedger = payload => ({
   type: ADD_TO_CART_REQUEST,
   payload,
 });
-export const getCategoryList = (payload) => ({
+export const getCategoryList = payload => ({
   type: GET_CATEGORY_LIST_REQUEST,
   payload,
 });
-export const getUser = (payload) => ({
+export const getUser = payload => ({
   type: GET_USER_REQUEST,
   payload,
 });
-export const postUser = (payload) => ({
+export const postUser = payload => ({
   type: POST_USER_REQUEST,
   payload,
 });
 
-export const getCartCount = (payload) => ({
+export const getCartCount = payload => ({
   type: GET_CART_REQUEST,
   payload,
 });
-export const getProductList = (payload) => ({
+export const getProductList = payload => ({
   type: GET_LIST_REQUEST,
   payload,
 });
-export const getProductDetail = (payload) => ({
+export const getProductDetail = payload => ({
   type: GET_PRODUCT_DETAILS_REQUEST,
   payload,
 });
-export const login = (payload) => ({
+export const login = payload => ({
   type: USER_LOGIN_REQUEST,
   payload,
 });
-export const register = (payload) => ({
+export const register = payload => ({
   type: USER_REGISTER_REQUEST,
   payload,
 });
 
-export const getState = (payload) => ({
+export const getState = payload => ({
   type: GET_STATE_REQUEST,
   payload,
 });
 
-export const forgotPassword = (payload) => ({
+export const forgotPassword = payload => ({
   type: USER_FORGOT_PASSWORD_REQUEST,
   payload,
 });
 
-export const resetPassword = (payload) => ({
+export const resetPassword = payload => ({
   type: RESET_PASSWORD_REQUEST,
   payload,
 });

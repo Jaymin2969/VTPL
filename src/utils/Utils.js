@@ -1,14 +1,13 @@
-// import { RNToasty } from 'react-native-toasty';
+import Toast from 'react-native-toast-message';
 
-const showErrorToast = (title) => {
-  // if (Defaults.dropdown) {
-  //    Defaults.dropdown.alertWithType('error', title);
-  // } else {
+const showErrorToast = title => {
+  return Toast.show({
+    type: 'error',
+    text1: 'Error',
+    text2: title,
+  });
   // RNToasty.Error({ title, withIcon: false, duration: 1 });
-
-  // }
 };
-
 const showNormalToast = (title, forceToast = false) => {
   // if (Defaults.dropdown && !forceToast) {
   //    Defaults.dropdown.alertWithType('info', title);
@@ -17,7 +16,7 @@ const showNormalToast = (title, forceToast = false) => {
   // }
 };
 
-const showSuccessToast = (title) => {
+const showSuccessToast = title => {
   // if (Defaults.dropdown) {
   //    Defaults.dropdown.alertWithType('success', title);
   // } else {
@@ -25,8 +24,4 @@ const showSuccessToast = (title) => {
   // }
 };
 
-export {
-  showErrorToast,
-  showNormalToast,
-  showSuccessToast,
-};
+export {showErrorToast, showNormalToast, showSuccessToast};

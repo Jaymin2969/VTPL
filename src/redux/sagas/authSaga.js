@@ -34,7 +34,7 @@ function showProcessing(isProcessing = false) {
 }
 
 function login(payload) {
-  return axios.get('http://116.72.19.220:800/Api/ERPAuth', {params: payload});
+  return axios.get('https://vyaratiles.co.in/Api/ERPAuth', {params: payload});
 }
 function* handleLogin(action) {
   try {

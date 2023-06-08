@@ -46,11 +46,10 @@ const style = StyleSheet.create({
     color: brandColors.black,
   },
   leftSpace: {marginLeft: 10},
-  dropdownView: {width: '48%'},
   mainWrapper: {
-    paddingTop: verticalScale(20),
     backgroundColor: brandColors.skyLight,
-    paddingBottom: verticalScale(100),
+    paddingBottom: verticalScale(10),
+    flex: 1,
   },
   mX: {
     marginHorizontal: horizontalScale(15),
@@ -123,7 +122,7 @@ const style = StyleSheet.create({
     color: brandColors.white,
   },
   buttonStyle: {
-    // marginHorizontal: horizontalScale(20),
+    marginHorizontal: horizontalScale(20),
     marginTop: verticalScale(20),
   },
   account: {

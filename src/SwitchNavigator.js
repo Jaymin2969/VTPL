@@ -29,6 +29,7 @@ import DispatchPlanning from './screen/DispatchPlanning';
 import BasicQuotation from './screen/BasicQuotation';
 import ProductDetails from './screen/ProductDetails';
 import QuotationEntry from './screen/QuotationEntry';
+import PDFScreen from './screen/PDFScreen';
 
 const Stack = createStackNavigator();
 const AppBottomTab = createBottomTabNavigator();
@@ -122,6 +123,7 @@ const RootNavigator = ({isLogin}) => {
               name="DispatchPlanning"
               component={DispatchPlanning}
             />
+            <Stack.Screen name="PDFScreen" component={PDFScreen} />
             <Stack.Screen name="BasicQuotation" component={BasicQuotation} />
             <Stack.Screen name="ProductDetails" component={ProductDetails} />
             <Stack.Screen name="ChangeServer" component={ChangeServer} />

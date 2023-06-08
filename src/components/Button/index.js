@@ -49,8 +49,8 @@ const styles = StyleSheet.create({
     marginRight: horizontalScale(10),
   },
   button: {
-    // flexDirection: 'row',
-    // justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
     backgroundColor: brandColors.black,
     alignItems: 'center',
     width: '100%',

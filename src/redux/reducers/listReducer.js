@@ -141,9 +141,7 @@ export const ListReducer = (state = initialState, action) => {
       return {
         ...state,
         flags: {countryListSuccess: true},
-        countryList: action.data?.map(i => {
-          return {...i, label: i.name, value: i.id};
-        }),
+        countryList: action.data,
       };
     case GET_COUNTRY_ERROR:
       return {...state, errors: {countryList: action.error}};
