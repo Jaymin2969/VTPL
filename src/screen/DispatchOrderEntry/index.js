@@ -82,77 +82,8 @@ const DispatchOrderEntry = ({navigation}) => {
   useEffect(() => {
     getDispPlanList();
   }, []);
-  console.log('@@@@@');
-  const onAppleButtonPress = async () => {
-    // Start the sign-in request
-    // const appleAuthRequestResponse = await appleAuth.performRequest({
-    //   requestedOperation: appleAuth.Operation.LOGIN,
-    //   requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-    // });
-
-    // Ensure Apple returned a user identityToken
-    if (!appleAuthRequestResponse.identityToken) {
-      throw new Error('Apple Sign-In failed - no identify token returned');
-    }
-
-    // Create a Firebase credential from the response
-    const {identityToken, nonce} = appleAuthRequestResponse;
-    const appleCredential = auth.AppleAuthProvider.credential(
-      identityToken,
-      nonce,
-    );
-    // Sign the user in with the credential
-    // return auth().signInWithCredential(appleCredential);
-  };
-  const signInWithPhoneNumber = async () => {
-    try {
-      setLoading(true);
-      // const confirmation = await auth().signInWithPhoneNumber(phno);
-      // setLoading(false)
-      // return navigation.navigate("OTP", { confirmation });
-    } catch (error) {
-      setLoading(false);
-      console.log('error', error);
-      alert(error);
-      // showErrorToast(error)
-    }
-  };
-  const onGoogleButtonPress = async () => {
-    try {
-      // Check if your device supports Google Play
-      // await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-      // // Get the users ID token
-      // const { idToken } = await GoogleSignin.signIn();
-
-      // Create a Google credential with the token
-      // const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      // // Sign-in the user with the credential
-      // const data = await auth().signInWithCredential(googleCredential);
-      // const token = await data.user.getIdToken()
-      // await TokenManager.saveToken(token)
-      return navigation.navigate('TabScreen');
-    } catch (error) {
-      alert(error);
-    }
-  };
-
-  function onPressHandler() {
-    navigation.navigate('SignUp');
-  }
 
   const toggleCheckbox = () => setChecked(!checked);
-
-  const data = [
-    {label: 'Item 1', value: '1'},
-    {label: 'Item 2', value: '2'},
-    {label: 'Item 3', value: '3'},
-    {label: 'Item 4', value: '4'},
-    {label: 'Item 5', value: '5'},
-    {label: 'Item 6', value: '6'},
-    {label: 'Item 7', value: '7'},
-    {label: 'Item 8', value: '8'},
-  ];
-
   return (
     <BaseScreen>
       <NavBar
@@ -295,30 +226,40 @@ const DispatchOrderEntry = ({navigation}) => {
           />
         </View>
         <View style={styles.textWrapper}>
-          <ScrollView showsVerticalScrollIndicator={false} horizontal>
-            <Table borderStyle={{borderColor: 'transparent'}}>
-              <Row
-                data={tableHeadData}
-                style={styles.header}
-                textStyle={styles.textHeader}
-              />
-              <ScrollView nestedScrollEnabled>
-                {addressList?.SOList?.map(i =>
-                  tableHeadData.map(d => i[d] || ''),
-                )?.map((rowData, index) => (
-                  <TableWrapper key={index} style={[styles.row]}>
-                    {rowData.map((cellData, cellIndex) => (
-                      <Cell
-                        key={cellIndex}
-                        data={cellData}
-                        textStyle={styles.txtDes}
-                        style={styles.cell}
-                      />
-                    ))}
-                  </TableWrapper>
-                ))}
-              </ScrollView>
-            </Table>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            horizontal
+            nestedScrollEnabled>
+            <View style={styles.tableWrapper}>
+              <Table borderStyle={{borderColor: 'transparent'}}>
+                <Row
+                  data={tableHeadData}
+                  style={styles.header}
+                  textStyle={styles.textHeader}
+                />
+                <>
+                  <FlatList
+                    data={addressList?.SOList?.map(i =>
+                      tableHeadData.map(d => i[d] || ''),
+                    )}
+                    renderItem={({item, index}) => (
+                      <TableWrapper key={index} style={[styles.row]}>
+                        {item.map((cellData, cellIndex) => (
+                          <Cell
+                            key={cellIndex}
+                            data={cellData}
+                            textStyle={styles.txtDes}
+                            style={styles.cell}
+                          />
+                        ))}
+                      </TableWrapper>
+                    )}
+                    keyExtractor={(item, index) => index}
+                    style={{marginTop: 10}}
+                  />
+                </>
+              </Table>
+            </View>
           </ScrollView>
         </View>
 

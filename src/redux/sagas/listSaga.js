@@ -161,12 +161,12 @@ function* handleAddAddress(action) {
   try {
     yield put(showProcessing(true));
     const {status, data} = yield call(addAddressApi, action.payload);
-    if (status === 201) {
+    if (status === 200) {
       yield put({
         type: ADD_ADDRESS_SUCCESS,
         data,
       });
-      dispatch({
+      yield put({
         type: RESET_FLAGS,
       });
     } else {
@@ -296,7 +296,11 @@ function* handleGetCartList() {
   }
 }
 async function handleAddCartApi(payload) {
-  return axios.get('https://vyaratiles.co.in/Api/Ledger', {params: payload});
+  return axios.post(
+    'https://vyaratiles.co.in/Api/Ledger',
+    {},
+    {params: payload},
+  );
 }
 
 function* handleAddCart(action) {

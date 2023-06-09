@@ -11,6 +11,7 @@ import BaseScreen from '../../components/BaseScreen';
 
 //image
 import NavBar from '../../components/NavBar';
+import {useSelector} from 'react-redux';
 
 const PDFScreen = ({navigation, route}) => {
   const {params} = route;
@@ -45,7 +46,7 @@ const PDFScreen = ({navigation, route}) => {
         <Button
           colors={['#10add1', '#07799a', '#034e6d']}
           // disabled={loading}
-          // onClick={login}
+          onClick={() => navigation.goBack()}
           text="Save"
           textStyle={styles.buttonText}
           style={[styles.buttonStyle]}

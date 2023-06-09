@@ -27,32 +27,29 @@ import {getProductList, getSOStatus} from '../../redux/actions/listAction';
 const SoStatus = ({navigation}) => {
   const dispatch = useDispatch();
   const {
-    flags: {addAddressSuccess},
-  } = useSelector(({auth}) => auth);
-  const {
     productList,
+    flags: {addAddressSuccess},
     errors: {addAddress},
   } = useSelector(({list}) => list);
 
-  const [loading, setLoading] = React.useState(false);
-  const [phno, setPhno] = React.useState('');
-  const [status, setStatus] = React.useState({});
-  const [fromLocation, setFromLocation] = React.useState({});
-  const [forLocation, setForLocation] = React.useState({});
-  const [productGroup, setProductGroup] = React.useState({});
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState({});
+  const [fromLocation, setFromLocation] = useState({});
+  const [forLocation, setForLocation] = useState({});
+  const [productGroup, setProductGroup] = useState({});
   const [clintInfo, setClintInfo] = useState({});
   const [site, setSite] = useState({});
   const [siteName, setSiteName] = useState({});
   const [product, setProduct] = useState({});
   const [MktPersons, setMktPersons] = useState({});
-  const [checked, setChecked] = React.useState(false);
-  const [checked1, setChecked1] = React.useState(false);
-  const [checked2, setChecked2] = React.useState(false);
-  const [checked3, setChecked3] = React.useState(false);
-  const [EqTypes, setEqTypes] = React.useState({});
-  const [unit, setUnit] = React.useState({});
-  const [productName, setProductName] = React.useState('');
-  const [productContain, setProductContain] = React.useState();
+  const [checked, setChecked] = useState(false);
+  const [checked1, setChecked1] = useState(false);
+  const [checked2, setChecked2] = useState(false);
+  const [checked3, setChecked3] = useState(false);
+  const [EqTypes, setEqTypes] = useState({});
+  const [unit, setUnit] = useState({});
+  const [productName, setProductName] = useState('');
+  const [productContain, setProductContain] = useState();
 
   useEffect(() => {
     if (addAddressSuccess) {
@@ -88,21 +85,20 @@ const SoStatus = ({navigation}) => {
       ProductID: product?.value?.ID,
       ProductStarts: productName,
       ProductContains: productContain,
-      WithStock: checked,
       UoMCode: unit?.value,
       StatusID: status?.value?._ID,
       LocID: fromLocation?.value?._ID || forLocation?.value?._ID,
       EqTypeID: EqTypes?.value,
-      ClubLots: checked3,
-      ClubOrders: checked1,
-      ClubSites: checked2,
       UserID,
     };
+    if (checked) params.WithStock = checked;
+    if (checked3) params.ClubLots = checked3;
+    if (checked1) params.ClubOrders = checked1;
+    if (checked2) params.ClubSites = checked2;
     dispatch(getSOStatus(params));
   };
 
   const toggleCheckbox = () => setChecked(!checked);
-  console.log('status', status);
   return (
     <BaseScreen>
       <NavBar

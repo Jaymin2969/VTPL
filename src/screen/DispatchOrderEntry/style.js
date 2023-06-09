@@ -31,6 +31,9 @@ const style = StyleSheet.create({
     borderTopLeftRadius: horizontalScale(20),
     borderTopRightRadius: horizontalScale(20),
   },
+  tableWrapper: {
+    height: verticalScale(400),
+  },
   dropdownWrapper: {
     flexDirection: 'row',
     alignItems: 'center',

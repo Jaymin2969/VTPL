@@ -46,9 +46,12 @@ const Ledger = ({navigation}) => {
   const {countryList} = useSelector(({list}) => list);
   const [loading, setLoading] = React.useState(false);
   const [phno, setPhno] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [checked, setChecked] = React.useState(true);
+  const [fromDate, setFromDate] = React.useState('');
+  const [toDate, setToDate] = React.useState('');
   const [value, setValue] = useState('');
+  const [checked, setChecked] = React.useState(true);
+  const [checked1, setChecked1] = React.useState(false);
+  const [checked2, setChecked2] = React.useState(true);
   const [acGroups, setAcGroups] = useState({});
   const [clients, setClients] = useState({});
   const [clientsArray, setClientsArray] = useState([]);
@@ -94,24 +97,14 @@ const Ledger = ({navigation}) => {
     setLoading(true);
     const UserID = await TokenManager.retrieveToken('UserId');
     const params = {
-      // MktID: MktPersons?.value?._ID,
-      // ClientGroup: clintInfo?.label,
-      // ClientID: site?.value?.ID,
-      // SiteID: siteName?.value,
-      // ProductGroupID: productGroup?.value?.ID,
-      // ProductID: product?.value?.ID,
-      // ProductStarts: productName,
-      // ProductContains: productContain,
-      // WithStock: checked,
-      // UoMCode: unit?.value,
-      // StatusID: status?.value?._ID,
-      // LocID: fromLocation?.value?._ID || forLocation?.value?._ID,
-      // EqTypeID: EqTypes?.value,
-      // ClubLots: checked3,
-      // ClubOrders: checked1,
-      // ClubSites: checked2,
+      ClientID: clientsArray?.map(i => i?.ID)[0] || '',
       UserID,
     };
+
+    if (checked1) params.MergeClients = checked1;
+    if (fromDate) params.FromDate = fromDate;
+    if (toDate) params.ToDate = toDate;
+    if (checked2) params.GrandTotal = checked2;
     dispatch(addLedger(params));
   };
 
@@ -214,8 +207,8 @@ const Ledger = ({navigation}) => {
             <Text style={[styles.des]}>{'From'}</Text>
             <Input
               placeholder=""
-              onChangeText={setPhno}
-              value={phno}
+              onChangeText={setFromDate}
+              value={fromDate}
               style={[styles.dropdown, styles.input]}
             />
           </View>
@@ -223,8 +216,8 @@ const Ledger = ({navigation}) => {
             <Text style={[styles.des]}>{'To'}</Text>
             <Input
               placeholder=""
-              onChangeText={setPhno}
-              value={phno}
+              onChangeText={setToDate}
+              value={toDate}
               style={[styles.dropdown, styles.input]}
             />
           </View>
@@ -232,8 +225,8 @@ const Ledger = ({navigation}) => {
         <View style={styles.divider} />
         <View style={styles.dropdownWrapper}>
           <CheckBox
-            checked={checked}
-            onPress={toggleCheckbox}
+            checked={checked1}
+            onPress={() => setChecked1(!checked1)}
             iconType="material-community"
             checkedIcon="checkbox-outline"
             uncheckedIcon={'checkbox-blank-outline'}
@@ -242,8 +235,8 @@ const Ledger = ({navigation}) => {
             textStyle={styles.textStyle}
           />
           <CheckBox
-            checked={checked}
-            onPress={toggleCheckbox}
+            checked={checked2}
+            onPress={() => setChecked2(!checked2)}
             iconType="material-community"
             checkedIcon="checkbox-outline"
             uncheckedIcon={'checkbox-blank-outline'}
