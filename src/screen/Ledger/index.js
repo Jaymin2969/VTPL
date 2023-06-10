@@ -3,6 +3,7 @@ import {FlatList, Image, Text, TouchableOpacity, View} from 'react-native';
 
 import {CheckBox} from 'react-native-elements';
 import {Dropdown} from 'react-native-element-dropdown';
+import {TextInputMask} from 'react-native-masked-text';
 
 //style
 import styles from './style';
@@ -40,7 +41,7 @@ const Ledger = ({navigation}) => {
     flags: {loginSuccess},
   } = useSelector(({auth}) => auth);
   const {
-    addToCartSuccess,
+    flags: {addToCartSuccess},
     errors: {addToCart},
   } = useSelector(({list}) => list);
   const {countryList} = useSelector(({list}) => list);
@@ -51,7 +52,7 @@ const Ledger = ({navigation}) => {
   const [value, setValue] = useState('');
   const [checked, setChecked] = React.useState(true);
   const [checked1, setChecked1] = React.useState(false);
-  const [checked2, setChecked2] = React.useState(true);
+  const [checked2, setChecked2] = React.useState(false);
   const [acGroups, setAcGroups] = useState({});
   const [clients, setClients] = useState({});
   const [clientsArray, setClientsArray] = useState([]);
@@ -97,8 +98,8 @@ const Ledger = ({navigation}) => {
     setLoading(true);
     const UserID = await TokenManager.retrieveToken('UserId');
     const params = {
-      ClientID: clientsArray?.map(i => i?.ID)[0] || '',
-      UserID,
+      ClientID: '8592',
+      // UserID,
     };
 
     if (checked1) params.MergeClients = checked1;
@@ -205,8 +206,12 @@ const Ledger = ({navigation}) => {
         <View style={styles.dropdownWrapper}>
           <View style={styles.inputWrapper}>
             <Text style={[styles.des]}>{'From'}</Text>
-            <Input
-              placeholder=""
+            <TextInputMask
+              type={'datetime'}
+              options={{
+                format: 'DD/MM/YYYY',
+              }}
+              placeholder="DD/MM/YYYY"
               onChangeText={setFromDate}
               value={fromDate}
               style={[styles.dropdown, styles.input]}
@@ -214,8 +219,12 @@ const Ledger = ({navigation}) => {
           </View>
           <View style={styles.inputWrapper}>
             <Text style={[styles.des]}>{'To'}</Text>
-            <Input
-              placeholder=""
+            <TextInputMask
+              type={'datetime'}
+              options={{
+                format: 'DD/MM/YYYY',
+              }}
+              placeholder="DD/MM/YYYY"
               onChangeText={setToDate}
               value={toDate}
               style={[styles.dropdown, styles.input]}

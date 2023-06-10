@@ -15,7 +15,8 @@ import {useSelector} from 'react-redux';
 
 const PDFScreen = ({navigation, route}) => {
   const {params} = route;
-  const {addAddress = {}} = useSelector(({list}) => list);
+  const {addAddress = {}, addToCart = {}} = useSelector(({list}) => list);
+  console.log('addToCart', addToCart);
   return (
     <BaseScreen>
       <NavBar
@@ -26,7 +27,7 @@ const PDFScreen = ({navigation, route}) => {
         <Pdf
           trustAllCerts={false}
           source={{
-            uri: addAddress?.Message,
+            uri: addAddress?.Message || addToCart?.Message,
             cache: true,
           }}
           onLoadComplete={(numberOfPages, filePath) => {

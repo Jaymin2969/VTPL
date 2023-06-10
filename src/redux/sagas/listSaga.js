@@ -6,27 +6,9 @@ import Toast from 'react-native-toast-message';
 
 import {request, setupHttpConfig} from '../../utils/http';
 import {
-  USER_LOGIN_REQUEST,
-  USER_LOGIN_SUCCESS,
-  USER_LOGIN_ERROR,
-  USER_REGISTER_REQUEST,
-  USER_REGISTER_SUCCESS,
-  USER_REGISTER_ERROR,
-  RESET_PASSWORD_REQUEST,
-  RESET_PASSWORD_SUCCESS,
-  RESET_PASSWORD_ERROR,
   GET_STATE_REQUEST,
   GET_STATE_SUCCESS,
   GET_STATE_ERROR,
-  USER_FORGOT_PASSWORD_REQUEST,
-  USER_FORGOT_PASSWORD_SUCCESS,
-  USER_FORGOT_PASSWORD_ERROR,
-  GET_PRODUCT_DETAILS_REQUEST,
-  GET_PRODUCT_DETAILS_SUCCESS,
-  GET_PRODUCT_DETAILS_ERROR,
-  GET_CART_REQUEST,
-  GET_CART_SUCCESS,
-  GET_CART_ERROR,
   POST_USER_REQUEST,
   POST_USER_SUCCESS,
   POST_USER_ERROR,
@@ -127,6 +109,10 @@ function* handleGetCountryList(action) {
     if (status === 200) {
       yield put({
         type: GET_COUNTRY_SUCCESS,
+        data,
+      });
+      yield put({
+        type: ADD_ADDRESS_SUCCESS,
         data,
       });
       yield put({
@@ -296,11 +282,7 @@ function* handleGetCartList() {
   }
 }
 async function handleAddCartApi(payload) {
-  return axios.post(
-    'https://vyaratiles.co.in/Api/Ledger',
-    {},
-    {params: payload},
-  );
+  return axios.get('https://vyaratiles.co.in/Api/Ledger', {params: payload});
 }
 
 function* handleAddCart(action) {
@@ -312,14 +294,6 @@ function* handleAddCart(action) {
         type: ADD_TO_CART_SUCCESS,
         data,
       });
-      yield put({
-        type: GET_CART_REQUEST,
-      });
-      if (!data?.brand_id) {
-        yield put({
-          type: GET_CART_LIST_REQUEST,
-        });
-      }
       yield put({
         type: RESET_FLAGS,
       });
@@ -458,73 +432,7 @@ function* handlPostUser(action) {
     yield put(showProcessing());
   }
 }
-async function cartCountApi(payload) {
-  const token = await TokenManager.retrieveToken();
-  return request.get('/get-cart-count', {
-    headers: {Authorization: `Bearer ${token}`},
-  });
-}
 
-function* handleCartCount(action) {
-  try {
-    yield put(showProcessing(true));
-    const {status, data} = yield call(cartCountApi, action.payload);
-    if (status === 200) {
-      yield put({
-        type: GET_CART_SUCCESS,
-        data,
-      });
-    } else {
-      yield put({
-        type: GET_CART_ERROR,
-        error: 'Something went wrong, Please try again later',
-      });
-    }
-  } catch (error) {
-    showErrorToast(error.message);
-    console.log('login error', error);
-    yield put({
-      type: GET_CART_ERROR,
-      error:
-        getSimplifiedError(error) ||
-        'Something went wrong, Please try again later',
-    });
-  } finally {
-    yield put(showProcessing());
-  }
-}
-function productDeatilsApi(payload) {
-  return request.get('/public-product/' + payload);
-}
-
-function* handleProdctDetails(action) {
-  try {
-    yield put(showProcessing(true));
-    const {status, data} = yield call(productDeatilsApi, action.payload);
-    if (status === 200) {
-      yield put({
-        type: GET_PRODUCT_DETAILS_SUCCESS,
-        data,
-      });
-    } else {
-      yield put({
-        type: GET_PRODUCT_DETAILS_ERROR,
-        error: 'Something went wrong, Please try again later',
-      });
-    }
-  } catch (error) {
-    showErrorToast(error.message);
-    console.log('login error', error);
-    yield put({
-      type: GET_PRODUCT_DETAILS_ERROR,
-      error:
-        getSimplifiedError(error) ||
-        'Something went wrong, Please try again later',
-    });
-  } finally {
-    yield put(showProcessing());
-  }
-}
 function listApi(payload) {
   return axios.get('https://vyaratiles.co.in/Api/SOStatusFilter', {
     params: payload,
@@ -560,176 +468,6 @@ function* handleList(action) {
     yield put(showProcessing());
   }
 }
-function login(payload) {
-  return request.post('/auth/login', payload);
-}
-
-function* handleLogin(action) {
-  try {
-    yield put(showProcessing(true));
-    const {status, data} = yield call(login, action.payload);
-    const {user, token} = data;
-    if (status === 200) {
-      yield TokenManager.saveToken(token);
-      yield setupHttpConfig();
-      yield put({
-        type: USER_LOGIN_SUCCESS,
-        data: user,
-      });
-    } else {
-      yield put({
-        type: USER_LOGIN_ERROR,
-        error: 'Something went wrong, Please try again later',
-      });
-    }
-  } catch (error) {
-    showErrorToast(error.message);
-    console.log('login error', error);
-    yield put({
-      type: USER_LOGIN_ERROR,
-      error:
-        getSimplifiedError(error) ||
-        'Something went wrong, Please try again later',
-    });
-  } finally {
-    yield put(showProcessing());
-  }
-}
-
-function register(payload) {
-  return request.post('/auth/register', payload);
-}
-
-function* handleRegister(action) {
-  try {
-    yield put(showProcessing(true));
-    const {status, data} = yield call(register, action.payload);
-    const {user, token} = data;
-    if (status === 200) {
-      yield TokenManager.saveToken(token);
-      yield setupHttpConfig();
-      yield put({
-        type: USER_REGISTER_SUCCESS,
-        data: user,
-      });
-    } else {
-      yield put({
-        type: USER_REGISTER_ERROR,
-        error: 'Something went wrong, Please try again later',
-      });
-    }
-  } catch (error) {
-    showErrorToast(error.message);
-    console.log('signup error :', error);
-    yield put({
-      type: USER_REGISTER_ERROR,
-      error:
-        getSimplifiedError(error) ||
-        'Something went wrong, Please try again later',
-    });
-  } finally {
-    yield put(showProcessing());
-  }
-}
-
-function resetPasswordApi(payload) {
-  return request.post('/user/change-password', payload);
-}
-
-function* handleResetPassword(action) {
-  try {
-    yield put(showProcessing(true));
-    const {status, data} = yield call(resetPasswordApi, action.payload);
-    if (status === 200) {
-      yield put({
-        type: RESET_PASSWORD_SUCCESS,
-        data,
-      });
-    } else {
-      yield put({
-        type: RESET_PASSWORD_ERROR,
-        error: 'Something went wrong, Please try again later',
-      });
-    }
-  } catch (error) {
-    showErrorToast(error.message);
-    console.log('error :', error);
-    yield put({
-      type: RESET_PASSWORD_ERROR,
-      error:
-        getSimplifiedError(error) ||
-        'Something went wrong, Please try again later',
-    });
-  } finally {
-    yield put(showProcessing());
-  }
-}
-
-function getStateApi() {
-  return request.get('/auth/states');
-}
-
-function* handleGetState({payload}) {
-  try {
-    yield put(showProcessing(payload));
-    const {status, data} = yield call(getStateApi);
-    if (status === 200) {
-      yield put({
-        type: GET_STATE_SUCCESS,
-        data,
-      });
-    } else {
-      yield put({
-        type: GET_STATE_ERROR,
-        error: 'Something went wrong, Please try again later',
-      });
-    }
-  } catch (error) {
-    showErrorToast(error.message);
-    console.log('error :', error);
-    yield put({
-      type: GET_STATE_ERROR,
-      error:
-        getSimplifiedError(error) ||
-        'Something went wrong, Please try again later',
-    });
-  } finally {
-    yield put(showProcessing());
-  }
-}
-
-function fogotPasswordApi(payload) {
-  return request.post('/auth/forgot-password', payload);
-}
-
-function* handleForgotPassword(action) {
-  try {
-    yield put(showProcessing(true));
-    const {status, data} = yield call(fogotPasswordApi, action.payload);
-    if (status === 200) {
-      yield put({
-        type: USER_FORGOT_PASSWORD_SUCCESS,
-        data,
-      });
-    } else {
-      yield put({
-        type: USER_FORGOT_PASSWORD_ERROR,
-        error: 'Something went wrong, Please try again later',
-      });
-    }
-  } catch (error) {
-    showErrorToast(error.message);
-    console.log('error :', error);
-    yield put({
-      type: USER_FORGOT_PASSWORD_ERROR,
-      error:
-        getSimplifiedError(error) ||
-        'Something went wrong, Please try again later',
-    });
-  } finally {
-    yield put(showProcessing());
-  }
-}
 
 export default all([
   takeLatest(GET_STATE_REQUEST, handleGetStateList),
@@ -742,7 +480,5 @@ export default all([
   takeLatest(GET_CATEGORY_LIST_REQUEST, handlGetCategoryList),
   takeLatest(GET_USER_REQUEST, handlGetUser),
   takeLatest(POST_USER_REQUEST, handlPostUser),
-  takeLatest(GET_CART_REQUEST, handleCartCount),
   takeLatest(GET_LIST_REQUEST, handleList),
-  takeLatest(GET_PRODUCT_DETAILS_REQUEST, handleProdctDetails),
 ]);

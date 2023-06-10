@@ -76,10 +76,7 @@ function* handleLogin(action) {
 }
 
 function register(payload) {
-  return axios.post(
-    'https://identity-service-test.dezensolutions.com/register',
-    payload,
-  );
+  return axios.post('https://vyaratiles.co.in/Api/ERPAuth/register', payload);
 }
 
 function* handleRegister(action) {
