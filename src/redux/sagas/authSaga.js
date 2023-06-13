@@ -25,6 +25,7 @@ import {getSimplifiedError} from '../../utils/error';
 // import TokenManager from '../../utils/TokenManager';
 import {IS_PROCESSING_REQUEST} from '../reducers/systemReducer';
 import TokenManager from '../../utils/TokenManager';
+import {showErrorToast} from '../../utils/Utils';
 
 function showProcessing(isProcessing = false) {
   return {
@@ -58,12 +59,7 @@ function* handleLogin(action) {
       });
     }
   } catch (error) {
-    console.log('login error===>', error);
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
+    showErrorToast(error.response.data.Message);
     yield put({
       type: USER_LOGIN_ERROR,
       error:
@@ -101,11 +97,7 @@ function* handleRegister(action) {
       });
     }
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
+    showErrorToast(error.response.data.Message);
     console.log('signup error :', error);
     yield put({
       type: USER_REGISTER_ERROR,
@@ -138,11 +130,7 @@ function* handleResetPassword(action) {
       });
     }
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
+    showErrorToast(error.response.data.Message);
     console.log('error :', error);
     yield put({
       type: RESET_PASSWORD_ERROR,
@@ -175,11 +163,7 @@ function* handleGetState({payload}) {
       });
     }
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
+    showErrorToast(error.response.data.Message);
     console.log('error :', error);
     yield put({
       type: GET_STATE_ERROR,
@@ -212,11 +196,7 @@ function* handleForgotPassword(action) {
       });
     }
   } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error',
-      text2: error.message,
-    });
+    showErrorToast(error.response.data.Message);
     console.log('error :', error);
     yield put({
       type: USER_FORGOT_PASSWORD_ERROR,

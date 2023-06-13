@@ -82,7 +82,7 @@ function* handleGetStateList(action) {
       });
     }
   } catch (error) {
-    showErrorToast(error.message);
+    showErrorToast(error.response.data.Message);
     console.log('login error', error);
     yield put({
       type: GET_STATE_ERROR,
@@ -126,7 +126,7 @@ function* handleGetCountryList(action) {
       });
     }
   } catch (error) {
-    showErrorToast(error.message);
+    showErrorToast(error.response.data.Message);
     console.log('login error', error);
     yield put({
       type: GET_COUNTRY_ERROR,
@@ -162,7 +162,7 @@ function* handleAddAddress(action) {
       });
     }
   } catch (error) {
-    showErrorToast(error.message);
+    showErrorToast(error.response.data.Message);
     yield put({
       type: ADD_ADDRESS_ERROR,
       error:
@@ -200,7 +200,7 @@ function* handleGetAddressList(action) {
       });
     }
   } catch (error) {
-    showErrorToast(error.message);
+    showErrorToast(error.response.data.Message);
     yield put({
       type: GET_ADDRESS_LIST_ERROR,
       error:
@@ -234,7 +234,7 @@ function* handleGetHomeProductList(action) {
       });
     }
   } catch (error) {
-    showErrorToast(error.message);
+    showErrorToast(error.response.data.Message);
     console.log('login error', error);
     yield put({
       type: GET_HOME_PRODUCT_LIST_ERROR,
@@ -269,7 +269,7 @@ function* handleGetCartList() {
       });
     }
   } catch (error) {
-    showErrorToast(error.message);
+    showErrorToast(error.response.data.Message);
     console.log('login error', error);
     yield put({
       type: GET_CART_LIST_ERROR,
@@ -304,7 +304,7 @@ function* handleAddCart(action) {
       });
     }
   } catch (error) {
-    showErrorToast(error.message);
+    showErrorToast(error.response.data.Message);
     console.log('login error', error);
     yield put({
       type: ADD_TO_CART_ERROR,
@@ -336,7 +336,7 @@ function* handlGetCategoryList(action) {
       });
     }
   } catch (error) {
-    showErrorToast(error.message);
+    showErrorToast(error.response.data.Message);
     console.log('login error', error);
     yield put({
       type: GET_CATEGORY_LIST_ERROR,
@@ -373,7 +373,7 @@ function* handlGetUser(action) {
       });
     }
   } catch (error) {
-    showErrorToast(error.message);
+    showErrorToast(error.response.data.Message);
     console.log('login error', error);
     const {displayName, phoneNumber} = auth().currentUser;
     const dataSave = {
@@ -420,7 +420,7 @@ function* handlPostUser(action) {
       });
     }
   } catch (error) {
-    showErrorToast(error.message);
+    showErrorToast(error.response.data.Message);
     console.log('login error', error);
     yield put({
       type: POST_USER_ERROR,
@@ -456,7 +456,7 @@ function* handleList(action) {
       });
     }
   } catch (error) {
-    showErrorToast(error.message);
+    showErrorToast(error.response.data.Message);
     console.log('login error', error);
     yield put({
       type: GET_LIST_ERROR,
