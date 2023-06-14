@@ -1,9 +1,5 @@
 import {
-  USER_LOGIN_REQUEST,
-  USER_REGISTER_REQUEST,
-  USER_FORGOT_PASSWORD_REQUEST,
   RESET_FLAGS,
-  RESET_PASSWORD_REQUEST,
   GET_STATE_REQUEST,
   GET_LIST_REQUEST,
   GET_PRODUCT_DETAILS_REQUEST,
@@ -56,7 +52,7 @@ export const getUser = payload => ({
   type: GET_USER_REQUEST,
   payload,
 });
-export const postUser = payload => ({
+export const dispPlan = payload => ({
   type: POST_USER_REQUEST,
   payload,
 });
@@ -73,29 +69,12 @@ export const getProductDetail = payload => ({
   type: GET_PRODUCT_DETAILS_REQUEST,
   payload,
 });
-export const login = payload => ({
-  type: USER_LOGIN_REQUEST,
-  payload,
-});
-export const register = payload => ({
-  type: USER_REGISTER_REQUEST,
-  payload,
-});
 
 export const getState = payload => ({
   type: GET_STATE_REQUEST,
   payload,
 });
 
-export const forgotPassword = payload => ({
-  type: USER_FORGOT_PASSWORD_REQUEST,
-  payload,
-});
-
-export const resetPassword = payload => ({
-  type: RESET_PASSWORD_REQUEST,
-  payload,
-});
 
 export const resetFlags = () => ({
   type: RESET_FLAGS,

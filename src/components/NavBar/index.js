@@ -38,6 +38,7 @@ const NavBar = ({
 
   const getIdToken = async () => {
     const data = await TokenManager.retrieveToken();
+    console.log('data',data)
     if (!data) return;
     setDataArray([
       ...dataArray,

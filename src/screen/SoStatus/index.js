@@ -18,7 +18,7 @@ import BaseScreen from '../../components/BaseScreen';
 import {useDispatch, useSelector} from 'react-redux';
 import NavBar from '../../components/NavBar';
 import {apple, google, loginBG} from '../../assets/images';
-import {horizontalScale} from '../../components/Core/basicStyles';
+import {brandColors, horizontalScale} from '../../components/Core/basicStyles';
 import {isIOS} from 'react-native-elements/dist/helpers';
 import {loginUser} from '../../redux/actions/authAction';
 import TokenManager from '../../utils/TokenManager';
@@ -83,7 +83,6 @@ const SoStatus = ({navigation}) => {
       SiteID: siteName?.value,
       ProductGroupID: productGroup?.value?.ID,
       ProductID: product?.value?.ID,
-      ProductStarts: productName,
       ProductContains: productContain,
       UoMCode: unit?.value,
       StatusID: status?.value?._ID,
@@ -91,6 +90,7 @@ const SoStatus = ({navigation}) => {
       EqTypeID: EqTypes?.value,
       UserID,
     };
+    if (productName) params.ProductStarts = productName;
     if (checked) params.WithStock = checked;
     if (checked3) params.ClubLots = checked3;
     if (checked1) params.ClubOrders = checked1;
@@ -110,6 +110,7 @@ const SoStatus = ({navigation}) => {
           <Text style={styles.des}>{'Status'}</Text>
           <Dropdown
             style={[styles.dropdown]}
+            itemTextStyle={{color: brandColors.black}}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
@@ -136,6 +137,7 @@ const SoStatus = ({navigation}) => {
               </Text>
               <Dropdown
                 style={[styles.dropdown]}
+                itemTextStyle={{color: brandColors.black}}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 inputSearchStyle={styles.inputSearchStyle}
@@ -162,6 +164,7 @@ const SoStatus = ({navigation}) => {
               </Text>
               <Dropdown
                 style={[styles.dropdown]}
+                itemTextStyle={{color: brandColors.black}}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 inputSearchStyle={styles.inputSearchStyle}
@@ -186,6 +189,7 @@ const SoStatus = ({navigation}) => {
           <Text style={styles.des}>{'Clint. Grp'}</Text>
           <Dropdown
             style={[styles.dropdown]}
+            itemTextStyle={{color: brandColors.black}}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
@@ -208,6 +212,7 @@ const SoStatus = ({navigation}) => {
           <Text style={styles.des}>{'Client'}</Text>
           <Dropdown
             style={[styles.dropdown]}
+            itemTextStyle={{color: brandColors.black}}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
@@ -230,6 +235,7 @@ const SoStatus = ({navigation}) => {
           <Text style={styles.des}>{'Site'}</Text>
           <Dropdown
             style={[styles.dropdown]}
+            itemTextStyle={{color: brandColors.black}}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
@@ -267,6 +273,7 @@ const SoStatus = ({navigation}) => {
           <Text style={styles.des}>{'Mkt.By'}</Text>
           <Dropdown
             style={[styles.dropdown]}
+            itemTextStyle={{color: brandColors.black}}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
@@ -288,6 +295,7 @@ const SoStatus = ({navigation}) => {
           />
           <Text style={styles.des}>{'Group'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -310,6 +318,7 @@ const SoStatus = ({navigation}) => {
           />
           <Text style={styles.des}>{'Product'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -332,6 +341,7 @@ const SoStatus = ({navigation}) => {
           />
           <Text style={styles.des}>{'Eq. Type'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -414,6 +424,7 @@ const SoStatus = ({navigation}) => {
         <View style={styles.dropdownWrapper}>
           <Text style={[styles.des]}>{'Unit'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown, {width: '80%', marginHorizontal: 0}]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}

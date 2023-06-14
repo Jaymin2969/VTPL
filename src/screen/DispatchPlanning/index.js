@@ -30,6 +30,7 @@ import {horizontalScale} from '../../components/Core/basicStyles';
 import {isIOS} from 'react-native-elements/dist/helpers';
 import {loginUser} from '../../redux/actions/authAction';
 import TokenManager from '../../utils/TokenManager';
+import {dispPlan} from '../../redux/actions/listAction';
 
 const tableHeadData = [
   'Date',
@@ -39,19 +40,43 @@ const tableHeadData = [
   'Consent Expiry On',
 ];
 
-const DispatchPlanning = ({navigation}) => {
+const DispatchPlanning = ({navigation, route = {}}) => {
+  const {
+    clintInfo,
+    products,
+    siteName,
+    site: clients,
+    MktPersons,
+    factories,
+  } = route.params;
+  // factories,
   const dispatch = useDispatch();
   const {
-    flags: {loginSuccess},
-  } = useSelector(({auth}) => auth);
+    flags: {postUserSuccess},
+  } = useSelector(({list}) => list);
   const [loading, setLoading] = React.useState(false);
   const [phno, setPhno] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [checked, setChecked] = React.useState(true);
+  const [factory, setFactory] = React.useState('');
+  const [clientName, setClientName] = React.useState('');
+  const [productName, setProductName] = React.useState('');
+  const [credit, setCredit] = React.useState('');
+  const [grade, setGrade] = React.useState('');
+  const [db, setDb] = React.useState('');
+  const [avail, setAvail] = React.useState('');
+  const [rate, setRate] = React.useState('');
+  const [orderQty, setOrderQty] = React.useState('');
+  const [stockOty, setStockOty] = React.useState('');
+  const [dispatchQty, setDispatchQty] = React.useState('');
+  const [creditLimit, setCreditLimit] = React.useState('');
+  const [currBal, setCurrBal] = React.useState('');
+  const [maxPlanned, setMaxPlanned] = React.useState('');
+  const [plannedQty, setPlannedQty] = React.useState('');
+  const [netBal, setNetBal] = React.useState('');
 
   useEffect(() => {
-    if (loginSuccess) return navigation.navigate('TabScreen');
-  }, [loginSuccess]);
+    if (postUserSuccess) return navigation.navigate('Home');
+  }, [postUserSuccess]);
 
   const login = () => {
     return navigation.navigate('ChangeServer');
@@ -66,76 +91,50 @@ const DispatchPlanning = ({navigation}) => {
     );
   };
 
-  const onAppleButtonPress = async () => {
-    // Start the sign-in request
-    // const appleAuthRequestResponse = await appleAuth.performRequest({
-    //   requestedOperation: appleAuth.Operation.LOGIN,
-    //   requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-    // });
-
-    // Ensure Apple returned a user identityToken
-    if (!appleAuthRequestResponse.identityToken) {
-      throw new Error('Apple Sign-In failed - no identify token returned');
-    }
-
-    // Create a Firebase credential from the response
-    const {identityToken, nonce} = appleAuthRequestResponse;
-    const appleCredential = auth.AppleAuthProvider.credential(
-      identityToken,
-      nonce,
+  const onSave = async () => {
+    const UserID = await TokenManager.retrieveToken('UserId');
+    dispatch(
+      dispPlan({
+        body: {
+          DispatchLocID: 14,
+          PlanLocID: 181,
+          SOID: 23668,
+          SOSrNo: 2,
+          UoMCode: 'SQMT',
+          Rate: +rate,
+          ClientID: clients?.value?.ID,
+          ClientName: clients?.label,
+          SiteID: siteName?.value,
+          SiteName: siteName?.label,
+          ProductID: products?.value?.ID,
+          ProductName: productName,
+          MktPersonID: MktPersons?.value?._ID,
+          OrdQty: orderQty,
+          ClientGroup: clintInfo?.label,
+          CreditLimit: +creditLimit,
+          BalAmt: avail,
+          IsInternal: false,
+          ProductType: 0,
+          SaleLoc: 'SANAND UNIT',
+          PendSaleQty: +dispatchQty,
+          StockQty: +stockOty,
+          Grade: grade,
+          Finish: db,
+          MaxPlanQty: maxPlanned,
+          PlanID: 0,
+          PlanDate: 'May 24 2023',
+          PlanType: 'A',
+          PlannedQty: +plannedQty,
+          SaleQty: 0,
+          AddLessQty: 0,
+        },
+        params: {
+          UserID,
+        },
+      }),
     );
-    // Sign the user in with the credential
-    // return auth().signInWithCredential(appleCredential);
+    // navigation.navigate('BasicQuotation')
   };
-  const signInWithPhoneNumber = async () => {
-    try {
-      setLoading(true);
-      // const confirmation = await auth().signInWithPhoneNumber(phno);
-      // setLoading(false)
-      // return navigation.navigate("OTP", { confirmation });
-    } catch (error) {
-      setLoading(false);
-      console.log('error', error);
-      alert(error);
-      // showErrorToast(error)
-    }
-  };
-  const onGoogleButtonPress = async () => {
-    try {
-      // Check if your device supports Google Play
-      // await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-      // // Get the users ID token
-      // const { idToken } = await GoogleSignin.signIn();
-
-      // Create a Google credential with the token
-      // const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      // // Sign-in the user with the credential
-      // const data = await auth().signInWithCredential(googleCredential);
-      // const token = await data.user.getIdToken()
-      // await TokenManager.saveToken(token)
-      return navigation.navigate('TabScreen');
-    } catch (error) {
-      alert(error);
-    }
-  };
-
-  function onPressHandler() {
-    navigation.navigate('SignUp');
-  }
-
-  const toggleCheckbox = () => setChecked(!checked);
-
-  const data = [
-    {label: 'Item 1', value: '1'},
-    {label: 'Item 2', value: '2'},
-    {label: 'Item 3', value: '3'},
-    {label: 'Item 4', value: '4'},
-    {label: 'Item 5', value: '5'},
-    {label: 'Item 6', value: '6'},
-    {label: 'Item 7', value: '7'},
-    {label: 'Item 8', value: '8'},
-  ];
-
   return (
     <BaseScreen>
       <NavBar
@@ -145,23 +144,39 @@ const DispatchPlanning = ({navigation}) => {
       <View style={styles.mainWrapper}>
         <View style={styles.mX}>
           <Text style={styles.des}>{'Factory'}</Text>
-          <Input placeholder="Client" onChangeText={setPhno} value={phno} />
+          <Input
+            placeholder="Client"
+            onChangeText={setFactory}
+            value={factory}
+          />
           <Text style={styles.des}>{'Site'}</Text>
-          <Input placeholder="Client" onChangeText={setPhno} value={phno} />
+          <Input
+            placeholder="Client"
+            onChangeText={setClientName}
+            value={clientName}
+          />
           <Text style={styles.des}>{'Product'}</Text>
-          <Input placeholder="Product" onChangeText={setPhno} value={phno} />
+          <Input
+            placeholder="Product"
+            onChangeText={setProductName}
+            value={productName}
+          />
           <View style={styles.dropdownWrapper}>
             <View>
               <Text style={styles.des}>{'Credit Limit'}</Text>
               <Input
                 placeholder="Credit Limit"
-                onChangeText={setPhno}
-                value={phno}
+                onChangeText={setCredit}
+                value={credit}
               />
             </View>
             <View>
               <Text style={styles.des}>{'Grade'}</Text>
-              <Input placeholder="Grade" onChangeText={setPhno} value={phno} />
+              <Input
+                placeholder="Grade"
+                onChangeText={setGrade}
+                value={grade}
+              />
             </View>
           </View>
           <View style={styles.dropdownWrapper}>
@@ -169,13 +184,13 @@ const DispatchPlanning = ({navigation}) => {
               <Text style={styles.des}>{'Curr Bal'}</Text>
               <Input
                 placeholder="Credit Limit"
-                onChangeText={setPhno}
-                value={phno}
+                onChangeText={setCurrBal}
+                value={currBal}
               />
             </View>
             <View>
               <Text style={styles.des}>{'Db Finish'}</Text>
-              <Input placeholder="Grade" onChangeText={setPhno} value={phno} />
+              <Input placeholder="Grade" onChangeText={setDb} value={db} />
             </View>
           </View>
           <View style={styles.dropdownWrapper}>
@@ -183,13 +198,13 @@ const DispatchPlanning = ({navigation}) => {
               <Text style={styles.des}>{'Avail.Bal Limit'}</Text>
               <Input
                 placeholder="Credit Limit"
-                onChangeText={setPhno}
-                value={phno}
+                onChangeText={setAvail}
+                value={avail}
               />
             </View>
             <View>
               <Text style={styles.des}>{'Rate'}</Text>
-              <Input placeholder="Rate" onChangeText={setPhno} value={phno} />
+              <Input placeholder="Rate" onChangeText={setRate} value={rate} />
             </View>
           </View>
           <View style={styles.dropdownWrapper}>
@@ -197,24 +212,24 @@ const DispatchPlanning = ({navigation}) => {
               <Text style={styles.des}>{'Order Qty'}</Text>
               <Input
                 placeholder="Order Qty"
-                onChangeText={setPhno}
-                value={phno}
+                onChangeText={setOrderQty}
+                value={orderQty}
               />
             </View>
             <View>
               <Text style={styles.des}>{'Stock Oty'}</Text>
               <Input
                 placeholder="Stock Oty"
-                onChangeText={setPhno}
-                value={phno}
+                onChangeText={setStockOty}
+                value={stockOty}
               />
             </View>
           </View>
           <Text style={styles.des}>{'Pending Dispatch Qty'}</Text>
           <Input
             placeholder="Pending Dispatch Qty"
-            onChangeText={setPhno}
-            value={phno}
+            onChangeText={setDispatchQty}
+            value={dispatchQty}
           />
         </View>
         <View style={styles.textWrapper}>
@@ -260,13 +275,17 @@ const DispatchPlanning = ({navigation}) => {
               <Text style={styles.des}>{'Max. Qty that \ncan be planned'}</Text>
               <Input
                 placeholder="Credit Limit"
-                onChangeText={setPhno}
-                value={phno}
+                onChangeText={setMaxPlanned}
+                value={maxPlanned}
               />
             </View>
             <View>
               <Text style={styles.des}>{'Planned Qty'}</Text>
-              <Input placeholder="Rate" onChangeText={setPhno} value={phno} />
+              <Input
+                placeholder="Rate"
+                onChangeText={setPlannedQty}
+                value={plannedQty}
+              />
             </View>
           </View>
           <View style={styles.dropdownWrapper}>
@@ -274,8 +293,8 @@ const DispatchPlanning = ({navigation}) => {
               <Text style={styles.des}>{'Net Bal'}</Text>
               <Input
                 placeholder="Credit Limit"
-                onChangeText={setPhno}
-                value={phno}
+                onChangeText={setNetBal}
+                value={netBal}
               />
             </View>
             <View>
@@ -288,7 +307,7 @@ const DispatchPlanning = ({navigation}) => {
         <View style={styles.dropdownWrapper}>
           <Button
             disabled={loading}
-            onClick={() => navigation.navigate('BasicQuotation')}
+            onClick={onSave}
             text="Save"
             textStyle={styles.buttonText}
             style={[styles.buttonStyle, styles.dropdownView]}

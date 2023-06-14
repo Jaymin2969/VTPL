@@ -29,8 +29,10 @@ const SignIn = ({navigation}) => {
     flags: {loginSuccess},
   } = useSelector(({auth}) => auth);
   const [loading, setLoading] = React.useState(false);
-  const [phno, setPhno] = React.useState('9723165069');
-  const [password, setPassword] = React.useState('krishna');
+  const [phno, setPhno] = React.useState('');
+  // const [phno, setPhno] = React.useState('6357322775');
+  const [password, setPassword] = React.useState('');
+  // const [password, setPassword] = React.useState('abcd');
   const [checked, setChecked] = React.useState(true);
 
   useFocusEffect(
@@ -41,12 +43,12 @@ const SignIn = ({navigation}) => {
   );
   const getDataUser = async data => {
     const isOnboardDone = await TokenManager.retrieveToken();
-    if (isOnboardDone) navigation.navigate('Home');
+    if (isOnboardDone) navigation.replace('Home');
     return;
   };
 
   useEffect(() => {
-    if (loginSuccess) return navigation.navigate('Home');
+    if (loginSuccess) return navigation.replace('Home');
   }, [loginSuccess]);
 
   const login = () => {

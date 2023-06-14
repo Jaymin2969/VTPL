@@ -18,7 +18,7 @@ import BaseScreen from '../../components/BaseScreen';
 import {useDispatch, useSelector} from 'react-redux';
 import NavBar from '../../components/NavBar';
 import {apple, google, loginBG} from '../../assets/images';
-import {horizontalScale} from '../../components/Core/basicStyles';
+import {brandColors, horizontalScale} from '../../components/Core/basicStyles';
 import {isIOS} from 'react-native-elements/dist/helpers';
 import {loginUser} from '../../redux/actions/authAction';
 import TokenManager from '../../utils/TokenManager';
@@ -159,6 +159,7 @@ const BasicQuotation = ({navigation}) => {
           <View style={styles.divider} />
           <Text style={styles.des}>{'Mkt. Person'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -174,6 +175,7 @@ const BasicQuotation = ({navigation}) => {
           />
           <Text style={styles.des}>{'Client'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -189,6 +191,7 @@ const BasicQuotation = ({navigation}) => {
           />
           <Text style={styles.des}>{'Contact'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -204,6 +207,7 @@ const BasicQuotation = ({navigation}) => {
           />
           <Text style={styles.des}>{'Site'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -223,6 +227,7 @@ const BasicQuotation = ({navigation}) => {
             <View style={styles.subContainer}>
               <Text style={styles.des}>{'App/Segment'}</Text>
               <Dropdown
+                itemTextStyle={{color: brandColors.black}}
                 style={[styles.dropdown]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
@@ -240,6 +245,7 @@ const BasicQuotation = ({navigation}) => {
             <View style={styles.subContainer}>
               <Text style={styles.des}>{'Architech'}</Text>
               <Dropdown
+                itemTextStyle={{color: brandColors.black}}
                 style={[styles.dropdown]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
@@ -259,6 +265,7 @@ const BasicQuotation = ({navigation}) => {
             <View style={styles.subContainer}>
               <Text style={styles.des}>{'Source'}</Text>
               <Dropdown
+                itemTextStyle={{color: brandColors.black}}
                 style={[styles.dropdown]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
@@ -276,6 +283,7 @@ const BasicQuotation = ({navigation}) => {
             <View style={styles.subContainer}>
               <Text style={styles.des}>{'Location'}</Text>
               <Dropdown
+                itemTextStyle={{color: brandColors.black}}
                 style={[styles.dropdown]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
@@ -295,6 +303,7 @@ const BasicQuotation = ({navigation}) => {
             <View style={styles.subContainer}>
               <Text style={styles.des}>{'Site Ref'}</Text>
               <Dropdown
+                itemTextStyle={{color: brandColors.black}}
                 style={[styles.dropdown]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
@@ -312,6 +321,7 @@ const BasicQuotation = ({navigation}) => {
             <View style={styles.subContainer}>
               <Text style={styles.des}>{'Category'}</Text>
               <Dropdown
+                itemTextStyle={{color: brandColors.black}}
                 style={[styles.dropdown]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
@@ -329,6 +339,7 @@ const BasicQuotation = ({navigation}) => {
           </View>
           <Text style={styles.des}>{'Rate Type'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -469,7 +480,7 @@ const BasicQuotation = ({navigation}) => {
           <Button
             colors={['#d10d3b', '#a0123b', '#7c163b']}
             disabled={loading}
-            onClick={()=>navigation.navigate('ProductDetails')}
+            onClick={() => navigation.navigate('ProductDetails')}
             text="Exit"
             textStyle={styles.buttonText}
             style={[styles.buttonStyle, styles.dropdownView]}

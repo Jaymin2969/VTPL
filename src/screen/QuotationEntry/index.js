@@ -18,7 +18,7 @@ import BaseScreen from '../../components/BaseScreen';
 import {useDispatch, useSelector} from 'react-redux';
 import NavBar from '../../components/NavBar';
 import {apple, google, loginBG} from '../../assets/images';
-import {horizontalScale} from '../../components/Core/basicStyles';
+import {brandColors, horizontalScale} from '../../components/Core/basicStyles';
 import {isIOS} from 'react-native-elements/dist/helpers';
 import {loginUser} from '../../redux/actions/authAction';
 import TokenManager from '../../utils/TokenManager';
@@ -32,6 +32,14 @@ const QuotationEntry = ({navigation}) => {
   const [phno, setPhno] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [checked, setChecked] = React.useState(true);
+  const [factory, setFactory] = React.useState('');
+  const [mktPerson, setMktPerson] = React.useState('');
+  const [packages, setPackage] = React.useState('');
+  const [taxes, setTaxes] = React.useState('');
+  const [freight, setFreight] = React.useState('');
+  const [unloading, setUnloading] = React.useState('');
+  const [validity, setValidity] = React.useState('');
+  const [deliver, setDeliver] = React.useState('');
 
   useEffect(() => {
     if (loginSuccess) return navigation.navigate('TabScreen');
@@ -50,64 +58,7 @@ const QuotationEntry = ({navigation}) => {
     );
   };
 
-  const onAppleButtonPress = async () => {
-    // Start the sign-in request
-    // const appleAuthRequestResponse = await appleAuth.performRequest({
-    //   requestedOperation: appleAuth.Operation.LOGIN,
-    //   requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-    // });
 
-    // Ensure Apple returned a user identityToken
-    if (!appleAuthRequestResponse.identityToken) {
-      throw new Error('Apple Sign-In failed - no identify token returned');
-    }
-
-    // Create a Firebase credential from the response
-    const {identityToken, nonce} = appleAuthRequestResponse;
-    const appleCredential = auth.AppleAuthProvider.credential(
-      identityToken,
-      nonce,
-    );
-    // Sign the user in with the credential
-    // return auth().signInWithCredential(appleCredential);
-  };
-  const signInWithPhoneNumber = async () => {
-    try {
-      setLoading(true);
-      // const confirmation = await auth().signInWithPhoneNumber(phno);
-      // setLoading(false)
-      // return navigation.navigate("OTP", { confirmation });
-    } catch (error) {
-      setLoading(false);
-      console.log('error', error);
-      alert(error);
-      // showErrorToast(error)
-    }
-  };
-  const onGoogleButtonPress = async () => {
-    try {
-      // Check if your device supports Google Play
-      // await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-      // // Get the users ID token
-      // const { idToken } = await GoogleSignin.signIn();
-
-      // Create a Google credential with the token
-      // const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      // // Sign-in the user with the credential
-      // const data = await auth().signInWithCredential(googleCredential);
-      // const token = await data.user.getIdToken()
-      // await TokenManager.saveToken(token)
-      return navigation.navigate('TabScreen');
-    } catch (error) {
-      alert(error);
-    }
-  };
-
-  function onPressHandler() {
-    navigation.navigate('SignUp');
-  }
-
-  const toggleCheckbox = () => setChecked(!checked);
 
   const data = [
     {label: 'Item 1', value: '1'},
@@ -159,6 +110,7 @@ const QuotationEntry = ({navigation}) => {
           <View style={styles.divider} />
           <Text style={styles.des}>{'Price'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -169,11 +121,12 @@ const QuotationEntry = ({navigation}) => {
             labelField="label"
             valueField="value"
             searchPlaceholder="Search..."
-            value={phno}
-            onChange={setPhno}
+            value={factory}
+            onChange={setFactory}
           />
           <Text style={styles.des}>{'Price Escalation'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -184,11 +137,12 @@ const QuotationEntry = ({navigation}) => {
             labelField="label"
             valueField="value"
             searchPlaceholder="Search..."
-            value={phno}
-            onChange={setPhno}
+            value={mktPerson}
+            onChange={setMktPerson}
           />
           <Text style={styles.des}>{'Packages & Following'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -199,11 +153,12 @@ const QuotationEntry = ({navigation}) => {
             labelField="label"
             valueField="value"
             searchPlaceholder="Search..."
-            value={phno}
-            onChange={setPhno}
+            value={packages}
+            onChange={setPackage}
           />
           <Text style={styles.des}>{'Taxes'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -214,11 +169,12 @@ const QuotationEntry = ({navigation}) => {
             labelField="label"
             valueField="value"
             searchPlaceholder="Search..."
-            value={phno}
-            onChange={setPhno}
+            value={taxes}
+            onChange={setTaxes}
           />
           <Text style={styles.des}>{'Freight/ins'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -229,11 +185,12 @@ const QuotationEntry = ({navigation}) => {
             labelField="label"
             valueField="value"
             searchPlaceholder="Search..."
-            value={phno}
-            onChange={setPhno}
+            value={freight}
+            onChange={setFreight}
           />
           <Text style={styles.des}>{'Unloading'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -244,11 +201,12 @@ const QuotationEntry = ({navigation}) => {
             labelField="label"
             valueField="value"
             searchPlaceholder="Search..."
-            value={phno}
-            onChange={setPhno}
+            value={unloading}
+            onChange={setUnloading}
           />
           <Text style={styles.des}>{'Validity'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -259,11 +217,12 @@ const QuotationEntry = ({navigation}) => {
             labelField="label"
             valueField="value"
             searchPlaceholder="Search..."
-            value={phno}
-            onChange={setPhno}
+            value={validity}
+            onChange={setValidity}
           />
           <Text style={styles.des}>{'Deliver'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -274,8 +233,8 @@ const QuotationEntry = ({navigation}) => {
             labelField="label"
             valueField="value"
             searchPlaceholder="Search..."
-            value={phno}
-            onChange={setPhno}
+            value={deliver}
+            onChange={setDeliver}
           />
         </View>
 

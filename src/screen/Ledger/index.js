@@ -19,7 +19,7 @@ import BaseScreen from '../../components/BaseScreen';
 import {useDispatch, useSelector} from 'react-redux';
 import NavBar from '../../components/NavBar';
 import {apple, google, loginBG} from '../../assets/images';
-import {horizontalScale} from '../../components/Core/basicStyles';
+import {brandColors, horizontalScale} from '../../components/Core/basicStyles';
 import {isIOS} from 'react-native-elements/dist/helpers';
 import {loginUser} from '../../redux/actions/authAction';
 import TokenManager from '../../utils/TokenManager';
@@ -70,7 +70,7 @@ const Ledger = ({navigation}) => {
   useEffect(() => {
     if (addToCartSuccess) {
       setLoading(false);
-      return navigation.navigate('PDFScreen');
+      return navigation.navigate('PDFScreen',{type:'ledger'});
     }
     if (addToCart) {
       setLoading(false);
@@ -130,6 +130,7 @@ const Ledger = ({navigation}) => {
         <View style={styles.mX}>
           <Text style={styles.des}>{'A/c Group'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -152,6 +153,7 @@ const Ledger = ({navigation}) => {
           />
           <Text style={styles.des}>{'Clint Group'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}

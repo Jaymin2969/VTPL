@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
+import {Image, Text, TouchableOpacity, View, BackHandler} from 'react-native';
 
 import ModalDropdown from 'react-native-modal-dropdown';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -34,6 +34,18 @@ const Home = ({navigation}) => {
   const [activeTab, setActiveTab] = React.useState(true);
   const [password, setPassword] = React.useState('');
   const [checked, setChecked] = React.useState(false);
+  // function handleBackButtonClick() {
+  //   BackHandler.exitApp();
+  // }
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+  //   return () => {
+  //     BackHandler.removeEventListener(
+  //       'hardwareBackPress',
+  //       handleBackButtonClick,
+  //     );
+  //   };
+  // }, []);
 
   const login = () => {
     if (phno?.length < 13 || !phno) {

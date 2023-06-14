@@ -18,7 +18,7 @@ import BaseScreen from '../../components/BaseScreen';
 import {useDispatch, useSelector} from 'react-redux';
 import NavBar from '../../components/NavBar';
 import {apple, google, loginBG} from '../../assets/images';
-import {horizontalScale} from '../../components/Core/basicStyles';
+import {brandColors, horizontalScale} from '../../components/Core/basicStyles';
 import {isIOS} from 'react-native-elements/dist/helpers';
 import {loginUser} from '../../redux/actions/authAction';
 import TokenManager from '../../utils/TokenManager';
@@ -132,6 +132,7 @@ const ProductDetails = ({navigation}) => {
             <View style={styles.subContainer}>
               <Text style={styles.des}>{'Group'}</Text>
               <Dropdown
+                itemTextStyle={{color: brandColors.black}}
                 style={[styles.dropdown]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
@@ -149,6 +150,7 @@ const ProductDetails = ({navigation}) => {
             <View style={styles.subContainer}>
               <Text style={styles.des}>{'From Loc'}</Text>
               <Dropdown
+                itemTextStyle={{color: brandColors.black}}
                 style={[styles.dropdown]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
@@ -166,6 +168,7 @@ const ProductDetails = ({navigation}) => {
           </View>
           <Text style={styles.des}>{'Product'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -191,6 +194,7 @@ const ProductDetails = ({navigation}) => {
             <View style={styles.subContainer}>
               <Text style={styles.des}>{'Grade'}</Text>
               <Dropdown
+                itemTextStyle={{color: brandColors.black}}
                 style={[styles.dropdown]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
@@ -208,6 +212,7 @@ const ProductDetails = ({navigation}) => {
             <View style={styles.subContainer}>
               <Text style={styles.des}>{'Finish'}</Text>
               <Dropdown
+                itemTextStyle={{color: brandColors.black}}
                 style={[styles.dropdown]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
@@ -231,6 +236,7 @@ const ProductDetails = ({navigation}) => {
             <View style={styles.subContainer}>
               <Text style={styles.des}>{'Finish'}</Text>
               <Dropdown
+                itemTextStyle={{color: brandColors.black}}
                 style={[styles.dropdown]}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
@@ -324,7 +330,7 @@ const ProductDetails = ({navigation}) => {
           <Button
             colors={['#10add1', '#07799a', '#034e6d']}
             disabled={loading}
-            onClick={()=>navigation.navigate('QuotationEntry')}
+            onClick={() => navigation.navigate('QuotationEntry')}
             text="Ok"
             textStyle={styles.buttonText}
             style={[styles.buttonStyle, styles.dropdownView]}

@@ -397,10 +397,8 @@ function* handlGetUser(action) {
   }
 }
 function postUserApi(payload) {
-  const token = payload?.token;
-  delete payload?.token;
-  return axios.post('http://65.0.73.160:3000/user', payload, {
-    headers: {Authorization: `Bearer ${token}`},
+  return axios.post('https://vyaratiles.co.in/Api/DispPlan', payload.body, {
+    params: payload.params,
   });
 }
 
@@ -412,6 +410,9 @@ function* handlPostUser(action) {
       yield put({
         type: POST_USER_SUCCESS,
         data,
+      });
+      yield put({
+        type: RESET_FLAGS,
       });
     } else {
       yield put({

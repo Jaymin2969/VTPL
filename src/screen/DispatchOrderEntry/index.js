@@ -11,6 +11,7 @@ import {
 import {CheckBox} from 'react-native-elements';
 import {Dropdown} from 'react-native-element-dropdown';
 import {Table, Row, TableWrapper, Cell} from 'react-native-table-component';
+import { TextInputMask } from 'react-native-masked-text';
 //style
 import styles from './style';
 
@@ -25,7 +26,11 @@ import BaseScreen from '../../components/BaseScreen';
 import {useDispatch, useSelector} from 'react-redux';
 import NavBar from '../../components/NavBar';
 import {apple, google, loginBG} from '../../assets/images';
-import {horizontalScale} from '../../components/Core/basicStyles';
+import {
+  brandColors,
+  fontScale,
+  horizontalScale,
+} from '../../components/Core/basicStyles';
 import {isIOS} from 'react-native-elements/dist/helpers';
 import {loginUser} from '../../redux/actions/authAction';
 import TokenManager from '../../utils/TokenManager';
@@ -64,25 +69,37 @@ const DispatchOrderEntry = ({navigation}) => {
   const dispatch = useDispatch();
   const {addressList = {}} = useSelector(({list}) => list);
   const [loading, setLoading] = React.useState(false);
-  const [phno, setPhno] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [products, setProducts] = React.useState('');
+  const [MktPersons, setMktPersons] = React.useState('');
+  const [factories, setFactories] = React.useState('');
   const [checked, setChecked] = React.useState(true);
   const [clintInfo, setClintInfo] = useState({});
   const [site, setSite] = useState({});
   const [siteName, setSiteName] = useState({});
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
   console.log('addressList', addressList.SOList);
   const getDispPlanList = async () => {
     const UserID = await TokenManager.retrieveToken('UserId');
     dispatch(
       getDispPlanDataList({
-        UserID: 7600466311,
+        UserID,
       }),
     );
   };
   useEffect(() => {
     getDispPlanList();
   }, []);
-
+  const onReport = () => {
+    navigation.navigate('DispatchPlanning', {
+      factories,
+      MktPersons,
+      clintInfo,
+      site,
+      siteName,
+      products,
+    });
+  };
   const toggleCheckbox = () => setChecked(!checked);
   return (
     <BaseScreen>
@@ -94,6 +111,7 @@ const DispatchOrderEntry = ({navigation}) => {
         <View style={styles.mX}>
           <Text style={styles.des}>{'Factory'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -111,11 +129,12 @@ const DispatchOrderEntry = ({navigation}) => {
             labelField="label"
             valueField="value"
             searchPlaceholder="Search..."
-            value={phno}
-            onChange={setPhno}
+            value={factories}
+            onChange={setFactories}
           />
           <Text style={styles.des}>{'Mkt. Person'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -133,11 +152,12 @@ const DispatchOrderEntry = ({navigation}) => {
             labelField="label"
             valueField="value"
             searchPlaceholder="Search..."
-            value={phno}
-            onChange={setPhno}
+            value={MktPersons}
+            onChange={setMktPersons}
           />
           <Text style={styles.des}>{'Client Grp'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -160,6 +180,7 @@ const DispatchOrderEntry = ({navigation}) => {
           />
           <Text style={styles.des}>{'Client'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -182,6 +203,7 @@ const DispatchOrderEntry = ({navigation}) => {
           />
           <Text style={styles.des}>{'Site'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -204,6 +226,7 @@ const DispatchOrderEntry = ({navigation}) => {
           />
           <Text style={styles.des}>{'Product'}</Text>
           <Dropdown
+            itemTextStyle={{color: brandColors.black}}
             style={[styles.dropdown]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -221,8 +244,8 @@ const DispatchOrderEntry = ({navigation}) => {
             labelField="label"
             valueField="value"
             searchPlaceholder="Search..."
-            value={phno}
-            onChange={setPhno}
+            value={products}
+            onChange={setProducts}
           />
         </View>
         <View style={styles.textWrapper}>
@@ -266,19 +289,27 @@ const DispatchOrderEntry = ({navigation}) => {
         <View style={styles.dropdownWrapper}>
           <View style={styles.inputWrapper}>
             <Text style={[styles.des]}>{'From'}</Text>
-            <Input
-              placeholder=""
-              onChangeText={setPhno}
-              value={phno}
+            <TextInputMask
+              type={'datetime'}
+              options={{
+                format: 'DD/MM/YYYY',
+              }}
+              placeholder="DD/MM/YYYY"
+              onChangeText={setFrom}
+              value={from}
               style={[styles.dropdown, styles.input]}
             />
           </View>
           <View style={styles.inputWrapper}>
             <Text style={[styles.des]}>{'To'}</Text>
-            <Input
-              placeholder=""
-              onChangeText={setPhno}
-              value={phno}
+            <TextInputMask
+              type={'datetime'}
+              options={{
+                format: 'DD/MM/YYYY',
+              }}
+              placeholder="DD/MM/YYYY"
+              onChangeText={setTo}
+              value={to}
               style={[styles.dropdown, styles.input]}
             />
           </View>
@@ -327,9 +358,9 @@ const DispatchOrderEntry = ({navigation}) => {
           <Button
             colors={['#151589', '#09096a', '#010151']}
             disabled={loading}
-            onClick={() => navigation.navigate('DispatchPlanning')}
+            onClick={onReport}
             text="Report"
-            textStyle={styles.buttonText}
+            textStyle={{fontSize: fontScale(17)}}
             style={[styles.buttonStyle, styles.dropdownView]}
           />
           <Button
