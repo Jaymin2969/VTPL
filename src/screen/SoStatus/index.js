@@ -195,10 +195,10 @@ const SoStatus = ({navigation}) => {
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
             data={
-              productList?.ClientInfo?.length > 0
-                ? productList?.ClientInfo.map(s => ({
-                    label: s.GroupName,
-                    value: s.Clients,
+              productList?.ClientGroups?.length > 0
+                ? productList?.ClientGroups.map(s => ({
+                    label: s,
+                    value: s,
                   }))
                 : []
             }
@@ -218,10 +218,12 @@ const SoStatus = ({navigation}) => {
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
             data={
-              clintInfo?.value?.length > 0
-                ? clintInfo?.value.map(s => ({
-                    label: s.Name,
-                    value: s,
+              productList?.Clients?.length > 0
+                ? productList?.Clients.filter(
+                    s => s.ClientGroup === clintInfo.value,
+                  ).map(d => ({
+                    label: d.Name,
+                    value: d,
                   }))
                 : []
             }

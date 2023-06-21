@@ -29,10 +29,12 @@ const SignIn = ({navigation}) => {
     flags: {loginSuccess},
   } = useSelector(({auth}) => auth);
   const [loading, setLoading] = React.useState(false);
-  const [phno, setPhno] = React.useState('');
+  // const [phno, setPhno] = React.useState('');
   // const [phno, setPhno] = React.useState('6357322775');
-  const [password, setPassword] = React.useState('');
   // const [password, setPassword] = React.useState('abcd');
+  // const [password, setPassword] = React.useState('');
+  const [phno, setPhno] = React.useState('6357322775');
+  const [password, setPassword] = React.useState('abcd');
   const [checked, setChecked] = React.useState(true);
 
   useFocusEffect(

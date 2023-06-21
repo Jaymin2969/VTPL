@@ -140,7 +140,7 @@ function* handleGetCountryList(action) {
 }
 
 async function addAddressApi(payload) {
-  return axios.get('https://vyaratiles.co.in/Api/SOStatus', {params: payload});
+  return axios.post('https://vyaratiles.co.in/Api/SOStatus', payload);
 }
 
 function* handleAddAddress(action) {
@@ -349,12 +349,11 @@ function* handlGetCategoryList(action) {
   }
 }
 
-async function getUserApi(dataToken) {
+async function getUserApi(payload) {
   const token = await TokenManager.retrieveToken();
-  return axios.get(
-    'https://identity-service-test.dezensolutions.com/user-profile',
-    {headers: {Authorization: `Bearer ${token || dataToken}`}},
-  );
+  return axios.get('https://vyaratiles.co.in/Api/DispPlanSO', {
+    params: payload,
+  });
 }
 
 function* handlGetUser(action) {
@@ -374,32 +373,12 @@ function* handlGetUser(action) {
     }
   } catch (error) {
     showErrorToast(error.response.data.Message);
-    console.log('login error', error);
-    const {displayName, phoneNumber} = auth().currentUser;
-    const dataSave = {
-      name: displayName || '',
-      mobileNumber: phoneNumber || '2234567890',
-      role: 'user',
-      token: auth()?.currentUser?.getIdToken(),
-    };
-    yield put({
-      type: POST_USER_REQUEST,
-      data: dataSave,
-    });
-    yield put({
-      type: GET_USER_ERROR,
-      error:
-        getSimplifiedError(error) ||
-        'Something went wrong, Please try again later',
-    });
   } finally {
     yield put(showProcessing());
   }
 }
 function postUserApi(payload) {
-  return axios.post('https://vyaratiles.co.in/Api/DispPlan', payload.body, {
-    params: payload.params,
-  });
+  return axios.post('https://vyaratiles.co.in/Api/DispPlan', payload.body);
 }
 
 function* handlPostUser(action) {

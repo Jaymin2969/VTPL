@@ -165,7 +165,7 @@ const style = StyleSheet.create({
   },
 
   container: {flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff'},
-  head: {height: 40, backgroundColor: '#808B97'},
+  head: {height: 40, backgroundColor: 'rgba(0,0,0,0.1)'},
 
   header: {
     flexDirection: 'row',
@@ -187,7 +187,9 @@ const style = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 10,
   },
-
+  activeItem: {
+    backgroundColor: '#808B97',
+  },
   txtDes: {
     fontSize: fontScale(15),
     fontWeight: '400',

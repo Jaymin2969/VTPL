@@ -56,7 +56,7 @@ const Ledger = ({navigation}) => {
   const [acGroups, setAcGroups] = useState({});
   const [clients, setClients] = useState({});
   const [clientsArray, setClientsArray] = useState([]);
-  const [store, setStore] = useState(dataArray);
+  const [store, setStore] = useState([]);
   const debouncedValue = useDebounce(value, 1000);
 
   const getSolist = async () => {
@@ -70,7 +70,7 @@ const Ledger = ({navigation}) => {
   useEffect(() => {
     if (addToCartSuccess) {
       setLoading(false);
-      return navigation.navigate('PDFScreen',{type:'ledger'});
+      return navigation.navigate('PDFScreen', {type: 'ledger'});
     }
     if (addToCart) {
       setLoading(false);
@@ -84,8 +84,8 @@ const Ledger = ({navigation}) => {
   useEffect(() => {
     // Do fetch here...
     // Triggers when "debouncedValue" changes
-    const filterData = dataArray.filter(i =>
-      i?.toLocaleLowerCase().includes(value?.toLocaleLowerCase()),
+    const filterData = clients?.value?.filter(i =>
+      i?.Name?.toLocaleLowerCase().includes(value?.toLocaleLowerCase()),
     );
     setStore(filterData);
   }, [debouncedValue]);
@@ -98,7 +98,7 @@ const Ledger = ({navigation}) => {
     setLoading(true);
     const UserID = await TokenManager.retrieveToken('UserId');
     const params = {
-      ClientID: '8592',
+      ClientID: clientsArray?.map(i => i.ID)?.join(','),
       // UserID,
     };
 
@@ -119,6 +119,26 @@ const Ledger = ({navigation}) => {
         setClientsArray([...clientsArray, item]);
       }
     };
+  useEffect(() => {
+    if (acGroups.value && clients.value) {
+      const updateDataList = countryList.Clients.filter(
+        i =>
+          i.ClientGroup === clients?.value &&
+          i.AcGroupID === acGroups?.value?._ID,
+      );
+      setStore(updateDataList);
+    } else if (acGroups?.value) {
+      const updateDataList = countryList.Clients.filter(
+        i => i.AcGroupID === acGroups?.value?._ID,
+      );
+      setStore(updateDataList);
+    } else if (clients.value) {
+      const updateDataList = countryList.Clients.filter(
+        i => i.ClientGroup === clients?.value,
+      );
+      setStore(updateDataList);
+    }
+  }, [acGroups, clients]);
 
   return (
     <BaseScreen>
@@ -149,7 +169,9 @@ const Ledger = ({navigation}) => {
             valueField="value"
             searchPlaceholder="Search..."
             value={acGroups}
-            onChange={setAcGroups}
+            onChange={data => {
+              setAcGroups(data);
+            }}
           />
           <Text style={styles.des}>{'Clint Group'}</Text>
           <Dropdown
@@ -160,10 +182,10 @@ const Ledger = ({navigation}) => {
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
             data={
-              countryList?.LedgerGroups?.length > 0
-                ? countryList?.LedgerGroups.map(s => ({
-                    label: s.GroupName,
-                    value: s.Clients,
+              countryList?.ClientGroups?.length > 0
+                ? countryList?.ClientGroups.map(s => ({
+                    label: s,
+                    value: s,
                   }))
                 : []
             }
@@ -172,7 +194,9 @@ const Ledger = ({navigation}) => {
             valueField="value"
             searchPlaceholder="Search..."
             value={clients}
-            onChange={setClients}
+            onChange={data => {
+              setClients(data);
+            }}
           />
         </View>
         <View style={styles.textWrapper}>
@@ -184,7 +208,7 @@ const Ledger = ({navigation}) => {
           />
           <FlatList
             nestedScrollEnabled
-            data={clients.value}
+            data={store}
             renderItem={({item}) => (
               <CheckBox
                 checked={clientsArray.find(i => i?.ID === item.ID)}

@@ -31,6 +31,7 @@ import {isIOS} from 'react-native-elements/dist/helpers';
 import {loginUser} from '../../redux/actions/authAction';
 import TokenManager from '../../utils/TokenManager';
 import {dispPlan} from '../../redux/actions/listAction';
+import {showErrorToast} from '../../utils/Utils';
 
 const tableHeadData = [
   'Date',
@@ -53,6 +54,7 @@ const DispatchPlanning = ({navigation, route = {}}) => {
   const dispatch = useDispatch();
   const {
     flags: {postUserSuccess},
+    userData = {},
   } = useSelector(({list}) => list);
   const [loading, setLoading] = React.useState(false);
   const [phno, setPhno] = React.useState('');
@@ -92,45 +94,52 @@ const DispatchPlanning = ({navigation, route = {}}) => {
   };
 
   const onSave = async () => {
+    if (userData?.MaxPlanQty < plannedQty)
+      return showErrorToast('Please provide right quantity!!');
     const UserID = await TokenManager.retrieveToken('UserId');
     dispatch(
       dispPlan({
         body: {
-          DispatchLocID: 14,
-          PlanLocID: 181,
-          SOID: 23668,
-          SOSrNo: 2,
-          UoMCode: 'SQMT',
-          Rate: +rate,
-          ClientID: clients?.value?.ID,
-          ClientName: clients?.label,
-          SiteID: siteName?.value,
-          SiteName: siteName?.label,
-          ProductID: products?.value?.ID,
-          ProductName: productName,
-          MktPersonID: MktPersons?.value?._ID,
-          OrdQty: orderQty,
-          ClientGroup: clintInfo?.label,
-          CreditLimit: +creditLimit,
-          BalAmt: avail,
-          IsInternal: false,
-          ProductType: 0,
-          SaleLoc: 'SANAND UNIT',
-          PendSaleQty: +dispatchQty,
-          StockQty: +stockOty,
-          Grade: grade,
-          Finish: db,
-          MaxPlanQty: maxPlanned,
-          PlanID: 0,
-          PlanDate: 'May 24 2023',
-          PlanType: 'A',
+          ...userData,
           PlannedQty: +plannedQty,
-          SaleQty: 0,
-          AddLessQty: 0,
-        },
-        params: {
+          NetPlanQty: userData?.PendingPlanQty + userData?.AddLessQty,
+          TotalPlanQty: +plannedQty + +userData?.AddLessQty,
+          // DispatchLocID: 14,
+          // PlanLocID: 181,
+          // SOID: 23668,
+          // SOSrNo: 2,
+          // UoMCode: 'SQMT',
+          // Rate: +rate,
+          // ClientID: clients?.value?.ID,
+          // ClientName: clients?.label,
+          // SiteID: siteName?.value,
+          // SiteName: siteName?.label,
+          // ProductID: products?.value?.ID,
+          // ProductName: productName,
+          // MktPersonID: MktPersons?.value?._ID,
+          // OrdQty: orderQty,
+          // ClientGroup: clintInfo?.label,
+          // CreditLimit: +creditLimit,
+          // BalAmt: avail,
+          // IsInternal: false,
+          // ProductType: 0,
+          // SaleLoc: 'SANAND UNIT',
+          // PendSaleQty: +dispatchQty,
+          // StockQty: +stockOty,
+          // Grade: grade,
+          // Finish: db,
+          // MaxPlanQty: maxPlanned,
+          // PlanID: 0,
+          // PlanDate: 'May 24 2023',
+          // PlanType: 'A',
+          // PlannedQty: +plannedQty,
+          // SaleQty: 0,
+          // AddLessQty: 0,
           UserID,
         },
+        // params: {
+        //   UserID,
+        // },
       }),
     );
     // navigation.navigate('BasicQuotation')
@@ -146,36 +155,41 @@ const DispatchPlanning = ({navigation, route = {}}) => {
           <Text style={styles.des}>{'Factory'}</Text>
           <Input
             placeholder="Client"
-            onChangeText={setFactory}
-            value={factory}
+            editable={false}
+            // onChangeText={setFactory}
+            value={userData?.ClientName}
           />
           <Text style={styles.des}>{'Site'}</Text>
           <Input
+            editable={false}
             placeholder="Client"
-            onChangeText={setClientName}
-            value={clientName}
+            // onChangeText={setClientName}
+            value={userData?.SiteName}
           />
           <Text style={styles.des}>{'Product'}</Text>
           <Input
+            editable={false}
             placeholder="Product"
-            onChangeText={setProductName}
-            value={productName}
+            // onChangeText={setProductName}
+            value={userData?.ProductName}
           />
           <View style={styles.dropdownWrapper}>
             <View>
               <Text style={styles.des}>{'Credit Limit'}</Text>
               <Input
+                editable={false}
                 placeholder="Credit Limit"
-                onChangeText={setCredit}
-                value={credit}
+                // onChangeText={setCredit}
+                value={userData?.CreditLimit + ''}
               />
             </View>
             <View>
               <Text style={styles.des}>{'Grade'}</Text>
               <Input
+                editable={false}
                 placeholder="Grade"
-                onChangeText={setGrade}
-                value={grade}
+                // onChangeText={setGrade}
+                value={userData?.Grade}
               />
             </View>
           </View>
@@ -183,56 +197,71 @@ const DispatchPlanning = ({navigation, route = {}}) => {
             <View>
               <Text style={styles.des}>{'Curr Bal'}</Text>
               <Input
+                editable={false}
                 placeholder="Credit Limit"
-                onChangeText={setCurrBal}
-                value={currBal}
+                // onChangeText={setCurrBal}
+                value={userData?.BalAmt + ''}
               />
             </View>
             <View>
               <Text style={styles.des}>{'Db Finish'}</Text>
-              <Input placeholder="Grade" onChangeText={setDb} value={db} />
+              <Input
+                editable={false}
+                placeholder="Grade"
+                // onChangeText={setDb}
+                value={userData?.Finish}
+              />
             </View>
           </View>
           <View style={styles.dropdownWrapper}>
             <View>
               <Text style={styles.des}>{'Avail.Bal Limit'}</Text>
               <Input
+                editable={false}
                 placeholder="Credit Limit"
-                onChangeText={setAvail}
-                value={avail}
+                // onChangeText={setAvail}
+                value={userData?.AvailableBal + ''}
               />
             </View>
             <View>
               <Text style={styles.des}>{'Rate'}</Text>
-              <Input placeholder="Rate" onChangeText={setRate} value={rate} />
+              <Input
+                editable={false}
+                placeholder="Rate"
+                // onChangeText={setRate}
+                value={userData?.Rate + ''}
+              />
             </View>
           </View>
           <View style={styles.dropdownWrapper}>
             <View>
               <Text style={styles.des}>{'Order Qty'}</Text>
               <Input
+                editable={false}
                 placeholder="Order Qty"
-                onChangeText={setOrderQty}
-                value={orderQty}
+                // onChangeText={setOrderQty}
+                value={userData?.OrdQty + ''}
               />
             </View>
             <View>
               <Text style={styles.des}>{'Stock Oty'}</Text>
               <Input
+                editable={false}
                 placeholder="Stock Oty"
-                onChangeText={setStockOty}
-                value={stockOty}
+                // onChangeText={setStockOty}
+                value={userData?.StockQty + ''}
               />
             </View>
           </View>
           <Text style={styles.des}>{'Pending Dispatch Qty'}</Text>
           <Input
+            editable={false}
             placeholder="Pending Dispatch Qty"
-            onChangeText={setDispatchQty}
-            value={dispatchQty}
+            // onChangeText={setDispatchQty}
+            value={userData?.PendingPlanQty + ''}
           />
         </View>
-        <View style={styles.textWrapper}>
+        {/* <View style={styles.textWrapper}>
           <Text style={styles.headerText}>{'All Quantities in Pcs'}</Text>
           <ScrollView showsVerticalScrollIndicator={false} horizontal>
             <Table borderStyle={{borderColor: 'transparent'}}>
@@ -268,21 +297,22 @@ const DispatchPlanning = ({navigation, route = {}}) => {
               </ScrollView>
             </Table>
           </ScrollView>
-        </View>
+        </View> */}
         <View style={styles.textWrapper}>
           <View style={styles.dropdownWrapper}>
             <View>
               <Text style={styles.des}>{'Max. Qty that \ncan be planned'}</Text>
               <Input
-                placeholder="Credit Limit"
-                onChangeText={setMaxPlanned}
-                value={maxPlanned}
+                editable={false}
+                placeholder="Planned Qty"
+                // onChangeText={setMaxPlanned}
+                value={userData?.MaxPlanQty + ''}
               />
             </View>
             <View>
               <Text style={styles.des}>{'Planned Qty'}</Text>
               <Input
-                placeholder="Rate"
+                placeholder="Planned Qty"
                 onChangeText={setPlannedQty}
                 value={plannedQty}
               />
@@ -292,14 +322,20 @@ const DispatchPlanning = ({navigation, route = {}}) => {
             <View>
               <Text style={styles.des}>{'Net Bal'}</Text>
               <Input
-                placeholder="Credit Limit"
-                onChangeText={setNetBal}
-                value={netBal}
+                editable={false}
+                placeholder="Net Bal"
+                // onChangeText={setNetBal}
+                value={userData?.PendingPlanQty + userData?.AddLessQty + ''}
               />
             </View>
             <View>
               <Text style={styles.des}>{'Plan Amt.'}</Text>
-              <Input placeholder="Rate" onChangeText={setPhno} value={phno} />
+              <Input
+                editable={false}
+                placeholder="Plan Amt."
+                // onChangeText={setPhno}
+                value={+plannedQty + +userData?.AddLessQty + ''}
+              />
             </View>
           </View>
         </View>

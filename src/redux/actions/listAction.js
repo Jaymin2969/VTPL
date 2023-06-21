@@ -48,7 +48,7 @@ export const getCategoryList = payload => ({
   type: GET_CATEGORY_LIST_REQUEST,
   payload,
 });
-export const getUser = payload => ({
+export const getDispPlanSO = payload => ({
   type: GET_USER_REQUEST,
   payload,
 });

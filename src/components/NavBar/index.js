@@ -38,7 +38,7 @@ const NavBar = ({
 
   const getIdToken = async () => {
     const data = await TokenManager.retrieveToken();
-    console.log('data',data)
+    console.log('data', data);
     if (!data) return;
     setDataArray([
       ...dataArray,
@@ -69,11 +69,11 @@ const NavBar = ({
       name: 'earth',
       onPress: onPressView,
     },
-    {
-      title: 'Change Password',
-      name: 'lock',
-      onPress: onPressView,
-    },
+    // {
+    //   title: 'Change Password',
+    //   name: 'lock',
+    //   onPress: onPressView,
+    // },
   ]);
 
   const deleteToken = async () => {

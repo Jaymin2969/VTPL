@@ -11,7 +11,7 @@ import {
 import {CheckBox} from 'react-native-elements';
 import {Dropdown} from 'react-native-element-dropdown';
 import {Table, Row, TableWrapper, Cell} from 'react-native-table-component';
-import { TextInputMask } from 'react-native-masked-text';
+import {TextInputMask} from 'react-native-masked-text';
 //style
 import styles from './style';
 
@@ -34,7 +34,10 @@ import {
 import {isIOS} from 'react-native-elements/dist/helpers';
 import {loginUser} from '../../redux/actions/authAction';
 import TokenManager from '../../utils/TokenManager';
-import {getDispPlanDataList} from '../../redux/actions/listAction';
+import {
+  getDispPlanDataList,
+  getDispPlanSO,
+} from '../../redux/actions/listAction';
 
 const tableHeadData = [
   'LocID',
@@ -67,7 +70,10 @@ const tableHeadData = [
 ];
 const DispatchOrderEntry = ({navigation}) => {
   const dispatch = useDispatch();
-  const {addressList = {}} = useSelector(({list}) => list);
+  const {
+    addressList = {},
+    flags: {userDataSuccess},
+  } = useSelector(({list}) => list);
   const [loading, setLoading] = React.useState(false);
   const [products, setProducts] = React.useState('');
   const [MktPersons, setMktPersons] = React.useState('');
@@ -78,7 +84,8 @@ const DispatchOrderEntry = ({navigation}) => {
   const [siteName, setSiteName] = useState({});
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
-  console.log('addressList', addressList.SOList);
+  const [selectedItem, setSelectedItem] = useState({});
+
   const getDispPlanList = async () => {
     const UserID = await TokenManager.retrieveToken('UserId');
     dispatch(
@@ -90,6 +97,18 @@ const DispatchOrderEntry = ({navigation}) => {
   useEffect(() => {
     getDispPlanList();
   }, []);
+  useEffect(() => {
+    if (userDataSuccess) {
+      return navigation.navigate('DispatchPlanning', {
+        factories,
+        MktPersons,
+        clintInfo,
+        site,
+        siteName,
+        products,
+      });
+    }
+  }, [userDataSuccess]);
   const onReport = () => {
     navigation.navigate('DispatchPlanning', {
       factories,
@@ -101,6 +120,17 @@ const DispatchOrderEntry = ({navigation}) => {
     });
   };
   const toggleCheckbox = () => setChecked(!checked);
+  const onNext = async () => {
+    const UserID = await TokenManager.retrieveToken('UserId');
+    dispatch(
+      getDispPlanSO({
+        UserID: UserID,
+        SOLocID: selectedItem['0'],
+        SOID: selectedItem['1'],
+        SOSrNo: selectedItem['2'],
+      }),
+    );
+  };
   return (
     <BaseScreen>
       <NavBar
@@ -164,10 +194,10 @@ const DispatchOrderEntry = ({navigation}) => {
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
             data={
-              addressList?.ClientDetails?.length > 0
-                ? addressList?.ClientDetails.map(s => ({
-                    label: s.GroupName,
-                    value: s.Clients,
+              addressList?.ClientGroups?.length > 0
+                ? addressList?.ClientGroups.map(s => ({
+                    label: s,
+                    value: s,
                   }))
                 : []
             }
@@ -187,10 +217,12 @@ const DispatchOrderEntry = ({navigation}) => {
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
             data={
-              clintInfo?.value?.length > 0
-                ? clintInfo?.value.map(s => ({
-                    label: s.Name,
-                    value: s,
+              addressList?.Clients?.length > 0
+                ? addressList?.Clients.filter(
+                    s => s.ClientGroup === clintInfo.value,
+                  ).map(d => ({
+                    label: d.Name,
+                    value: d,
                   }))
                 : []
             }
@@ -266,16 +298,25 @@ const DispatchOrderEntry = ({navigation}) => {
                       tableHeadData.map(d => i[d] || ''),
                     )}
                     renderItem={({item, index}) => (
-                      <TableWrapper key={index} style={[styles.row]}>
-                        {item.map((cellData, cellIndex) => (
-                          <Cell
-                            key={cellIndex}
-                            data={cellData}
-                            textStyle={styles.txtDes}
-                            style={styles.cell}
-                          />
-                        ))}
-                      </TableWrapper>
+                      <TouchableOpacity
+                        key={index}
+                        onPress={() => setSelectedItem({...item, index})}>
+                        <TableWrapper
+                          key={index}
+                          style={[
+                            styles.row,
+                            selectedItem.index === index && styles.activeItem,
+                          ]}>
+                          {item.map((cellData, cellIndex) => (
+                            <Cell
+                              key={cellIndex}
+                              data={cellData}
+                              textStyle={styles.txtDes}
+                              style={styles.cell}
+                            />
+                          ))}
+                        </TableWrapper>
+                      </TouchableOpacity>
                     )}
                     keyExtractor={(item, index) => index}
                     style={{marginTop: 10}}
@@ -340,7 +381,7 @@ const DispatchOrderEntry = ({navigation}) => {
         <View style={styles.dropdownWrapper}>
           <Button
             disabled={loading}
-            // onClick={login}
+            onClick={onNext}
             text="Next"
             textStyle={styles.buttonText}
             style={[styles.buttonStyle, styles.dropdownView]}

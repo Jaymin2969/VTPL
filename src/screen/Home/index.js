@@ -46,6 +46,9 @@ const Home = ({navigation}) => {
   //     );
   //   };
   // }, []);
+  // useEffect(() => {
+  //   TokenManager.saveToken('6357322775', 'UserId');
+  // }, []);
 
   const login = () => {
     if (phno?.length < 13 || !phno) {
