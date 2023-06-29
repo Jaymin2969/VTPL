@@ -23,6 +23,7 @@ import {isIOS} from 'react-native-elements/dist/helpers';
 import {loginUser} from '../../redux/actions/authAction';
 import TokenManager from '../../utils/TokenManager';
 import {getProductList, getSOStatus} from '../../redux/actions/listAction';
+import {useFocusEffect} from '@react-navigation/native';
 
 const SoStatus = ({navigation}) => {
   const dispatch = useDispatch();
@@ -69,9 +70,13 @@ const SoStatus = ({navigation}) => {
       }),
     );
   };
-  useEffect(() => {
-    getSolist();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      const unsubscribe = getSolist();
+      return () => unsubscribe;
+    }, []),
+  );
+
   const params = {};
   const login = async () => {
     setLoading(true);
@@ -130,7 +135,30 @@ const SoStatus = ({navigation}) => {
             value={status}
             onChange={setStatus}
           />
-          <View style={styles.dropdownWrapper}>
+          <Text style={[styles.des]}>{'For Location'}</Text>
+          <Dropdown
+            style={[styles.dropdown]}
+            itemTextStyle={{color: brandColors.black}}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={
+              productList?.ForLocs?.length > 0
+                ? productList?.ForLocs.map(s => ({
+                    label: s._Name,
+                    value: s,
+                  }))
+                : []
+            }
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            searchPlaceholder="Search..."
+            value={forLocation}
+            onChange={setForLocation}
+          />
+          {/* <View style={styles.dropdownWrapper}>
             <View style={styles.dropdownView}>
               <Text style={[styles.des, styles.leftSpace]}>
                 {'From Location'}
@@ -159,33 +187,9 @@ const SoStatus = ({navigation}) => {
               />
             </View>
             <View style={styles.dropdownView}>
-              <Text style={[styles.des, styles.leftSpace]}>
-                {'For Location'}
-              </Text>
-              <Dropdown
-                style={[styles.dropdown]}
-                itemTextStyle={{color: brandColors.black}}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
-                iconStyle={styles.iconStyle}
-                data={
-                  productList?.ForLocs?.length > 0
-                    ? productList?.ForLocs.map(s => ({
-                        label: s._Name,
-                        value: s,
-                      }))
-                    : []
-                }
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                searchPlaceholder="Search..."
-                value={forLocation}
-                onChange={setForLocation}
-              />
+             
             </View>
-          </View>
+          </View> */}
           <Text style={styles.des}>{'Clint. Grp'}</Text>
           <Dropdown
             style={[styles.dropdown]}
@@ -219,8 +223,8 @@ const SoStatus = ({navigation}) => {
             iconStyle={styles.iconStyle}
             data={
               productList?.Clients?.length > 0
-                ? productList?.Clients.filter(
-                    s => s.ClientGroup === clintInfo.value,
+                ? productList?.Clients.filter(s =>
+                    clintInfo?.value ? s.ClientGroup === clintInfo.value : true,
                   ).map(d => ({
                     label: d.Name,
                     value: d,

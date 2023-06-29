@@ -19,7 +19,11 @@ import BaseScreen from '../../components/BaseScreen';
 import {useDispatch, useSelector} from 'react-redux';
 import NavBar from '../../components/NavBar';
 import {apple, google, loginBG} from '../../assets/images';
-import {brandColors, horizontalScale} from '../../components/Core/basicStyles';
+import {
+  brandColors,
+  horizontalScale,
+  verticalScale,
+} from '../../components/Core/basicStyles';
 import {isIOS} from 'react-native-elements/dist/helpers';
 import {loginUser} from '../../redux/actions/authAction';
 import TokenManager from '../../utils/TokenManager';
@@ -84,11 +88,11 @@ const Ledger = ({navigation}) => {
   useEffect(() => {
     // Do fetch here...
     // Triggers when "debouncedValue" changes
-    const filterData = clients?.value?.filter(i =>
+    const filterData = (clients?.value || countryList?.Clients)?.filter(i =>
       i?.Name?.toLocaleLowerCase().includes(value?.toLocaleLowerCase()),
     );
     setStore(filterData);
-  }, [debouncedValue]);
+  }, [debouncedValue, addToCartSuccess]);
 
   useEffect(() => {
     if (loginSuccess) return navigation.navigate('TabScreen');
@@ -225,7 +229,7 @@ const Ledger = ({navigation}) => {
               />
             )}
             keyExtractor={(item, index) => index}
-            style={{marginTop: 10}}
+            style={{marginTop: 10, height: verticalScale(400)}}
           />
         </View>
 

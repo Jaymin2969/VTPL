@@ -8,31 +8,22 @@ import {
   View,
 } from 'react-native';
 
-import {CheckBox} from 'react-native-elements';
 import {Dropdown} from 'react-native-element-dropdown';
 import {Table, Row, TableWrapper, Cell} from 'react-native-table-component';
-import {TextInputMask} from 'react-native-masked-text';
 //style
 import styles from './style';
 
 //components
-import Input from '../../components/Input';
 import Button from '../../components/Button';
 import BaseScreen from '../../components/BaseScreen';
 
+import {useFocusEffect} from '@react-navigation/native';
 //image
 
 //redux
 import {useDispatch, useSelector} from 'react-redux';
 import NavBar from '../../components/NavBar';
-import {apple, google, loginBG} from '../../assets/images';
-import {
-  brandColors,
-  fontScale,
-  horizontalScale,
-} from '../../components/Core/basicStyles';
-import {isIOS} from 'react-native-elements/dist/helpers';
-import {loginUser} from '../../redux/actions/authAction';
+import {brandColors, fontScale} from '../../components/Core/basicStyles';
 import TokenManager from '../../utils/TokenManager';
 import {
   getDispPlanDataList,
@@ -40,34 +31,35 @@ import {
 } from '../../redux/actions/listAction';
 
 const tableHeadData = [
-  'LocID',
-  'SOID',
-  'SrNo',
-  'FactoryID',
   'Factory',
+  // 'FactoryID',
   'SONo',
-  'SODate',
+  'SrNo',
+  // 'SODate',
   'PONo',
-  'ClientID',
-  'Client',
-  'SiteID',
-  'SiteName',
-  'ClientGroup',
-  'MktPersonID',
-  'MktPerson',
-  'ProductID',
-  'ItemID',
-  'ProdItemID',
   'ProductName',
   'FinishCode',
   'ProductGrade',
   'UoMCode',
   'SOQty',
   'PendingSaleQty',
-  'StockQty',
   'Rate',
   'PendingPlanQty',
+  'Client',
+  'SiteName',
+  'MktPerson',
+  // 'MktPersonID',
+  'StockQty',
+  'LocID',
+  'SOID',
+  // 'ClientID',
+  // 'SiteID',
+  // 'ClientGroup',
+  // 'ProductID',
+  // 'ItemID',
+  // 'ProdItemID',
 ];
+
 const DispatchOrderEntry = ({navigation}) => {
   const dispatch = useDispatch();
   const {
@@ -94,9 +86,15 @@ const DispatchOrderEntry = ({navigation}) => {
       }),
     );
   };
-  useEffect(() => {
-    getDispPlanList();
-  }, []);
+  // useEffect(() => {
+  //   getDispPlanList();
+  // }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      const unsubscribe = getDispPlanList();
+      return () => unsubscribe;
+    }, []),
+  );
   useEffect(() => {
     if (userDataSuccess) {
       return navigation.navigate('DispatchPlanning', {
@@ -125,12 +123,13 @@ const DispatchOrderEntry = ({navigation}) => {
     dispatch(
       getDispPlanSO({
         UserID: UserID,
-        SOLocID: selectedItem['0'],
-        SOID: selectedItem['1'],
+        SOLocID: selectedItem['16'],
+        SOID: selectedItem['17'],
         SOSrNo: selectedItem['2'],
       }),
     );
   };
+
   return (
     <BaseScreen>
       <NavBar
@@ -218,8 +217,8 @@ const DispatchOrderEntry = ({navigation}) => {
             iconStyle={styles.iconStyle}
             data={
               addressList?.Clients?.length > 0
-                ? addressList?.Clients.filter(
-                    s => s.ClientGroup === clintInfo.value,
+                ? addressList?.Clients.filter(s =>
+                    clintInfo?.value ? s.ClientGroup === clintInfo.value : true,
                   ).map(d => ({
                     label: d.Name,
                     value: d,
@@ -286,7 +285,9 @@ const DispatchOrderEntry = ({navigation}) => {
             horizontal
             nestedScrollEnabled>
             <View style={styles.tableWrapper}>
-              <Table borderStyle={{borderColor: 'transparent'}}>
+              <Table
+                borderStyle={{borderColor: 'transparent'}}
+                style={styles.tableWrapper}>
                 <Row
                   data={tableHeadData}
                   style={styles.header}
@@ -294,9 +295,28 @@ const DispatchOrderEntry = ({navigation}) => {
                 />
                 <>
                   <FlatList
-                    data={addressList?.SOList?.map(i =>
-                      tableHeadData.map(d => i[d] || ''),
-                    )}
+                    nestedScrollEnabled
+                    data={addressList?.SOList?.filter(
+                      i =>
+                        (factories?.value
+                          ? i?.FactoryID === factories?.value?._ID
+                          : true) &&
+                        (MktPersons?.value?._ID
+                          ? i?.MktPersonID === MktPersons?.value?._ID
+                          : true) &&
+                        (clintInfo?.value
+                          ? i?.ClientGroup === clintInfo?.value
+                          : true) &&
+                        (site?.value?.ID
+                          ? i?.ClientID === site?.value?.ID
+                          : true) &&
+                        (siteName?.value
+                          ? i?.SiteID === siteName?.value
+                          : true) &&
+                        (siteName?.value?.ID
+                          ? i?.ProductID === siteName?.value?.ID
+                          : true),
+                    )?.map(i => tableHeadData.map(d => i[d] || ''))}
                     renderItem={({item, index}) => (
                       <TouchableOpacity
                         key={index}
@@ -327,7 +347,7 @@ const DispatchOrderEntry = ({navigation}) => {
           </ScrollView>
         </View>
 
-        <View style={styles.dropdownWrapper}>
+        {/* <View style={styles.dropdownWrapper}>
           <View style={styles.inputWrapper}>
             <Text style={[styles.des]}>{'From'}</Text>
             <TextInputMask
@@ -377,7 +397,7 @@ const DispatchOrderEntry = ({navigation}) => {
             containerStyle={styles.checkWrapper}
             textStyle={styles.textStyle}
           />
-        </View>
+        </View> */}
         <View style={styles.dropdownWrapper}>
           <Button
             disabled={loading}
@@ -387,16 +407,6 @@ const DispatchOrderEntry = ({navigation}) => {
             style={[styles.buttonStyle, styles.dropdownView]}
           />
           <Button
-            colors={['#45e2ea', '#26a4a9', '#097272']}
-            disabled={loading}
-            // onClick={login}
-            text="Full So"
-            textStyle={styles.buttonText}
-            style={[styles.buttonStyle, styles.dropdownView]}
-          />
-        </View>
-        <View style={styles.dropdownWrapper}>
-          <Button
             colors={['#151589', '#09096a', '#010151']}
             disabled={loading}
             onClick={onReport}
@@ -404,10 +414,20 @@ const DispatchOrderEntry = ({navigation}) => {
             textStyle={{fontSize: fontScale(17)}}
             style={[styles.buttonStyle, styles.dropdownView]}
           />
+          {/* <Button
+            colors={['#45e2ea', '#26a4a9', '#097272']}
+            disabled={loading}
+            // onClick={login}
+            text="Full So"
+            textStyle={styles.buttonText}
+            style={[styles.buttonStyle, styles.dropdownView]}
+          /> */}
+        </View>
+        <View style={styles.dropdownWrapper}>
           <Button
             colors={['#e32d2e', '#b32527', '#892020']}
             disabled={loading}
-            // onClick={login}
+            onClick={() => navigation.replace('Home')}
             text="Exit"
             textStyle={styles.buttonText}
             style={[styles.buttonStyle, styles.dropdownView]}

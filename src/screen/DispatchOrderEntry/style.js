@@ -177,7 +177,7 @@ const style = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
     paddingHorizontal: horizontalScale(10),
-    width: horizontalScale(170),
+    width: horizontalScale(120),
     textAlign: 'left',
   },
   row: {

@@ -26,12 +26,13 @@ import BaseScreen from '../../components/BaseScreen';
 import {useDispatch, useSelector} from 'react-redux';
 import NavBar from '../../components/NavBar';
 import {apple, google, loginBG} from '../../assets/images';
-import {horizontalScale} from '../../components/Core/basicStyles';
+import {brandColors, horizontalScale} from '../../components/Core/basicStyles';
 import {isIOS} from 'react-native-elements/dist/helpers';
 import {loginUser} from '../../redux/actions/authAction';
 import TokenManager from '../../utils/TokenManager';
 import {dispPlan} from '../../redux/actions/listAction';
 import {showErrorToast} from '../../utils/Utils';
+import {TextInputMask} from 'react-native-masked-text';
 
 const tableHeadData = [
   'Date',
@@ -64,6 +65,7 @@ const DispatchPlanning = ({navigation, route = {}}) => {
   const [productName, setProductName] = React.useState('');
   const [credit, setCredit] = React.useState('');
   const [grade, setGrade] = React.useState('');
+  const [fromDate, setFromDate] = React.useState();
   const [db, setDb] = React.useState('');
   const [avail, setAvail] = React.useState('');
   const [rate, setRate] = React.useState('');
@@ -75,13 +77,14 @@ const DispatchPlanning = ({navigation, route = {}}) => {
   const [maxPlanned, setMaxPlanned] = React.useState('');
   const [plannedQty, setPlannedQty] = React.useState('');
   const [netBal, setNetBal] = React.useState('');
+  const [planType, setPlanType] = React.useState('');
 
   useEffect(() => {
     if (postUserSuccess) return navigation.navigate('Home');
   }, [postUserSuccess]);
 
   const login = () => {
-    return navigation.navigate('ChangeServer');
+    return navigation.goBack();
     if (phno?.length < 13 || !phno) {
       return alert('Please enter valid phno');
     }
@@ -104,6 +107,8 @@ const DispatchPlanning = ({navigation, route = {}}) => {
           PlannedQty: +plannedQty,
           NetPlanQty: userData?.PendingPlanQty + userData?.AddLessQty,
           TotalPlanQty: +plannedQty + +userData?.AddLessQty,
+          PlanDate: fromDate,
+          PlanType: planType?.value,
           // DispatchLocID: 14,
           // PlanLocID: 181,
           // SOID: 23668,
@@ -200,14 +205,14 @@ const DispatchPlanning = ({navigation, route = {}}) => {
                 editable={false}
                 placeholder="Credit Limit"
                 // onChangeText={setCurrBal}
-                value={userData?.BalAmt + ''}
+                value={userData?.BalAmt + ' ' + userData?.BalType}
               />
             </View>
             <View>
-              <Text style={styles.des}>{'Db Finish'}</Text>
+              <Text style={styles.des}>{'Finish'}</Text>
               <Input
                 editable={false}
-                placeholder="Grade"
+                placeholder=" "
                 // onChangeText={setDb}
                 value={userData?.Finish}
               />
@@ -253,12 +258,57 @@ const DispatchPlanning = ({navigation, route = {}}) => {
               />
             </View>
           </View>
-          <Text style={styles.des}>{'Pending Dispatch Qty'}</Text>
-          <Input
-            editable={false}
-            placeholder="Pending Dispatch Qty"
-            // onChangeText={setDispatchQty}
-            value={userData?.PendingPlanQty + ''}
+          <View style={styles.dropdownWrapper}>
+            <View>
+              <Text style={styles.des}>{'Pending Dispatch Qty'}</Text>
+              <Input
+                editable={false}
+                placeholder="Pending Dispatch Qty"
+                // onChangeText={setDispatchQty}
+                value={userData?.PendingPlanQty + ''}
+              />
+            </View>
+            <View>
+              <Text style={styles.des}>{'Net Bal'}</Text>
+              <Input
+                editable={false}
+                placeholder="Net Bal"
+                // onChangeText={setDispatchQty}
+                value={userData?.AvailableBal + plannedQty * userData?.Rate}
+              />
+            </View>
+          </View>
+          <Text style={styles.des}>{'Plan Date'}</Text>
+          <TextInputMask
+            type={'datetime'}
+            options={{
+              format: 'DD/MM/YYYY',
+            }}
+            placeholder="DD/MM/YYYY"
+            onChangeText={setFromDate}
+            value={fromDate}
+            style={[styles.dropdown]}
+          />
+          <Text style={styles.des}>{'Plan Date'}</Text>
+          <Dropdown
+            itemTextStyle={{color: brandColors.black}}
+            style={[styles.dropdown]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={[
+              {label: 'A', value: 'A'},
+              {label: 'B', value: 'B'},
+              {label: 'C', value: 'C'},
+              {label: 'D', value: 'D'},
+            ]}
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            searchPlaceholder="Search..."
+            value={planType}
+            onChange={setPlanType}
           />
         </View>
         {/* <View style={styles.textWrapper}>
@@ -334,7 +384,7 @@ const DispatchPlanning = ({navigation, route = {}}) => {
                 editable={false}
                 placeholder="Plan Amt."
                 // onChangeText={setPhno}
-                value={+plannedQty + +userData?.AddLessQty + ''}
+                value={+plannedQty * userData?.Rate + ''}
               />
             </View>
           </View>
